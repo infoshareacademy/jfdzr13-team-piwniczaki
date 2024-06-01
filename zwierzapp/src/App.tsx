@@ -9,6 +9,7 @@ import Profile from "./components/Profile/Profile";
 import Form from "./components/Form/Form";
 import Filter from "./components/Filter/Filter";
 // import styles from "./styles/app.module.scss"
+import PrivateRoute from './utils/PrivateRoute';
 
 function App() {
   return (
@@ -19,16 +20,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* private routes */}
-        {/* <Route element={<PrivateRoute />}> */}
+        <Route element={<PrivateRoute />}>
           <Route path="/addcare" element={<AddCare />} />
           <Route path="/addpet" element={<AddPet />} />
           <Route path="/filter" element={<Filter />} />
           <Route path="/form" element={<Form />} />
           <Route path="/profile" element={<Profile />} />
-
-        {/* </Route> */}
+        </Route>
       </Route>
-
     </Routes>
   );
 }
