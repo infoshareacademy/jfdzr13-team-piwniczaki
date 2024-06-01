@@ -1,6 +1,8 @@
 @import "./vars.scss";
 
 .header{
-    color: $blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 30px;
 }
