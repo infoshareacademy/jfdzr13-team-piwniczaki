@@ -1,15 +1,15 @@
-import { Routes, Route } from "react-router-dom";
-import Login from "./components/Login/Login";
+import { Route, Routes } from "react-router-dom";
 import Layout from "./Layout/Layout";
-import MainPage from "./components/MainPage/MainPage";
-import Register from "./components/Register/Register";
 import AddCare from "./components/AddCare/AddCare";
 import AddPet from "./components/AddPet/AddPet";
-import Profile from "./components/Profile/Profile";
-import Form from "./components/Form/Form";
 import Filter from "./components/Filter/Filter";
+import Form from "./components/Form/Form";
+import Login from "./components/Login/Login";
+import MainPage from "./components/MainPage/MainPage";
+import Profile from "./components/Profile/Profile";
+import Register from "./components/Register/Register";
 // import styles from "./styles/app.module.scss"
-import PrivateRoute from './utils/PrivateRoute';
+import PrivateRoute from "./utils/PrivateRoute";
 
 function App() {
   return (
