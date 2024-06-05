@@ -1,6 +1,80 @@
 @import "../../styles/vars.scss";
 
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
+
 .loginContainer{
-    color: $blue;
-    font-size: 30px;
+    font-family: karla;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    font-size: 1em;
+    
+}
+button:hover{
+    cursor: pointer;
+}
+.boxLogin{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 50%;
+    width: 30%;
+    gap: 10px;
+    background-color: rgb(227, 227, 227);
+}
+.linkToMainPage{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    text-decoration: none;
+    gap: 5px;
+    font-size: 0.8rem;
+}
+.linkToMainPage img{
+    max-width: 16px;
+    max-height: 16px;
+}
+.formContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap:14px;
+}
+.formContainer input{
+    background-color: rgba(217, 217, 217, 1);
+    border: none;
+    padding: 10px;
+}
+.formContainer button{
+    background-color: rgba(83, 57, 49, 1);
+    color: white;
+    border: none;
+    padding: 5px 20px;
+}
+.googleLogin{
+    background-color: rgba(217, 217, 217, 1);
+    border: none;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.googleLogo{
+    max-width: 32px;
+    max-height: 32px;
+}
+.registerLink{
+    text-decoration: none;
+    font-weight: 700;
+}
+a:visited{
+    text-decoration: none;
+    color: black;
 }
