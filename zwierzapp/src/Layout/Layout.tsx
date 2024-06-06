@@ -1,14 +1,14 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/NavBar/NavBar";
-
+import styles from './layout.module.scss'
 
 const Layout = () => {
 	return (
 		<div >
-			<header>
+			<header className={styles.header}>
 				<Navbar />
 			</header>
-			<main>
+			<main className={styles.main}>
 				<Outlet />
 			</main>
 		</div>

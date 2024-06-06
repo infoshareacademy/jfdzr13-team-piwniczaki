@@ -1,1 +1,11 @@
 @import "../styles/vars.scss";
+
+.header {
+    height: 70px;
+    width: 100vw;
+}
+
+.main {
+    height: calc(100vh - 70px);
+    width: 100vw;
+}
