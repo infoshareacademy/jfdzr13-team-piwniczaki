@@ -1,0 +1,25 @@
+@import "../../../styles/vars.scss";
+
+.aboutUsWrapper {
+  font-family: $font-poppins;
+  font-size: 20px;
+  text-align: justify;
+  padding: 80px 300px;
+  background-image: linear-gradient(to top, #000000, #3b3b3b, #777777, #b9b9b9, #ffffff);
+  color: white;
+}
+
+.aboutUsWrapper h1 {
+  color: $orange;
+  font-size: 30px;
+  padding: 15px 0;
+}
+
+.aboutUsWrapper .aboutUsList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 80px 0;
+  gap: 70px;
+  list-style-type: none;
+  text-align: justify;
+}
