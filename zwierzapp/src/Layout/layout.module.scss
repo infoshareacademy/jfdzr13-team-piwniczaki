@@ -4,6 +4,6 @@
 .layout{
     width: 100vw;
     height: 100vh;
-    display: grid;
-    grid-template-rows: 100px 1fr;
+    display: flex;
+    flex-direction: column;
 }
