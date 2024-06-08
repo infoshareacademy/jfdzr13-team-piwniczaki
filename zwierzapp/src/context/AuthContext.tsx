@@ -7,6 +7,7 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
 } from "firebase/auth";
+import toast from 'react-hot-toast';
 import { auth } from "../utils/firebase.tsx";
 
 interface AuthContextData {
@@ -23,33 +24,51 @@ const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const [currentUser, setCurrentUser] = useState<any>(null);
+
+    const [currentUser, setCurrentUser] = useState(null);
+
 
     function login(email: string, password: string) {
-        signInWithEmailAndPassword(auth, email, password)
-
+        toast.promise(
+            signInWithEmailAndPassword(auth, email, password),
+            {
+                loading: 'Logowanie..',
+                success: <b>Zostałeś zalogowany</b>,
+                error: (err) => <b>Błąd: {err.message}</b>,
+            }
+        );
     }
     function loginWithGoogle() {
         const provider = new GoogleAuthProvider();
-        return signInWithPopup(auth, provider)
-        .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential?.accessToken;
-            const user = result.user;
-          }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            const email = error.customData.email;
-            const credential = GoogleAuthProvider.credentialFromError(error);
-          });
-        
-
+        toast.promise(
+            signInWithPopup(auth, provider),
+            {
+                loading: 'Logowanie..',
+                success: <b>Zostałeś zalogowany</b>,
+                error: (err) => <b>Błąd: {err.message}</b>,
+            }
+        );
     }
     function register(email: string, password: string) {
-        createUserWithEmailAndPassword(auth, email, password);
+        toast.promise(
+            createUserWithEmailAndPassword(auth, email, password),
+            {
+                loading: 'Rejestrowanie',
+                success: <b>Zarejestrowanie poprawnie!</b>,
+                error: (err) => <b>Błąd: {err.message}</b>,
+            }
+        );
     }
+    
     function logout() {
-        signOut(auth);
+        toast.promise(
+            signOut(auth),
+            {
+                loading: 'Wylogowywanie',
+                success: <b>Wylogowano!</b>,
+                error: (err) => <b>Błąd: {err.message}</b>,
+            }
+        );
     }
 
     useEffect(() => {
