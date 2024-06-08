@@ -11,7 +11,7 @@
   color: white;
 }
 
-.sectionsWrapper .welcomePageWrapper {
+.welcomePageWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,14 +22,14 @@
   left: 200px;
 }
 
-.sectionsWrapper .welcomePageWrapper .zwierzakText {
+.zwierzakText {
   font-family: $font-poppins;
   font-size: 40px;
   font-weight: 500;
   color: $orange;
 }
 
-.sectionsWrapper .welcomePageWrapper .buttonZarejestruj {
+ .buttonZarejestruj {
   font-size: 30px;
   font-weight: 400;
   margin: 20px 0;
@@ -38,13 +38,21 @@
   border: none;
   border-radius: 70px;
   color: white;
-}
+   &:hover {
+     transform: scale(1.1);
+   }
+   &:active {
+     background-color: white;
+     color: $orange;
+   }
+ }
 
-.sectionsWrapper .welcomePageWrapper .buttonZarejestruj:hover {
-  transform: scale(1.1);
-}
+// TO JEST TO SAMO
+//.buttonZarejestruj:hover {
+//  transform: scale(1.1);
+//}
 
-.sectionsWrapper .welcomePageWrapper .buttonZarejestruj:active {
-  background-color: white;
-  color: $orange;
-}
+//.buttonZarejestruj:active {
+//  background-color: white;
+//  color: $orange;
+//}

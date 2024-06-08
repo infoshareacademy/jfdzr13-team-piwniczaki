@@ -51,7 +51,7 @@ const Carousel = () => {
         {dogs.map((element, index) => (
           <SwiperSlide key={index}>
             <div className={styles.carouselItem}>
-              <img className={styles.carouselImage} src={element.photo}></img>
+              <img alt={`Pet nr ${element.id}`} className={styles.carouselImage} src={element.photo}/>
             </div>
           </SwiperSlide>
         ))}
