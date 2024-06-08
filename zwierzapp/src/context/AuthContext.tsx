@@ -7,17 +7,26 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
 } from "firebase/auth";
-
-import { auth } from "../utils/firebase.jsx";
 import toast from 'react-hot-toast';
+import { auth } from "../utils/firebase.tsx";
 
-const AuthContext = createContext({});
+interface AuthContextData {
+    currentUser: any; 
+    login: (email: string, password: string) => Promise<void>;
+    loginWithGoogle: () => Promise<void>;
+    register: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextData | null>(null);;
 
 const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
+
     const [currentUser, setCurrentUser] = useState(null);
+
 
     function login(email: string, password: string) {
         toast.promise(

@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/NavBar/NavBar";
+import styles from './layout.module.scss'
 import { Toaster } from 'react-hot-toast';
 
 
 const Layout = () => {
 	return (
 		<div >
-			<header>
+			<header className={styles.header}>
 				<Navbar />
 			</header>
 			<main>
