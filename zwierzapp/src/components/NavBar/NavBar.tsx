@@ -1,9 +1,8 @@
-import { NavLink } from "react-router-dom";
-import logo from "../../assets/paw.png";
 import styles from "./navBar.module.scss";
 import paw from "../../images/Paw.svg"
 import { Link } from "react-router-dom";
 import useAuth from "../../context/AuthContext"
+import { Link as ScrollTrigger } from 'react-scroll';
 
 function NavBar() {
   const { currentUser, logout } = useAuth();
@@ -14,8 +13,8 @@ function NavBar() {
         <img src={paw}></img></Link>
       </div>
       <div className={styles.menuNav}>
-        <Link to="/#aboutUs" className={styles.linkElemenets}>O nas</Link>
-        <Link to="/#contact" className={styles.linkElemenets}>Kontakt</Link>
+        <ScrollTrigger to="aboutUs" className={styles.linkElemenets} smooth={true} duration={500}>O nas</ScrollTrigger>
+        <ScrollTrigger to="contact" className={styles.linkElemenets} smooth={true} duration={600}>Kontakt</ScrollTrigger>
 
         {currentUser ? (
           <>

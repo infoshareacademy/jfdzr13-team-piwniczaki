@@ -4,10 +4,12 @@ import mail from "../../../assets/mail-icon.svg";
 import phone from "../../../assets/phone-icon.svg";
 import twitter from "../../../assets/twitter-icon.svg";
 import styles from "./footer.module.scss";
+import { Element } from 'react-scroll';
 
 const Footer = () => {
   return (
     <main className={styles.footerWrapper}>
+      <Element name="contact" smooth={true} duration={500}>
       <h1 className={styles.contactHeader}>Skontaktuj się z nami</h1>
       <ul className={styles.footerItemsList}>
         <li className={styles.footerItem}>
@@ -42,6 +44,7 @@ const Footer = () => {
           <img className={styles.twitterIcon} src={twitter} alt="twitter"></img>
         </li>
       </ul>
+      </Element>
     </main>
   );
 };
