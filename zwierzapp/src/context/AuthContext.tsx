@@ -7,6 +7,7 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
 } from "firebase/auth";
+
 import { auth } from "../utils/firebase.jsx";
 import toast from 'react-hot-toast';
 
