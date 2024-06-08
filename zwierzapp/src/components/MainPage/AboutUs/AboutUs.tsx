@@ -1,8 +1,10 @@
 import styles from "./aboutUs.module.scss";
+import { Element } from 'react-scroll';
 
 const AboutUs = () => {
   return (
     <main className={styles.aboutUsWrapper}>
+      <Element name="aboutUs">
       <h1>O nas</h1>
       <p>
         Witamy na naszej stronie, stworzonej z myślą o wszystkich miłośnikach
@@ -37,6 +39,7 @@ const AboutUs = () => {
           </p>
         </li>
       </ul>
+      </Element>
     </main>
   );
 };

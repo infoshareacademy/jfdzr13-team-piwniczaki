@@ -8,7 +8,7 @@ import {
     signInWithPopup,
 } from "firebase/auth";
 import toast from 'react-hot-toast';
-import { auth } from "../utils/firebase.tsx";
+import { auth } from "../utils/firebase.ts";
 
 interface AuthContextData {
     currentUser: any; 

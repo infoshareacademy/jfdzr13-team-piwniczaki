@@ -8,7 +8,6 @@ import Login from "./components/Login/Login";
 import MainPage from "./components/MainPage/MainPage";
 import Profile from "./components/Profile/Profile";
 import Register from "./components/Register/Register";
-// import styles from "./styles/app.module.scss"
 import PrivateRoute from "./utils/PrivateRoute";
 
 function App() {
