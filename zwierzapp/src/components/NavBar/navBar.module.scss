@@ -1,6 +1,44 @@
 @import "../../styles/vars.scss";
 
-.navbarContainer{
-    color: $blue;
-    font-size: 30px;
+.navbarContainer {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: $brown;
+  border-bottom: 1px solid $orange;
+}
+
+.navbarContainer .navLeft {
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: $font-architects;
+  font-size: 20px;
+  color: white;
+}
+
+.navbarContainer .navLeft .navLogo {
+  height: 50%;
+}
+
+.navbarContainer .navLoginButton {
+  padding: 5px 20px;
+  font-family: $font-poppins;
+  font-weight: bold;
+  font-size: 10px;
+  border-radius: 20px;
+  border-color: $orange;
+  border-width: 2px;
+}
+
+.navbarContainer .navLoginButton:hover {
+  transform: scale(1.1);
+}
+
+.navbarContainer .navLoginButton:active {
+  background-color: $brown;
+  color: $orange;
 }
