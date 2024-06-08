@@ -7,7 +7,9 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../utils/firebase.js";
+
+import { auth } from "../utils/firebase.jsx";
+import toast from 'react-hot-toast';
 
 const AuthContext = createContext({});
 
@@ -18,19 +20,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     function login(email: string, password: string) {
-        signInWithEmailAndPassword(auth, email, password)
-
+        toast.promise(
+            signInWithEmailAndPassword(auth, email, password),
+            {
+                loading: 'Logowanie..',
+                success: <b>Zostałeś zalogowany</b>,
+                error: (err) => <b>Błąd: {err.message}</b>,
+            }
+        );
     }
     function loginWithGoogle() {
         const provider = new GoogleAuthProvider();
-        return signInWithPopup(auth, provider)
-
+        toast.promise(
+            signInWithPopup(auth, provider),
+            {
+                loading: 'Logowanie..',
+                success: <b>Zostałeś zalogowany</b>,
+                error: (err) => <b>Błąd: {err.message}</b>,
+            }
+        );
     }
     function register(email: string, password: string) {
-        createUserWithEmailAndPassword(auth, email, password);
+        toast.promise(
+            createUserWithEmailAndPassword(auth, email, password),
+            {
+                loading: 'Rejestrowanie',
+                success: <b>Zarejestrowanie poprawnie!</b>,
+                error: (err) => <b>Błąd: {err.message}</b>,
+            }
+        );
     }
+    
     function logout() {
-        signOut(auth);
+        toast.promise(
+            signOut(auth),
+            {
+                loading: 'Wylogowywanie',
+                success: <b>Wylogowano!</b>,
+                error: (err) => <b>Błąd: {err.message}</b>,
+            }
+        );
     }
 
     useEffect(() => {

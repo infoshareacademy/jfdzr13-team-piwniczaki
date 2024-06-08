@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+import logo from "../../assets/paw.png";
 import styles from "./navBar.module.scss";
 import paw from "../../images/Paw.svg"
 import { Link } from "react-router-dom";
@@ -33,4 +35,4 @@ function NavBar() {
   )
 }
 
-export default NavBar
+export default NavBar;
