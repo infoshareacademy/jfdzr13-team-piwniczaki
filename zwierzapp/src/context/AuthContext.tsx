@@ -1,27 +1,56 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import {
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut,
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../utils/firebase.tsx";
-import { onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
-const AuthContext = createContext({});
+interface AuthContextData {
+    currentUser: any; 
+    login: (email: string, password: string) => Promise<void>;
+    loginWithGoogle: () => Promise<void>;
+    register: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextData | null>(null);;
+
 const useAuth = () => useContext(AuthContext);
 
-export const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
-    function login(email, pwd) {
-        return signInWithEmailAndPassword(auth, email, pwd)
+    const [currentUser, setCurrentUser] = useState<any>(null);
+
+    function login(email: string, password: string) {
+        signInWithEmailAndPassword(auth, email, password)
+
     }
     function loginWithGoogle() {
         const provider = new GoogleAuthProvider();
         return signInWithPopup(auth, provider)
+        .then((result) => {
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential?.accessToken;
+            const user = result.user;
+          }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const email = error.customData.email;
+            const credential = GoogleAuthProvider.credentialFromError(error);
+          });
+        
+
     }
-    function register(email, pwd) {
-        return createUserWithEmailAndPassword(auth, email, pwd)
+    function register(email: string, password: string) {
+        createUserWithEmailAndPassword(auth, email, password);
     }
     function logout() {
-        return signOut(auth)
+        signOut(auth);
     }
-
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -29,7 +58,7 @@ export const AuthProvider = ({ children }) => {
         });
         return () => unsubscribe();
     }, []);
-    
+
     const passedData = {
         currentUser,
         login,
@@ -38,8 +67,8 @@ export const AuthProvider = ({ children }) => {
         logout
     }
 
-    return <AuthContext.Provider value={passedData}>{children}</AuthContext.Provider>
 
+    return <AuthContext.Provider value={passedData}>{children}</AuthContext.Provider>
 }
 
 export default useAuth;

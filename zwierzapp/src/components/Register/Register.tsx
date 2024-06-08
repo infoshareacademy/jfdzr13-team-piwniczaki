@@ -1,17 +1,72 @@
 import styles from "./register.module.scss";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import { useEffect } from "react";
+import useAuth from "../../context/AuthContext";
+import { db} from "../../utils/firebase";
+import { addDoc } from "firebase/firestore"
+import {auth} from "../../utils/firebase"
+
 
 function Register() {
 
-  const handleSubmit = () => {
+  const { register, loginWithGoogle, currentUser } = useAuth() ?? {};
+  const navigate = useNavigate();
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email");
+    const pwd = formData.get("password");
+    const cpwd = formData.get("confirm_password");
+    const name = formData.get("name");
+    const surname = formData.get("surname");
+
+
+    //sprawdzenie czy wszystkie pola są wypełnione
+    if (![email, pwd, cpwd, name, surname].every(value => typeof value === "string" && value.trim() !== "")) {
+      console.error("Wszystkie pola muszą być wypełnione!"); // toast
+      return;
+    }
+    //sprawdzenie czy hasła są takie same
+    if(pwd !== cpwd){
+      console.log("Hasła muszą być takie same!") //toast
+      return
+    }
+    if (!register) {
+      return;
+    }
+    try {
+      await register(email as string, pwd as string)
+      const user = auth.currentUser;
+      console.log(user)
+
+      if(user){
+        await addDoc(collection(db, "Users"),{
+          uid: user.uid,
+          name: name,
+          surname: surname,
+        }
+      )
+    }
+      console.log("udało się?")
+      console.log("imię:", name)
+      console.log("nazwisko:", surname)
+      console.log("email:", email)
+      console.log("dane:", user)//toast
+    } catch (e) {
+      console.error(e); // toast
+    }
   }
-
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/profile");
+    }
+  }, [currentUser, navigate])
 
   return (
     <div className={styles.registerContainer}>
         <article className={styles.register}>
-          <button>⬅️ WRÓĆ NA STRONĘ GŁÓWNĄ</button>
+          <Link to="/">⬅️ WRÓĆ NA STRONĘ GŁÓWNĄ</Link>
           <h2>Dołącz do nas!</h2>
 
           <form onSubmit={handleSubmit}>
@@ -40,7 +95,7 @@ function Register() {
           </form>
           <div>
             <span>LUB</span>
-            <button>Zarejestruj się kontem Google!</button>
+            <button onClick={loginWithGoogle}>Zarejestruj się kontem Google!</button>
           </div>
         </article>
 
