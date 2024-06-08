@@ -1,11 +1,9 @@
 @import "../styles/vars.scss";
 
-.header {
-    height: 70px;
-    width: 100vw;
-}
 
-.main {
-    height: calc(100vh - 70px);
+.layout{
     width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 100px 1fr;
 }
