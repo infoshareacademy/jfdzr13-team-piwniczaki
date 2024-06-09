@@ -7,7 +7,7 @@ import googleLogo from "../../images/googleLogo.svg"
 
 
 const Login = () => {
-  const { loginWithGoogle, login, currentUser } = useAuth();
+  const { authenticateWithGoogle, login, currentUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +44,7 @@ const Login = () => {
           <p>LUB</p>
           <div className={styles.lineElement}></div>
         </div>
-        <button className={styles.googleLogin} onClick={loginWithGoogle}><img className={styles.googleLogo} src={googleLogo} />KONTYNUUJ Z UŻYCIEM KONTA GOOGLE</button>
+        <button className={styles.googleLogin} onClick={authenticateWithGoogle}><img className={styles.googleLogo} src={googleLogo} />KONTYNUUJ Z UŻYCIEM KONTA GOOGLE</button>
         <Link to="/register" className={styles.registerLink}>NIE MASZ KONTA? ZAREJESTRUJ SIĘ!</Link>
       </div>
     </div>

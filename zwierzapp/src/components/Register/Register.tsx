@@ -2,10 +2,6 @@ import styles from "./register.module.scss";
 import {Link, useNavigate} from "react-router-dom";
 import { useEffect } from "react";
 import useAuth from "../../context/AuthContext";
-import { db} from "../../utils/firebase";
-import { addDoc, getDocs } from "firebase/firestore"
-import {auth} from "../../utils/firebase"
-import {collection} from "firebase/firestore"
 
 function Register() {
 
@@ -38,14 +34,7 @@ function Register() {
       return;
     }
     try {
-      const { user } = await register(email as string, pwd as string)
-
-        await addDoc(collection(db, "Users"),{
-          uid: user.uid,
-          name: name,
-          surname: surname,
-        }
-      )
+      register(email as string, pwd as string)
     } catch (e) {
       console.error(e); //toast
     }
@@ -55,24 +44,6 @@ function Register() {
       navigate("/profile");
     }
   }, [currentUser, navigate])
-
-
-
-   const handleGoogleLogin = async () => {
-
-     const {user} = await authenticateWithGoogle()
-
-     const usersdata = await getDocs(collection(db, "Users"));
-     const data = usersdata.docs.map((document) => document.data());
-     const findUid = data.some(existingUser => existingUser.uid === user.uid)
-
-
-      if(!findUid){
-      await addDoc(collection(db, "Users"),{
-        uid: user.uid
-      })}
-
-   }
 
 
   return (
@@ -107,7 +78,7 @@ function Register() {
           </form>
           <div>
             <span>LUB</span>
-            <button onClick={handleGoogleLogin}>Zarejestruj się kontem Google!</button>
+            <button onClick={authenticateWithGoogle}>Zarejestruj się kontem Google!</button>
           </div>
         </article>
 

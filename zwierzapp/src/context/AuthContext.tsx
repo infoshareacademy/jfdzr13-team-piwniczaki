@@ -8,50 +8,69 @@ import {
     signInWithPopup,
 } from "firebase/auth";
 import toast from 'react-hot-toast';
-import { auth } from "../utils/firebase.ts";
+import { auth, db } from "../utils/firebase"; // Ensure db is imported correctly
+import { addDoc, getDocs, collection } from "firebase/firestore";
 
 interface AuthContextData {
     currentUser: any; 
     login: (email: string, password: string) => Promise<void>;
-    loginWithGoogle: () => Promise<void>;
+    authenticateWithGoogle: () => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextData | null>(null);;
+const AuthContext = createContext<AuthContextData | null>(null);
 
 const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-
-
-    const [currentUser, setCurrentUser] = useState(null);
-
+    const [currentUser, setCurrentUser] = useState<any>(null);
 
     function login(email: string, password: string) {
-        toast.promise(
+        return toast.promise(
             signInWithEmailAndPassword(auth, email, password),
             {
-                loading: 'Logowanie..',
+                loading: 'Logowanie...',
                 success: <b>Zostałeś zalogowany</b>,
                 error: (err) => <b>Błąd: {err.message}</b>,
             }
         );
     }
+
+    const addNewUserToDatabase = async (user: any) => {
+        const usersdata = await getDocs(collection(db, "Users"));
+        const data = usersdata.docs.map((document) => document.data());
+        const findUid = data.some(existingUser => existingUser.uid === user.uid);
+
+        if (!findUid) {
+            await addDoc(collection(db, "Users"), {
+                uid: user.uid,
+            });
+        }
+    };
+
     function authenticateWithGoogle() {
         const provider = new GoogleAuthProvider();
         return toast.promise(
-            signInWithPopup(auth, provider),
+            signInWithPopup(auth, provider)
+                .then(async (result) => {
+                    const user = result.user;
+                    await addNewUserToDatabase(user);
+                }),
             {
-                loading: 'Logowanie..',
-                success: <b>Zostałeś zalogowany</b>,
+                loading: 'Logowanie...',
+                success: <b>Zostałeś zalogowany przez Google</b>,
                 error: (err) => <b>Błąd: {err.message}</b>,
             }
         );
     }
+
     function register(email: string, password: string) {
-         return toast.promise(
-            createUserWithEmailAndPassword(auth, email, password),
+        return toast.promise(
+            createUserWithEmailAndPassword(auth, email, password)                .then(async (result) => {
+                const user = result.user;
+                await addNewUserToDatabase(user);
+            }),
             {
                 loading: 'Rejestrowanie',
                 success: <b>Zarejestrowanie poprawnie!</b>,
@@ -59,9 +78,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
         );
     }
-    
+
     function logout() {
-        toast.promise(
+        return toast.promise(
             signOut(auth),
             {
                 loading: 'Wylogowywanie',
@@ -83,11 +102,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         login,
         authenticateWithGoogle,
         register,
-        logout
-    }
+        logout,
+    };
 
-
-    return <AuthContext.Provider value={passedData}>{children}</AuthContext.Provider>
-}
+    return <AuthContext.Provider value={passedData}>{children}</AuthContext.Provider>;
+};
 
 export default useAuth;
