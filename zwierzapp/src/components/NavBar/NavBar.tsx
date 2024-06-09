@@ -5,7 +5,7 @@ import useAuth from "../../context/AuthContext"
 import { Link as ScrollTrigger } from 'react-scroll';
 
 function NavBar() {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout } = useAuth() || {};
   return (
     <div className={styles.navbarContainer}>
       <div className={styles.logoAndNameNav}>

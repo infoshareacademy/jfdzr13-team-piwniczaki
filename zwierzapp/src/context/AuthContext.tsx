@@ -38,9 +38,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
         );
     }
-    function loginWithGoogle() {
+    function authenticateWithGoogle() {
         const provider = new GoogleAuthProvider();
-        toast.promise(
+        return toast.promise(
             signInWithPopup(auth, provider),
             {
                 loading: 'Logowanie..',
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         );
     }
     function register(email: string, password: string) {
-        toast.promise(
+         return toast.promise(
             createUserWithEmailAndPassword(auth, email, password),
             {
                 loading: 'Rejestrowanie',
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const passedData = {
         currentUser,
         login,
-        loginWithGoogle,
+        authenticateWithGoogle,
         register,
         logout
     }
