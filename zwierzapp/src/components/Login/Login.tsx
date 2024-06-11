@@ -7,7 +7,7 @@ import googleLogo from "../../images/googleLogo.svg"
 
 
 const Login = () => {
-  const { authenticateWithGoogle, login, currentUser } = useAuth();
+  const { authenticateWithGoogle, login, currentUser } = useAuth() || {};
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,7 +36,7 @@ const Login = () => {
         <h1>WITAJ!</h1>
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           <input type="email" name="email" placeholder="ADRES MAIL" required />
-          <input type="password" name="password" placeholder="HASŁO" required />
+          <input type="password" name="password" placeholder="HASŁO" autoComplete="on" required />
           <button type="submit">ZALOGUJ SIĘ</button>
         </form>
         <div className={styles.orContainer}>
