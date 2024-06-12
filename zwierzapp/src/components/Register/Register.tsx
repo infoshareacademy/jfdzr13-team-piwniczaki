@@ -2,6 +2,7 @@ import styles from "./register.module.scss";
 import {Link, useNavigate} from "react-router-dom";
 import { useEffect } from "react";
 import useAuth from "../../context/AuthContext";
+import googleLogo from "../../images/googleLogo.svg";
 
 function Register() {
 
@@ -47,10 +48,10 @@ function Register() {
 
 
   return (
-    <div className={styles.registerContainer}>
-        <article className={styles.register}>
-          <Link to="/">⬅️ WRÓĆ NA STRONĘ GŁÓWNĄ</Link>
-          <h2>Dołącz do nas!</h2>
+    <div className={styles.registerPage}>
+        <article className={styles.registerContainer}>
+
+          <h2> UTWÓRZ KONTO</h2>
 
           <form onSubmit={handleSubmit}>
 
@@ -65,21 +66,15 @@ function Register() {
             <label htmlFor="confirm_password">
               <input type="password" name="confirm_password" id="confirm_password" placeholder="POWTÓRZ HASŁO " autoComplete="on"/>
             </label>
-
-            <label htmlFor="name">
-              <input type="text" name="name" id="name" placeholder="IMIĘ"/>
-            </label>
-
-            <label htmlFor="surname">
-              <input type="text" name="surname" id="surname" placeholder="NAZWISKO"/>
-            </label>
           
-            <button type="submit">Zarejestruj się!</button>
+            <button type="submit" className={styles.orangeBtn}>ZAREJESTRUJ SIĘ</button>
           </form>
-          <div>
-            <span>LUB</span>
-            <button onClick={authenticateWithGoogle}>Zarejestruj się kontem Google!</button>
+          <div className={styles.orContainer}>
+            <div className={styles.line}></div>
+            <p className={styles.or}>LUB</p>
+            <div className={styles.line}></div>
           </div>
+          <button onClick={authenticateWithGoogle} className={styles.googleBtn}><img className={styles.googleLogo} src={googleLogo} />KONTYNUUJ Z UŻYCIEM KONTA GOOGLE</button>
         </article>
 
     </div>

@@ -1,26 +1,120 @@
 @import "../../styles/vars.scss";
 
-.registerContainer {
-    height: 100%;
+.registerPage {
+    height: calc(100vh - 100px);
     width: 100%;
     color: black;
-    font-size: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.register {
-    height: 900px;
-    width: 1000px;
-    background-color: grey;
+.registerContainer {
+    height: 100%;
+    width: 764px;
+    padding: 100px, 50px, 100px, 50px;
+    font-family: $font-poppins;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+
+    h2 {
+        font-weight: 700;
+        font-size: 40px;
+        margin-bottom: 30px;
+    }
 
     form {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+
+        input {
+            height: 66px;
+            width: 664px;
+            padding: 20px 50px 20px 50px;
+            font-size: 20px;
+            background-color: $grey;
+            border: none;
+            border-radius: 35px;
+
+            &:focus {}
+        }
+    }
+
+}
+
+.orangeBtn {
+    height: 71px;
+    width: 436px;
+    font-family: $font-poppins;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    background-color: $orange;
+    border: none;
+    border-radius: 35px;
+    margin-bottom: 30px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+
+    &:active,
+    &:hover {
+        background-color: white;
+        outline: 3px solid $orange;
+        color: $orange;
+        box-sizing: border-box;
+    }
+
+    &:active {
+        text-decoration: underline;
+    }
+}
+
+
+.orContainer {
+    display: flex;
+    margin-bottom: 30px;
+
+    .line {
+        width: 158px;
+        height: 1px;
+        background-color: black;
+        display: flex;
+        align-self: center;
+    }
+
+    p {
+        padding: 0 20px;
+        font-size: 24px;
+        font-weight: 700;
+    }
+}
+
+.googleBtn {
+    height: 71px;
+    width: 519px;
+    padding: 20px, 40px, 20px, 40px;
+    border: none;
+    border-radius: 35px;
+    font-family: $font-poppins;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:active,
+    &:hover {
+        background-color: $darkerGrey ;
+    }
+
+    &:active {
+        text-decoration: underline;
+    }
+
+    .googleLogo {
+        margin-right: 20px;
     }
 }
