@@ -3,7 +3,7 @@ import useAuth from '../context/AuthContext';
 
 function PrivateRoute() {
 
-  const { currentUser } = useAuth()
+  const { currentUser } = useAuth() ?? {};
   const location = useLocation();
   return (
     <>
