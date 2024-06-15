@@ -9,7 +9,7 @@ import { Element } from 'react-scroll';
 const Footer = () => {
   return (
     <main className={styles.footerWrapper}>
-      <Element name="contact" smooth={true} duration={500}>
+      <Element name="contact" >
       <h1 className={styles.contactHeader}>Skontaktuj się z nami</h1>
       <ul className={styles.footerItemsList}>
         <li className={styles.footerItem}>
