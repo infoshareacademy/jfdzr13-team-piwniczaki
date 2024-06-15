@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../context/AuthContext";
+import googleLogo from "../../images/googleLogo.svg";
 import styles from "./register.module.scss";
 
 function Register() {
@@ -16,7 +17,6 @@ function Register() {
     const name = formData.get("name");
     const surname = formData.get("surname");
 
-    //sprawdzenie czy wszystkie pola są wypełnione
     if (
       ![email, pwd, cpwd, name, surname].every(
         (value) => typeof value === "string" && value.trim() !== ""
@@ -25,7 +25,6 @@ function Register() {
       console.error("Wszystkie pola muszą być wypełnione!"); // toast
       return;
     }
-    //sprawdzenie czy hasła są takie same
     if (pwd !== cpwd) {
       console.log("Hasła muszą być takie same!"); //toast
       return;
@@ -46,63 +45,36 @@ function Register() {
   }, [currentUser, navigate]);
 
   return (
-    <div className={styles.registerContainer}>
-      <article className={styles.register}>
-        <Link to="/">⬅️ WRÓĆ NA STRONĘ GŁÓWNĄ</Link>
-        <h2>Dołącz do nas!</h2>
+    <div className={styles.registerPage}>
+        <article className={styles.registerContainer}>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">
-            <input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="ADRES E-MAIL"
-            />
-          </label>
+          <h2> UTWÓRZ KONTO</h2>
 
-          <label htmlFor="password">
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="HASŁO"
-              autoComplete="on"
-            />
-          </label>
+          <form onSubmit={handleSubmit}>
 
-          <label htmlFor="confirm_password">
-            <input
-              type="password"
-              name="confirm_password"
-              id="confirm_password"
-              placeholder="POWTÓRZ HASŁO "
-              autoComplete="on"
-            />
-          </label>
+            <label htmlFor="email">
+              <input type="email" name="email" id="email" placeholder="ADRES E-MAIL"/>
+            </label>
 
-          <label htmlFor="name">
-            <input type="text" name="name" id="name" placeholder="IMIĘ" />
-          </label>
+            <label htmlFor="password">
+              <input type="password" name="password" id="password" placeholder="HASŁO" autoComplete="on"/>
+            </label>
+          
+            <label htmlFor="confirm_password">
+              <input type="password" name="confirm_password" id="confirm_password" placeholder="POWTÓRZ HASŁO " autoComplete="on"/>
+            </label>
+          
+            <button type="submit" className={styles.orangeBtn}>ZAREJESTRUJ SIĘ</button>
+          </form>
+          <div className={styles.orContainer}>
+            <div className={styles.line}></div>
+            <p className={styles.or}>LUB</p>
+            <div className={styles.line}></div>
+          </div>
+          <button onClick={authenticateWithGoogle} className={styles.googleBtn}><img className={styles.googleLogo} src={googleLogo} />KONTYNUUJ Z UŻYCIEM KONTA GOOGLE</button>
+        </article>
 
-          <label htmlFor="surname">
-            <input
-              type="text"
-              name="surname"
-              id="surname"
-              placeholder="NAZWISKO"
-            />
-          </label>
 
-          <button type="submit">Zarejestruj się!</button>
-        </form>
-        <div>
-          <span>LUB</span>
-          <button onClick={authenticateWithGoogle}>
-            Zarejestruj się kontem Google!
-          </button>
-        </div>
-      </article>
     </div>
   );
 }
