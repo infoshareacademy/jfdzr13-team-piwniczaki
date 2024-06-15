@@ -14,11 +14,9 @@ function Register() {
     const email = formData.get("email");
     const pwd = formData.get("password");
     const cpwd = formData.get("confirm_password");
-    const name = formData.get("name");
-    const surname = formData.get("surname");
 
     if (
-      ![email, pwd, cpwd, name, surname].every(
+      ![email, pwd, cpwd].every(
         (value) => typeof value === "string" && value.trim() !== ""
       )
     ) {
