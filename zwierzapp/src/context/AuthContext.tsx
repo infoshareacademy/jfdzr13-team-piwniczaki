@@ -17,7 +17,8 @@ import {
 } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { auth, db } from "../utils/firebase"; // Ensure db is imported correctly
+import { auth, db } from "../utils/firebase"; 
+
 type AdditionalUserInfo = {
   name: string;
   surname: string;
@@ -53,7 +54,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateUserToDatabase = async (uid: string, data: any) => {
-    // aktualizuję użytkownika, zapisuję do bazy
     const usersSnapshot = await getDocs(
       query(collection(db, "Users"), where("uid", "==", uid))
     );
@@ -68,7 +68,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const getUserFromDatabase = async (uid: string) => {
-    // pobiera z bazy
     const usersSnapshot = await getDocs(
       query(collection(db, "Users"), where("uid", "==", uid))
     );
@@ -131,11 +130,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   function savePersonalData(userData: AdditionalUserInfo) {
-    // tworzę wpis użytkownika w bazie danych
     return toast.promise(
       new Promise(async (resolve) => {
         await updateUserToDatabase(currentUser.uid, userData);
-        //  xyz ma prawo się wykonać kiedy skończy się wykonywać updateUserToDatabase
         resolve(undefined);
       }),
       {
@@ -150,7 +147,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const dbUser = await getUserFromDatabase(user.uid);
-        // ta funkcja uruchamia się 1) kiedy się loguję 2) wylogowuję. jak się loguję jest, jak wylogowuję null, if żeby nie odpalać szukania id dla null
         if (dbUser) {
           setCurrentUser({
             ...user,
