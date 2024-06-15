@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../../../context/AuthContext";
 import styles from "../WelcomePage/welcomePage.module.scss";
 
 const WelcomePage = () => {
+  const { currentUser } = useAuth();
+
   return (
     <main className={styles.sectionsWrapper}>
       <section className={styles.welcomePageWrapper}>
@@ -10,9 +13,13 @@ const WelcomePage = () => {
           <span className={styles.zwierzakText}> zwierzaka </span> z naszą
           aplikacją
         </p>
-        <NavLink to="/register">
-          <button className={styles.buttonZarejestruj}>Zarejestruj się!</button>
-        </NavLink>
+        {!currentUser && (
+          <NavLink to="/register">
+            <button className={styles.buttonZarejestruj}>
+              Zarejestruj się!
+            </button>
+          </NavLink>
+        )}
       </section>
     </main>
   );

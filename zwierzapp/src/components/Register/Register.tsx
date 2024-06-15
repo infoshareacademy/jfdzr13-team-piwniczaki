@@ -1,15 +1,12 @@
-import styles from "./register.module.scss";
-import {Link, useNavigate} from "react-router-dom";
 import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../context/AuthContext";
 import googleLogo from "../../images/googleLogo.svg";
+import styles from "./register.module.scss";
 
 function Register() {
-
   const { register, authenticateWithGoogle, currentUser } = useAuth() ?? {};
   const navigate = useNavigate();
-
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,32 +17,32 @@ function Register() {
     const name = formData.get("name");
     const surname = formData.get("surname");
 
-
-    //sprawdzenie czy wszystkie pola są wypełnione
-    if (![email, pwd, cpwd, name, surname].every(value => typeof value === "string" && value.trim() !== "")) {
+    if (
+      ![email, pwd, cpwd, name, surname].every(
+        (value) => typeof value === "string" && value.trim() !== ""
+      )
+    ) {
       console.error("Wszystkie pola muszą być wypełnione!"); // toast
       return;
     }
-    //sprawdzenie czy hasła są takie same
-    if(pwd !== cpwd){
-      console.log("Hasła muszą być takie same!") //toast
-      return
+    if (pwd !== cpwd) {
+      console.log("Hasła muszą być takie same!"); //toast
+      return;
     }
     if (!register) {
       return;
     }
     try {
-      register(email as string, pwd as string)
+      register(email as string, pwd as string);
     } catch (e) {
       console.error(e); //toast
     }
-  }
+  };
   useEffect(() => {
     if (currentUser) {
-      navigate("/profile");
+      navigate("/personal-data");
     }
-  }, [currentUser, navigate])
-
+  }, [currentUser, navigate]);
 
   return (
     <div className={styles.registerPage}>
@@ -77,8 +74,9 @@ function Register() {
           <button onClick={authenticateWithGoogle} className={styles.googleBtn}><img className={styles.googleLogo} src={googleLogo} />KONTYNUUJ Z UŻYCIEM KONTA GOOGLE</button>
         </article>
 
+
     </div>
-  )
+  );
 }
 
-export default Register
+export default Register;

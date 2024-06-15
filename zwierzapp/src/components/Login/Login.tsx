@@ -1,10 +1,8 @@
-import styles from "./login.module.scss";
 import { useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import useAuth from "../../context/AuthContext"
-import googleLogo from "../../images/googleLogo.svg"
-
-
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../context/AuthContext";
+import googleLogo from "../../images/googleLogo.svg";
+import styles from "./login.module.scss";
 
 const Login = () => {
   const { authenticateWithGoogle, login, currentUser } = useAuth();
@@ -21,14 +19,17 @@ const Login = () => {
     } catch (e) {
       console.error(e); // Hot toast ma być
     }
-
-  }
+  };
 
   useEffect(() => {
     if (currentUser) {
-      navigate("/");
+      if (currentUser.phone) {
+        navigate("/");
+      } else {
+        navigate("/personal-data");
+      }
     }
-  }, [currentUser, navigate])
+  }, [currentUser, navigate]);
 
   return (
     <div className={styles.loginContainer}>
@@ -44,11 +45,16 @@ const Login = () => {
           <p>LUB</p>
           <div className={styles.lineElement}></div>
         </div>
-        <button className={styles.googleLogin} onClick={authenticateWithGoogle}><img className={styles.googleLogo} src={googleLogo} />KONTYNUUJ Z UŻYCIEM KONTA GOOGLE</button>
-        <Link to="/register" className={styles.registerLink}>NIE MASZ KONTA? ZAREJESTRUJ SIĘ!</Link>
+        <button className={styles.googleLogin} onClick={authenticateWithGoogle}>
+          <img className={styles.googleLogo} src={googleLogo} />
+          KONTYNUUJ Z UŻYCIEM KONTA GOOGLE
+        </button>
+        <Link to="/register" className={styles.registerLink}>
+          NIE MASZ KONTA? ZAREJESTRUJ SIĘ!
+        </Link>
       </div>
     </div>
   );
-}
+};
 
 export default Login;
