@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import AddCare from "./components/AddCare/AddCare";
+import AddDataForm from "./components/AddDataForm/AddDataForm";
 import AddPet from "./components/AddPet/AddPet";
 import Filter from "./components/Filter/Filter";
 import Form from "./components/Form/Form";
@@ -24,6 +25,7 @@ function App() {
           <Route path="/addpet" element={<AddPet />} />
           <Route path="/filter" element={<Filter />} />
           <Route path="/form" element={<Form />} />
+          <Route path="/personal-data" element={<AddDataForm />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
