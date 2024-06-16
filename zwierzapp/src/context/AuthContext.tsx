@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       {
         loading: "Rejestrowanie",
         success: <b>Zarejestrowanie poprawnie!</b>,
-        error: (err) => <b>Błąd: {err.message}</b>,
+        error: "Niepoprawny adres e-mail",
       }
     );
   }
