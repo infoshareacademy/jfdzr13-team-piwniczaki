@@ -1,14 +1,14 @@
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import oneDog from "../../../assets/1-dog.jpg";
-import twoDog from "../../../assets/2-dog.jpg";
-import threeDog from "../../../assets/3-dog.jpg";
-import fourDog from "../../../assets/4-dog.jpg";
-import fiveDog from "../../../assets/5-dog.jpg";
-import sixDog from "../../../assets/6-dog.jpg";
-import sevenDog from "../../../assets/7-dog.jpg";
-import eightDog from "../../../assets/8-dog.jpg";
+import oneDog from "../../../assets/DogsPhotos/1-dog.jpg";
+import twoDog from "../../../assets/DogsPhotos/2-dog.jpg";
+import threeDog from "../../../assets/DogsPhotos/3-dog.jpg";
+import fourDog from "../../../assets/DogsPhotos/4-dog.jpg";
+import fiveDog from "../../../assets/DogsPhotos/5-dog.jpg";
+import sixDog from "../../../assets/DogsPhotos/6-dog.jpg";
+import sevenDog from "../../../assets/DogsPhotos/7-dog.jpg";
+import eightDog from "../../../assets/DogsPhotos/8-dog.jpg";
 import styles from "./carousel.module.scss";
 
 const Carousel = () => {
@@ -51,7 +51,11 @@ const Carousel = () => {
         {dogs.map((element) => (
           <SwiperSlide key={element.id}>
             <div className={styles.carouselItem}>
-              <img alt={`Pet nr ${element.id}`} className={styles.carouselImage} src={element.photo}/>
+              <img
+                alt={`Pet nr ${element.id}`}
+                className={styles.carouselImage}
+                src={element.photo}
+              />
             </div>
           </SwiperSlide>
         ))}
