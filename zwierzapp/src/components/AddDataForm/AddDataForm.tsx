@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../context/AuthContext";
+import AddAvatar from "./AddAvatar/AddAvatar";
 import styles from "./addDataForm.module.scss";
 
 const AddDataForm = () => {
-  const { savePersonalData } = useAuth() || {};
+  const { savePersonalData, currentUser } = useAuth() || {};
   const navigate = useNavigate();
+  console.log(currentUser);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ const AddDataForm = () => {
       await savePersonalData(additionalUserData);
       navigate("/profile");
     } catch (e) {
-      console.error(e); // Hot toast 
+      console.error(e); // Hot toast
     }
   };
 
@@ -33,6 +35,7 @@ const AddDataForm = () => {
       <div className={styles.boxLogin}>
         <h1>UZUPEŁNIJ DANE</h1>
         <form onSubmit={handleSubmit} className={styles.formContainer}>
+          <AddAvatar />
           <input type="text" name="name" placeholder="IMIĘ" required />
           <input
             autoComplete="on"
@@ -48,7 +51,13 @@ const AddDataForm = () => {
             placeholder="NUMER TELEFONU"
             required
           />
-          <input autoComplete="on" type="text" name="city" placeholder="MIASTO" required />
+          <input
+            autoComplete="on"
+            type="text"
+            name="city"
+            placeholder="MIASTO"
+            required
+          />
           <button type="submit">ZAPISZ ZMIANY</button>
         </form>
       </div>
