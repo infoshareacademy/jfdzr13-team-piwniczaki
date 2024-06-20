@@ -10,7 +10,7 @@ import MainPage from "./components/MainPage/MainPage";
 import Profile from "./components/Profile/Profile";
 import Register from "./components/Register/Register";
 import PrivateRoute from "./utils/PrivateRoute";
-
+import AddPetsitter from "./components/AddPetsitter/AddPetsitter";
 function App() {
   return (
     <Routes>
@@ -19,6 +19,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/addpetsitter" element={<AddPetsitter />} />
         {/* private routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/addcare" element={<AddCare />} />
