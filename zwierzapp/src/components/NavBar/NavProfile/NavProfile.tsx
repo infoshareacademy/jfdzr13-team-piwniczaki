@@ -10,13 +10,18 @@ import findIcon from "../../../images/person_search.svg"
 function NavProfile() {
     const { currentUser, logout } = useAuth() || {};
     const [ isClicked, setClick ] = useState(false);
-
+    console.log(currentUser)
     function showMenu() {
         if (isClicked) {
             setClick(false)
         } else {
             setClick(true)
         }
+    }
+
+    function hideMenu(){
+        setClick(false)
+        console.log("działa")
     }
 
     return (
@@ -26,11 +31,11 @@ function NavProfile() {
                 <div className={styles.hamburgerMenu}>
                     <div className={styles.cornerBox}></div>
                     <div className={styles.userBox}>
-                        <span className={styles.userName}>{currentUser.displayName}</span>
+                        <span className={styles.userName}>{currentUser.name} {currentUser.surname}</span>
                         <span className={styles.userMail}>{currentUser.email}</span>
                     </div>
-                    <Link to="/profile" className={styles.settingButton}><img src={settingIcon} />Ustawienia konta</Link>
-                    <Link to="/filter" className={styles.settingButton}><img src={findIcon} />Znajdź Petsittera</Link>
+                    <Link to="/profile" className={styles.settingButton} onClick={hideMenu}><img src={settingIcon}  />Ustawienia konta</Link>
+                    <Link to="/filter" className={styles.settingButton} onClick={hideMenu}><img src={findIcon}  />Znajdź Petsittera</Link>
                     <Link to="/" className={styles.logoutButton} onClick={logout}>Wyloguj się</Link>
                 </div>
             ) : (
