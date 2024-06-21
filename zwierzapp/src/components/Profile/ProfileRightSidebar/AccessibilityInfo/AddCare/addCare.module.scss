@@ -1,5 +1,4 @@
 @import "../../../../../styles/vars.scss";
-
 .addcareContainer{
     font-family: "Poppins", sans-serif;
     display: flex;
@@ -11,7 +10,27 @@
     padding-top: 10px;
     gap: 15px;
 }
-.dateContainer{
+.dateTittle{
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+    gap:15px
+}
+.tittleAcc{
     display: flex;
-    gap:10px;
+    justify-content: center;
+    align-items: center;
+}
+.formContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.dateContainer{
+    width: 30%;
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap:15px
 }

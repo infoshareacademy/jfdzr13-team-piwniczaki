@@ -12,6 +12,7 @@ function AddCare() {
   const [accessDates, setAccessDates] = useState([]);
   const [documentId, setDocumentId] = useState<string | null>(null);
   const database = useFirebaseData("Petsitters");
+  const currentDate = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     if (currentUser && database.length > 0) {
@@ -30,7 +31,13 @@ function AddCare() {
     const startDate = formData.get("startDate");
     const endDate = formData.get("endDate");
 
+
+
     if (documentId && startDate && endDate) {
+      if (endDate < startDate) {
+        toast.error("Wybrana data początkowy jest póżniejsza niż wybrana data końcowa");
+        return
+      }
       const newDate = { startDate, endDate };
       try {
         const docRef = doc(db, "Petsitters", documentId);
@@ -65,26 +72,33 @@ function AddCare() {
     }
   };
 
-  const currentDate = new Date().toISOString().split('T')[0];
+
 
   return (
     <div className={styles.addcareContainer}>
       {accessDates.length === 0 ? (
         <p className={styles.emptyState}>Brak dostępnych dat</p>
       ) : (
-        accessDates.map((date, index) => (
-          <div key={index} className={styles.dateContainer}>
-            <input type="date" value={date.startDate} readOnly></input>
-            <input type="date" value={date.endDate} readOnly></input>
-            <button onClick={() => removeRecord(date)}>Skasuj</button>
+        <>
+          <div className={styles.dateTittle}>
+            <span className={styles.tittleAcc}>Początek</span>
+            <span className={styles.tittleAcc}>Koniec</span>
           </div>
-        ))
+          {accessDates.map((date, index) => (
+            <div key={index} className={styles.dateContainer}>
+              <input type="date" value={date.startDate} readOnly></input>
+              <input type="date" value={date.endDate} readOnly></input>
+              <button onClick={() => removeRecord(date)}>Skasuj</button>
+            </div>
+          ))}
+
+        </>
       )}
-      <div>
-        <form onSubmit={addNewDate}>
-          <input type="date" name="startDate" min={currentDate} required></input>
-          <input type="date" name="endDate" min={currentDate} required></input>
-          <button type="submit">Dodaj</button>
+      <div className={styles.formContainer}>
+        <form onSubmit={addNewDate} className={styles.dateContainer}>
+            <input type="date" name="startDate" min={currentDate} required></input>
+            <input type="date" name="endDate" min={currentDate} required></input>
+            <button type="submit">Dodaj</button>
         </form>
       </div>
       <Link to="/profile" className={styles.becomePetSitterLink}>Wróć</Link>
