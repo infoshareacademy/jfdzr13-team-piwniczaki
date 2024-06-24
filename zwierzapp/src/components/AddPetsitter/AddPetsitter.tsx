@@ -1,11 +1,19 @@
 import styles from './AddPetsitter.module.scss'
 import { useState} from 'react';
 import useAuth from '../../context/AuthContext';
-import { getDocs, doc, setDoc,collection, query,where } from 'firebase/firestore';
+import {addDoc,collection} from 'firebase/firestore';
 import { db } from '../../utils/firebase'; 
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
+
+//toasty do handle submit
+//przy ofercie znak zapytania i na nim dymek "spacer cena za h, nocleg cena za opiekę całodobową, wizyta domowa cena za jednorazową wizytę w ciągu dnia"
+//handle submit przekierowuje do profilu, może jakiś loading podczas przekierowania
+//style
+
 function AddPetsitter(){
-    const { currentUser } = useAuth();
-    console.log(currentUser)
+    const { currentUser } = useAuth() || {};
+
     const [checkboxes, setCheckboxes] = useState([{
         cat: false,
         catActivity0: false,
@@ -35,8 +43,14 @@ function AddPetsitter(){
         dogAccom: false,
         dogHomeVisit: false,
     }
-    ]);
+]);
+const dogObj = checkboxes[1];
+const catObj = checkboxes[0];
 
+    const [prices, setPrices] = useState([
+        { catWalkPrice: 0, catAccomPrice: 0, catHomeVisitPrice: 0 },
+        { dogWalkPrice: 0, dogAccomPrice: 0, dogHomeVisitPrice: 0 }
+    ]);
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, checked } = event.target;
@@ -53,39 +67,64 @@ function AddPetsitter(){
         })
     };
 
-  
+    const handlePriceInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = event.target;
+    const [animal, key] = id.split('.');
+
+    setPrices((prev) => {
+        const updated = [...prev];
+        const index = animal === 'cat' ? 0 : 1;
+        updated[index] = {
+            ...updated[index],
+            [key]: parseFloat(value),
+        };
+        return updated;
+    });
+  }
+
+  const navigate = useNavigate();
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (!currentUser || !('uid' in currentUser)) {
-            console.error('Użytkownik niezalogowany');
+        const loadingToastId = toast.loading('Dodawanie danych...');
+
+        if (!dogObj.dog && !catObj.cat) {
+            toast.dismiss(loadingToastId);
+            toast.error('Zaznacz przynajmniej jedną opcję', { id: 'race' });
             return;
         }
+        if ((dogObj.dog && !(dogObj.dogActivity0 || dogObj.dogActivity1||dogObj.dogActivity2)) || (catObj.cat && !(catObj.catActivity0 || catObj.catActivity1 || catObj.catActivity2))) {
+            toast.dismiss(loadingToastId);
+            toast.error('Zaznacz przynajmniej jeden rodzaj aktywności fizycznej', { id: 'activity' });
+            return;
+        }
+        if ((dogObj.dog && !(dogObj.dogWeight0|| dogObj.dogWeight1 ||dogObj.dogWeight2 ||dogObj.dogWeight3 ||dogObj.dogWeight4 ||dogObj.dogWeight5)) || (catObj.cat && !(catObj.catWeight0 || catObj.catWeight1 || catObj.catWeight2  || catObj.catWeight3  || catObj.catWeight4  || catObj.catWeight5))) {
+            toast.dismiss(loadingToastId);
+            toast.error('Zaznacz przynajmniej jeden zakres wagi', { id: 'weight'});
+            return;
+        }
+        if((dogObj.dog && !(dogObj.dogHomeVisit|| dogObj.dogWalk ||dogObj.dogAccom)) || (catObj.cat && !(catObj.catHomeVisit || catObj.catWalk|| catObj.catAccom)))  {
+            toast.dismiss(loadingToastId);
+            toast.error('Zaznacz przynajmniej jedną usługę', { id: 'offer' });
+            return;
+        }
+
+    
+
         try {
-            console.log('jestem w try submita')
-            const userDocRef = doc(db, 'Petsitters', currentUser.uid);
-
-            const q = query(collection(db, 'Petsitters'), where('userId', '==', currentUser.uid));
-            console.log('Zapytanie zostało wykonane:', q);
-
-            const querySnapshot = await getDocs(q);
-            console.log('Liczba znalezionych dokumentów:', querySnapshot.size);
-
-            if (querySnapshot.empty) {
-                console.warn('Nie znaleziono żadnych dokumentów dla podanego UID');
-                return;
-              }
-
-            querySnapshot.forEach(async () => {
-                await setDoc(userDocRef, { animals: checkboxes }, { merge: true });
-                console.log(`Dane zostały zaktualizowane dla użytkownika o UID: ${currentUser.uid}`);
+            addDoc(collection(db, 'Petsitters'),{
+                prices: prices,
+                animals: checkboxes,
+                userId: currentUser.uid,
             });
-            
-            // if (event.currentTarget) {
-            //     event.currentTarget.reset();
-            //   } else {
-            //     console.error('Nie można zresetować formularza: event.currentTarget jest null');}
+            toast.success('Przesłano dane', {
+                id: loadingToastId
+            });
+            setTimeout(() => {
+                navigate('/profile');
+            }, 2000); 
         } catch (error) {
-            console.error('Błąd podczas aktualizacji danych:', error);
+            toast.dismiss(loadingToastId);
+            toast.error('Błąd podczas aktualizacji danych');
         }
        
     };
@@ -107,12 +146,12 @@ function AddPetsitter(){
                                         type='checkbox'
                                         name='race'
                                         onChange={handleCheckboxChange}
-                                        checked={checkboxes[1].dog}
+                                        checked={dogObj.dog}
                                     />
                                     PIES
                                 </label>
                             </div>
-                            {checkboxes[1].dog && (
+                            {dogObj.dog && (
                                 <>
                                     <div className="dogActivity">
                                         <h3>Aktywność Fizyczna</h3>
@@ -123,7 +162,7 @@ function AddPetsitter(){
                                                     type='checkbox'
                                                     name='activity'
                                                     onChange={handleCheckboxChange}
-                                                    checked={checkboxes[1].dogActivity0}
+                                                    checked={dogObj.dogActivity0}
                                                 />
                                                 LENIUCH
                                             </label>
@@ -133,7 +172,7 @@ function AddPetsitter(){
                                                     type='checkbox'
                                                     name='activity'
                                                     onChange={handleCheckboxChange}
-                                                    checked={checkboxes[1].dogActivity1}
+                                                    checked={dogObj.dogActivity1}
                                                 />
                                                 ŚREDNIAK
                                             </label>
@@ -143,7 +182,7 @@ function AddPetsitter(){
                                                     type='checkbox'
                                                     name='activity'
                                                     onChange={handleCheckboxChange}
-                                                    checked={checkboxes[1].dogActivity2}
+                                                    checked={dogObj.dogActivity2}
                                                 />
                                                 WARIAT
                                             </label>
@@ -158,7 +197,7 @@ function AddPetsitter(){
                                                     type='checkbox'
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
-                                                    checked={checkboxes[1].dogWeight0}
+                                                    checked={dogObj.dogWeight0}
                                                 />
                                                 &lt;5kg
                                             </label>
@@ -168,7 +207,7 @@ function AddPetsitter(){
                                                     type='checkbox'
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
-                                                    checked={checkboxes[1].dogWeight1}
+                                                    checked={dogObj.dogWeight1}
                                                 />
                                                 5-10kg
                                             </label>
@@ -178,7 +217,7 @@ function AddPetsitter(){
                                                     type='checkbox'
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
-                                                    checked={checkboxes[1].dogWeight2}
+                                                    checked={dogObj.dogWeight2}
                                                 />
                                                 10-15kg
                                             </label>
@@ -188,7 +227,7 @@ function AddPetsitter(){
                                                     type='checkbox'
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
-                                                    checked={checkboxes[1].dogWeight3}
+                                                    checked={dogObj.dogWeight3}
                                                 />
                                                 15-20kg
                                             </label>
@@ -198,7 +237,7 @@ function AddPetsitter(){
                                                     type='checkbox'
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
-                                                    checked={checkboxes[1].dogWeight4}
+                                                    checked={dogObj.dogWeight4}
                                                 />
                                                 20+kg
                                             </label>
@@ -212,30 +251,35 @@ function AddPetsitter(){
                                                 id='dog.dogWalk'
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[1].dogWalk}
+                                                checked={dogObj.dogWalk}
                                             />
                                             SPACER
                                         </label>
+                                        {dogObj.dogWalk && <label htmlFor='dog.dogWalkPrice'><input type='number' id='dog.dogWalkPrice' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
+
                                         <label htmlFor="dog.dogAccom">
                                             <input
                                                 type='checkbox'
                                                 id='dog.dogAccom'
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[1].dogAccom}
+                                                checked={dogObj.dogAccom}
                                             />
                                             NOCLEG
                                         </label>
+                                        {dogObj.dogAccom && <label htmlFor='dog.dogAccom'><input type='number' id='dog.dogAccom' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
+
                                         <label htmlFor="dog.dogHomeVisit">
                                             <input
                                                 type='checkbox'
                                                 id='dog.dogHomeVisit'
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[1].dogHomeVisit}
+                                                checked={dogObj.dogHomeVisit}
                                             />
                                             WIZYTA DOMOWA
                                         </label>
+                                        {dogObj.dogHomeVisit && <label htmlFor='dog.dogHomeVisit'><input type='number' id='dog.dogHomeVisit' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
                                     </div>
                                 </>
                             )}
@@ -248,12 +292,12 @@ function AddPetsitter(){
                                         type='checkbox'
                                         name='race'
                                         onChange={handleCheckboxChange}
-                                        checked={checkboxes[0].cat}
+                                        checked={catObj.cat}
                                     />
                                     KOT
                                 </label>
                             </div>
-                            {checkboxes[0].cat && (
+                            {catObj.cat && (
                                 <>
                                     <div className="catActivity">
                                         <h3>AKTYWNOŚĆ FIZYCZNA</h3>
@@ -263,7 +307,7 @@ function AddPetsitter(){
                                                 type='checkbox'
                                                 name='activity'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catActivity0}
+                                                checked={catObj.catActivity0}
                                             />
                                             LENIUCH
                                         </label>
@@ -273,7 +317,7 @@ function AddPetsitter(){
                                                 type='checkbox'
                                                 name='activity'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catActivity1}
+                                                checked={catObj.catActivity1}
                                             />
                                             ŚREDNIAK
                                         </label>
@@ -283,7 +327,7 @@ function AddPetsitter(){
                                                 type='checkbox'
                                                 name='activity'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catActivity2}
+                                                checked={catObj.catActivity2}
                                             />
                                             WARIAT
                                         </label>
@@ -296,7 +340,7 @@ function AddPetsitter(){
                                                 type='checkbox'
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catWeight0}
+                                                checked={catObj.catWeight0}
                                             />
                                             &lt;2kg
                                         </label>
@@ -306,7 +350,7 @@ function AddPetsitter(){
                                                 type='checkbox'
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catWeight1}
+                                                checked={catObj.catWeight1}
                                             />
                                             2-4kg
                                         </label>
@@ -316,7 +360,7 @@ function AddPetsitter(){
                                                 type='checkbox'
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catWeight2}
+                                                checked={catObj.catWeight2}
                                             />
                                             4-6kg
                                         </label>
@@ -326,7 +370,7 @@ function AddPetsitter(){
                                                 type='checkbox'
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catWeight3}
+                                                checked={catObj.catWeight3}
                                             />
                                             6-8kg
                                         </label>
@@ -336,7 +380,7 @@ function AddPetsitter(){
                                                 type='checkbox'
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catWeight4}
+                                                checked={catObj.catWeight4}
                                             />
                                             8+kg
                                         </label>
@@ -349,30 +393,34 @@ function AddPetsitter(){
                                                 id='cat.catWalk'
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catWalk}
+                                                checked={catObj.catWalk}
                                             />
                                             SPACER
                                         </label>
+                                        {catObj.catWalk && <label htmlFor='cat.catWalkPrice'><input type='number' id='cat.catWalkPrice' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
                                         <label htmlFor="cat.catAccom">
                                             <input
                                                 type='checkbox'
                                                 id='cat.catAccom'
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catAccom}
+                                                checked={catObj.catAccom}
                                             />
                                             NOCLEG
                                         </label>
+                                        {catObj.catAccom && <label htmlFor='cat.catAccomPrice'><input type='number' id='cat.catAccomPrice' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
                                         <label htmlFor="cat.catHomeVisit">
                                             <input
                                                 type='checkbox'
                                                 id='cat.catHomeVisit'
                                                 name='offer'
+                                                placeholder='0'
                                                 onChange={handleCheckboxChange}
-                                                checked={checkboxes[0].catHomeVisit}
+                                                checked={catObj.catHomeVisit}
                                             />
                                             WIZYTA DOMOWA
                                         </label>
+                                        {catObj.catHomeVisit && <label htmlFor='cat.catHomeVisit'><input type='number' id='cat.catHomeVisit' name='price' onChange={handlePriceInput}/><span>PLN</span></label>}
                                     </div>
                                 </>
                             )}
