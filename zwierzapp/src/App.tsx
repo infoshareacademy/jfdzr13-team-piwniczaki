@@ -19,7 +19,6 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/addpetsitter" element={<AddPetsitter />} />
         {/* private routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/addcare" element={<AddCare />} />
@@ -28,6 +27,7 @@ function App() {
           <Route path="/form" element={<Form />} />
           <Route path="/personal-data" element={<AddDataForm />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/addpetsitter" element={<AddPetsitter />} />
         </Route>
       </Route>
     </Routes>
