@@ -7,6 +7,7 @@ import avatarFive from "../../../assets/Avatars/Avatar 5.svg";
 import avatarSix from "../../../assets/Avatars/Avatar 6.svg";
 import AvatarModal from "../AvatarModal/AvatarModal";
 import styles from "./addAvatar.module.scss";
+import edit from "../../../assets/Icons/pencil-edit.svg";
 
 export type Avatar = { id: number; photo: string; alt: string };
 
@@ -33,10 +34,10 @@ const AddAvatar = () => {
   return (
     <>
       <div className={styles.avatarContainer}>
-        <button type="button" onClick={() => toggleMenu()}>
-          Zmień
+        <button className={styles.avatarChangeButton} type="button" onClick={() => toggleMenu()}>
+          <img className={styles.avatarEditImage} src={edit}/>
         </button>
-        <img src={avatar.photo} alt={avatar.alt} />
+        <img className={styles.avatarMain} src={avatar.photo} alt={avatar.alt} />
         {isClicked ? (
           <AvatarModal avatars={avatars} toggleMenu={toggleMenu} />
         ) : (

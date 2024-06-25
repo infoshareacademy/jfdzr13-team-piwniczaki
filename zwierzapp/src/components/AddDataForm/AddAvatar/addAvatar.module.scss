@@ -1,8 +1,32 @@
 .avatarContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-};
+  position: relative;
+}
 
+.avatarChangeButton {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  height: 50px;
+  width: 50px;
+  background: rgba(254, 144, 42, 1);
+  color: white;
+  border: none;
+  border-radius: 69px;
+  font-weight: 700;
+  font-size: 24px;
+  
+  &:hover {
+    background: rgb(189, 91, 0);
+    fill: white;
+  }
+}
+.avatarMain {
+  height: 340px;
+}
 
-
+.avatarEditImage {
+  height: 50%;
+  width: 50%;
+}
