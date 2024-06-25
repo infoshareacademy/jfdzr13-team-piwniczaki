@@ -58,7 +58,7 @@ const AddDataForm = () => {
             placeholder="MIASTO"
             required
           />
-          <button type="submit">ZAPISZ ZMIANY</button>
+          <button className={styles.saveChangesButton} type="submit">ZAPISZ ZMIANY</button>
         </form>
       </div>
     </div>
