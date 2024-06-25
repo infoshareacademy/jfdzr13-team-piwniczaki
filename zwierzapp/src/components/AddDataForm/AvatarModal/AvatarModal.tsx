@@ -10,14 +10,14 @@ const AvatarModal = (props: AvatarModalProps) => {
   return (
     <div>
       <ul className={styles.avatarContainer}>
+        <p className={styles.avatarText}>WYBIERZ SWÓJ AWATAR</p>
         {props.avatars.map((element, index) => (
-          <li key={index}>
+          <li className={styles.avatarImages} key={index}>
             <img
               src={element.photo}
               alt={element.alt}
               onClick={() => {
                 props.toggleMenu(element.id);
-
                 console.log(element);
               }}
             />
