@@ -3,7 +3,7 @@ import styles from "./avatarModal.module.scss";
 
 type AvatarModalProps = {
   avatars: Avatar[];
-  toggleMenu: (id: number) => void;
+  toggleMenu: (id?: number) => void;
 };
 
 const AvatarModal = (props: AvatarModalProps) => {
