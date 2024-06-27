@@ -26,7 +26,9 @@ function ProfileMain(passedData: { uid?: string }) {
         <h1>
           {user ? `${user.name} ${user.surname}` : "Anonimowy użytkownik"}
         </h1>
-        {(user && <p>{user.descLong}</p>) || <button>Dodaj opis</button>}
+        {(user?.descLong && <p>{user.descLong}</p>) || (
+          <button>Dodaj opis</button>
+        )}
       </div>
       <PriceSection />
       <PetSection />
