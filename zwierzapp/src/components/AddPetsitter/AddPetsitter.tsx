@@ -72,7 +72,7 @@ const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 useEffect(() => {
     const fetchData = async () => {
 
-        if(dataContext && authContext) {   
+        if(dataContext && authContext && authContext.currentUser) {   
             const {getUserFromDatabase} = dataContext;
             const {currentUser} = authContext;
             const uid = currentUser.uid;
@@ -93,7 +93,7 @@ useEffect(() => {
         }
     }
     fetchData();
-    });
+    }, [dataContext, authContext]);
 
         
     const handleEditClick = () => {
@@ -162,34 +162,34 @@ useEffect(() => {
 
     
         try {
-            if (dataContext && authContext && authContext.currentUser) {
-              const { currentUser } = authContext;
-              const { saveUserToDatabase } = dataContext;
-              const uid = currentUser.uid;
-          
-              if (isFirstTime) {
-                await addDoc(collection(db, 'Petsitters'), {
-                  prices: prices,
-                  checkboxes: checkboxes,
-                  userId: currentUser.uid,
-                });
-                toast.success('Przesłano dane', { id: loadingToastId });
-              } else {
-                await saveUserToDatabase('Petsitters', uid, { prices, checkboxes });
-                toast.success('Zaktualizowano dane', { id: loadingToastId });
-                setIsEditMode(false);
-              }
-          
-              setTimeout(() => {
-                navigate('/profile');
-              }, 2000);
-            }
-          } catch (error) {
-            toast.dismiss(loadingToastId);
-            toast.error('Błąd podczas zapisywania danych');
+                if (dataContext && authContext && authContext.currentUser) {
+                const { currentUser } = authContext;
+                const { saveUserToDatabase } = dataContext;
+                const uid = currentUser.uid;
+            
+                    if (isFirstTime) {
+                        await addDoc(collection(db, 'Petsitters'), {
+                        prices: prices,
+                        checkboxes: checkboxes,
+                        userId: currentUser.uid,
+                        });
+                        toast.success('Przesłano dane', { id: loadingToastId });
+                    } else {
+                        await saveUserToDatabase('Petsitters', uid, { prices, checkboxes });
+                        toast.success('Zaktualizowano dane', { id: loadingToastId });
+                        setIsEditMode(false);
+                    }
+                
+                    setTimeout(() => {
+                        navigate('/profile');
+                    }, 2000);
+                    }
+            } catch (error) {
+                toast.dismiss(loadingToastId);
+                toast.error('Błąd podczas zapisywania danych');
           }
           
-
+        }
  
 
     return (
@@ -532,6 +532,6 @@ useEffect(() => {
         </div>
     );
 
-}}
+}
 
 export default AddPetsitter
