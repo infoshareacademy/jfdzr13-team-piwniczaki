@@ -17,7 +17,17 @@ import {
 } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { auth, db } from "../utils/firebase"; 
+import { auth, db } from "../utils/firebase";
+
+export interface User {
+  uid: string;
+  name?: string;
+  surname?: string;
+  phone?: number;
+  city?: string;
+  descLong?: string;
+  descShort?: string;
+}
 
 type AdditionalUserInfo = {
   name: string;
@@ -34,7 +44,7 @@ interface AuthContextData {
   savePersonalData: (userData: AdditionalUserInfo) => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextData | null>(null);
+export const AuthContext = createContext<AuthContextData | null>(null);
 
 const useAuth = () => useContext(AuthContext);
 

@@ -3,20 +3,19 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import useAuth from "../../../context/AuthContext";
 
-import profileImg from "../../../images/Profile button.png"
-import settingIcon from "../../../images/settings.svg"
-import findIcon from "../../../images/person_search.svg"
+import profileImg from "../../../images/Profile button.png";
+import settingIcon from "../../../images/settings.svg";
+import findIcon from "../../../images/person_search.svg";
 
 function NavProfile() {
     const { currentUser, logout } = useAuth() || {};
     const [ isClicked, setClick ] = useState(false);
-    console.log(currentUser)
     function showMenu() {
-        if (isClicked) {
-            setClick(false)
-        } else {
-            setClick(true)
-        }
+        setClick((prevState) => !prevState);
+    }
+
+    function hideMenu() {
+        setClick(false);
     }
 
     function hideMenu(){
@@ -26,9 +25,12 @@ function NavProfile() {
 
     return (
         <div className={styles.profileNavBarContainer}>
-            <img src={profileImg} onClick={showMenu}></img>
-            {isClicked ? (
-                <div className={styles.hamburgerMenu}>
+            <img src={profileImg} onClick={showMenu} alt="Profile" />
+            {isClicked && (
+                <div
+                    className={styles.hamburgerMenu}
+                    onMouseLeave={hideMenu}
+                >
                     <div className={styles.cornerBox}></div>
                     <div className={styles.userBox}>
                         <span className={styles.userName}>{currentUser.name} {currentUser.surname}</span>
@@ -38,12 +40,9 @@ function NavProfile() {
                     <Link to="/filter" className={styles.settingButton} onClick={hideMenu}><img src={findIcon}  />Znajdź Petsittera</Link>
                     <Link to="/" className={styles.logoutButton} onClick={logout}>Wyloguj się</Link>
                 </div>
-            ) : (
-                <></>
             )}
-
         </div>
-    )
+    );
 }
 
-export default NavProfile
+export default NavProfile;
