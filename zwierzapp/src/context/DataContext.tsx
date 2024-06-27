@@ -16,6 +16,7 @@ interface DataContextInterface {
     getUsersDocs: (collectionName: string, uid: string) => Promise<any[] | null>;
     getUserFromDatabase:(collectionName: string, uid: string, data: any) => Promise<void>;
     currentUser: any;
+
   }
   
   
@@ -33,8 +34,7 @@ interface DataContextInterface {
 
   const updateUserToDatabase = async (collectionName:string, uid: string, data: any) => {
     const usersSnapshot = await getDocs(
-
-      query(collection(db, collectionName), where("userId", "==", uid))
+      query(collection(db, collectionName), where("uid", "==", uid))
     );
 
     if (usersSnapshot.docs.length === 1) {
@@ -48,7 +48,7 @@ interface DataContextInterface {
 
   const getUserFromDatabase = async (collectionName:string, uid: string) => {
     const usersSnapshot = await getDocs(
-      query(collection(db, collectionName), where("userId", "==", uid))
+      query(collection(db, collectionName), where("uid", "==", uid))
     );
 
     if (!usersSnapshot.docs.length) {
