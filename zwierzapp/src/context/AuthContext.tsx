@@ -21,9 +21,12 @@ import { auth, db } from "../utils/firebase";
 
 export interface User {
   uid: string;
-  name: string;
-  surname: string;
-  descLong: string;
+  name?: string;
+  surname?: string;
+  phone?: number;
+  city?: string;
+  descLong?: string;
+  descShort?: string;
 }
 
 type AdditionalUserInfo = {
