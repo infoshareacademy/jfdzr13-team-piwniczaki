@@ -155,8 +155,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log('User from onAuthStateChanged:', user); // Debug log
       if (user) {
         const dbUser = await getUserFromDatabase(user.uid);
+        console.log('User from database:', dbUser); // Debug log
         if (dbUser) {
           setCurrentUser({
             ...user,
