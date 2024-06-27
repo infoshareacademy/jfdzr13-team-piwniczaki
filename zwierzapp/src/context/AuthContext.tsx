@@ -19,12 +19,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { auth, db } from "../utils/firebase";
 
-type AdditionalUserInfo = {
+export type AdditionalUserInfo = {
   name: string;
   surname: string;
   city: string;
-  phone: number;
+  phone: string;
 };
+
+
 interface AuthContextData {
   currentUser: any;
   login: (email: string, password: string) => Promise<void>;
