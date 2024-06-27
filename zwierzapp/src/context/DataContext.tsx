@@ -1,4 +1,4 @@
-  import {
+import {
     collection,
     doc,
     getDocs,
@@ -11,10 +11,11 @@
   
 
 interface DataContextInterface {
+    saveUserToDatabase: (uid: string, data: any) => Promise<void>;
+    updateUserToDatabase: (collectionName: string, uid: string, data: any) => Promise<void>;
+    getUsersDocs: (collectionName: string, uid: string) => Promise<any[] | null>;
+    getUserFromDatabase:(collectionName: string, uid: string, data: any) => Promise<void>;
     currentUser: any;
-    saveUserToDatabase:any;
-    updateUserToDatabase:any;
-    getUserFromDatabase:any;
   }
   
   
@@ -32,6 +33,7 @@ interface DataContextInterface {
 
   const updateUserToDatabase = async (collectionName:string, uid: string, data: any) => {
     const usersSnapshot = await getDocs(
+
       query(collection(db, collectionName), where("userId", "==", uid))
     );
 
@@ -59,7 +61,25 @@ interface DataContextInterface {
     };
   };
 
+  const getUsersDocs = async (collectionName:string, uid: string) => {
+    const usersSnapshot = await getDocs(
+        query(collection(db, collectionName), where('userID', '==', uid))
+    );
+
+    if (!usersSnapshot.docs.length) {
+        return null;
+    }
+
+    const userData = usersSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+
+    return userData;
+  }
+
   const passedData = {
+    getUsersDocs,
     saveUserToDatabase,
     updateUserToDatabase,
     getUserFromDatabase

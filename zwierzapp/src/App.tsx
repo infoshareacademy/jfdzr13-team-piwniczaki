@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./Layout/Layout";
-import AddCare from "./components/AddCare/AddCare";
+import AddCare from "./components/Profile/ProfileRightSidebar/AccessibilityInfo/AddCare/AddCare";
 import AddDataForm from "./components/AddDataForm/AddDataForm";
 import AddPet from "./components/AddPet/AddPet";
 import Filter from "./components/Filter/Filter";
