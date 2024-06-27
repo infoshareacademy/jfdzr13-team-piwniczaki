@@ -16,13 +16,13 @@ export interface PetsitterDocument {
   };
   animals?: {
     [key: number]: {
+      catActivity2: boolean;
       catWeight5: boolean;
       catWeight4: boolean;
       catWeight3: boolean;
       catWeight2: boolean;
       catWeight1: boolean;
       catWeight0: boolean;
-      catactivity2: boolean;
       catActivity1: boolean;
       catActivity0: boolean;
       dogActivity0: boolean;
