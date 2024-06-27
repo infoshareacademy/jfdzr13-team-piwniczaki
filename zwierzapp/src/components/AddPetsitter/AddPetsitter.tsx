@@ -87,6 +87,7 @@ useEffect(() => {
             }else{
                 console.error('Current user nie jest petsitterem');
                 setIsFirstTime(true)
+                setIsEditMode(true)
             }
         }else {
             console.error('Current user or data context is null or undefined');
