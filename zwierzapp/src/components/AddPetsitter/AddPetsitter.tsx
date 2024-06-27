@@ -1,19 +1,21 @@
-import styles from './AddPetsitter.module.scss'
-import { useState} from 'react';
+import styles from './AddPetsitter.module.scss';
+import { useState, useEffect} from 'react';
 import useAuth from '../../context/AuthContext';
 import {addDoc,collection} from 'firebase/firestore';
 import { db } from '../../utils/firebase'; 
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
+import useData from '../../context/DataContext';
 
-//toasty do handle submit
-//przy ofercie znak zapytania i na nim dymek "spacer cena za h, nocleg cena za opiekę całodobową, wizyta domowa cena za jednorazową wizytę w ciągu dnia"
-//handle submit przekierowuje do profilu, może jakiś loading podczas przekierowania
-//style
+//*** przy ofercie znak zapytania i na nim dymek "spacer cena za h, nocleg cena za opiekę całodobową, wizyta domowa cena za jednorazową wizytę w ciągu dnia"
+
 
 function AddPetsitter(){
-    const { currentUser } = useAuth() || {};
 
+    const {saveUserToDatabase, updateUserToDatabase,getUserFromDatabase} = useData() || {};
+    const [isFirstTime, setIsFirstTime] = useState(false);
+    const { currentUser } = useAuth() || {};
+    const [isEditMode, setIsEditMode] = useState(false);
     const [checkboxes, setCheckboxes] = useState([{
         cat: false,
         catActivity0: false,
@@ -67,6 +69,47 @@ const catObj = checkboxes[0];
         })
     };
 
+    console.log('current user: ', currentUser)
+    const uid = currentUser.uid
+
+    useEffect(() => {
+        console.log('Current user in AddPetsitter:', currentUser); // Debug log
+      }, [currentUser]);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const userData = await getUserFromDatabase('Petsitters',uid);
+          if (userData) {
+            setCheckboxes(userData.checkboxes || []);
+            setPrices(userData.prices || []);
+            setIsEditMode(false);
+            setIsFirstTime(false);
+          }else{
+            console.error('Current user is null or undefined');
+            setIsFirstTime(true)
+          }
+        };
+        fetchData();
+    }, [uid,getUserFromDatabase]);
+  
+    const handleEditClick = () => {
+      setIsEditMode(true);
+    };
+
+    const handleSaveClick = async () => {
+        const loadingToastId = toast.loading('Aktualizowanie danych...');
+        try {
+            await updateUserToDatabase(uid, checkboxes);
+            toast.success('Dane zaktualizowane', { id: loadingToastId });
+            setIsEditMode(false);
+        } catch (error) {
+            toast.dismiss(loadingToastId);
+            toast.error('Błąd podczas aktualizacji danych');
+        }
+    };
+
+
     const handlePriceInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     const [animal, key] = id.split('.');
@@ -83,6 +126,7 @@ const catObj = checkboxes[0];
   }
 
   const navigate = useNavigate();
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const loadingToastId = toast.loading('Dodawanie danych...');
@@ -109,24 +153,27 @@ const catObj = checkboxes[0];
         }
 
     
-
+        
         try {
-            addDoc(collection(db, 'Petsitters'),{
-                prices: prices,
-                animals: checkboxes,
-                userId: currentUser.uid,
-            });
-            toast.success('Przesłano dane', {
-                id: loadingToastId
-            });
+            if (isFirstTime) {
+                await addDoc(collection(db, 'Petsitters'), {
+                    prices: prices,
+                    checkboxes: checkboxes,
+                    userId: currentUser.uid,
+                });
+                toast.success('Przesłano dane', { id: loadingToastId });
+            } else {
+                await saveUserToDatabase(uid, { prices, checkboxes });
+                toast.success('Zaktualizowano dane', { id: loadingToastId });
+                setIsEditMode(false);
+            }
             setTimeout(() => {
                 navigate('/profile');
-            }, 2000); 
+            }, 2000);
         } catch (error) {
             toast.dismiss(loadingToastId);
-            toast.error('Błąd podczas aktualizacji danych');
+            toast.error('Błąd podczas zapisywania danych');
         }
-       
     };
 
  
@@ -147,6 +194,7 @@ const catObj = checkboxes[0];
                                         name='race'
                                         onChange={handleCheckboxChange}
                                         checked={dogObj.dog}
+                                        disabled={!isEditMode}
                                     />
                                     PIES
                                 </label>
@@ -163,6 +211,7 @@ const catObj = checkboxes[0];
                                                     name='activity'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogActivity0}
+                                                    disabled={!isEditMode}
                                                 />
                                                 LENIUCH
                                             </label>
@@ -173,6 +222,7 @@ const catObj = checkboxes[0];
                                                     name='activity'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogActivity1}
+                                                    disabled={!isEditMode}
                                                 />
                                                 ŚREDNIAK
                                             </label>
@@ -183,6 +233,7 @@ const catObj = checkboxes[0];
                                                     name='activity'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogActivity2}
+                                                    disabled={!isEditMode}
                                                 />
                                                 WARIAT
                                             </label>
@@ -198,6 +249,7 @@ const catObj = checkboxes[0];
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight0}
+                                                    disabled={!isEditMode}
                                                 />
                                                 &lt;5kg
                                             </label>
@@ -208,6 +260,7 @@ const catObj = checkboxes[0];
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight1}
+                                                    disabled={!isEditMode}
                                                 />
                                                 5-10kg
                                             </label>
@@ -218,6 +271,7 @@ const catObj = checkboxes[0];
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight2}
+                                                    disabled={!isEditMode}
                                                 />
                                                 10-15kg
                                             </label>
@@ -228,6 +282,7 @@ const catObj = checkboxes[0];
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight3}
+                                                    disabled={!isEditMode}
                                                 />
                                                 15-20kg
                                             </label>
@@ -238,6 +293,7 @@ const catObj = checkboxes[0];
                                                     name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight4}
+                                                    disabled={!isEditMode}
                                                 />
                                                 20+kg
                                             </label>
@@ -252,6 +308,7 @@ const catObj = checkboxes[0];
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
                                                 checked={dogObj.dogWalk}
+                                                disabled={!isEditMode}
                                             />
                                             SPACER
                                         </label>
@@ -264,6 +321,7 @@ const catObj = checkboxes[0];
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
                                                 checked={dogObj.dogAccom}
+                                                disabled={!isEditMode}
                                             />
                                             NOCLEG
                                         </label>
@@ -276,6 +334,7 @@ const catObj = checkboxes[0];
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
                                                 checked={dogObj.dogHomeVisit}
+                                                disabled={!isEditMode}
                                             />
                                             WIZYTA DOMOWA
                                         </label>
@@ -293,6 +352,7 @@ const catObj = checkboxes[0];
                                         name='race'
                                         onChange={handleCheckboxChange}
                                         checked={catObj.cat}
+                                        disabled={!isEditMode}
                                     />
                                     KOT
                                 </label>
@@ -308,6 +368,7 @@ const catObj = checkboxes[0];
                                                 name='activity'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catActivity0}
+                                                disabled={!isEditMode}
                                             />
                                             LENIUCH
                                         </label>
@@ -318,6 +379,7 @@ const catObj = checkboxes[0];
                                                 name='activity'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catActivity1}
+                                                disabled={!isEditMode}
                                             />
                                             ŚREDNIAK
                                         </label>
@@ -328,6 +390,7 @@ const catObj = checkboxes[0];
                                                 name='activity'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catActivity2}
+                                                disabled={!isEditMode}
                                             />
                                             WARIAT
                                         </label>
@@ -341,6 +404,7 @@ const catObj = checkboxes[0];
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight0}
+                                                disabled={!isEditMode}
                                             />
                                             &lt;2kg
                                         </label>
@@ -351,6 +415,7 @@ const catObj = checkboxes[0];
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight1}
+                                                disabled={!isEditMode}
                                             />
                                             2-4kg
                                         </label>
@@ -361,6 +426,7 @@ const catObj = checkboxes[0];
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight2}
+                                                disabled={!isEditMode}
                                             />
                                             4-6kg
                                         </label>
@@ -371,6 +437,7 @@ const catObj = checkboxes[0];
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight3}
+                                                disabled={!isEditMode}
                                             />
                                             6-8kg
                                         </label>
@@ -381,6 +448,7 @@ const catObj = checkboxes[0];
                                                 name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight4}
+                                                disabled={!isEditMode}
                                             />
                                             8+kg
                                         </label>
@@ -394,6 +462,7 @@ const catObj = checkboxes[0];
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWalk}
+                                                disabled={!isEditMode}
                                             />
                                             SPACER
                                         </label>
@@ -405,6 +474,7 @@ const catObj = checkboxes[0];
                                                 name='offer'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catAccom}
+                                                disabled={!isEditMode}
                                             />
                                             NOCLEG
                                         </label>
@@ -417,6 +487,7 @@ const catObj = checkboxes[0];
                                                 placeholder='0'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catHomeVisit}
+                                                disabled={!isEditMode}
                                             />
                                             WIZYTA DOMOWA
                                         </label>
@@ -426,7 +497,22 @@ const catObj = checkboxes[0];
                             )}
                         </div>
                     </div>
-                    <button type="submit">Zapisz</button>
+                    <div className={styles.buttonWrapper}>
+                        {!isFirstTime && !isEditMode && (
+                            <button type="button" onClick={handleEditClick}>
+                                Edytuj
+                            </button>
+                        )}
+                        {isFirstTime || isEditMode ? (
+                            <button type="submit">
+                                Zapisz
+                            </button>
+                        ) : (
+                            <button type="button" onClick={handleSaveClick}>
+                                Zapisz
+                            </button>
+                        )}
+                    </div>
                 </form>
             </article>
         </div>

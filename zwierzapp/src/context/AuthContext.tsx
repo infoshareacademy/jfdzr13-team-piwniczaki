@@ -1,5 +1,4 @@
 import {
-  User,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -26,7 +25,7 @@ type AdditionalUserInfo = {
   city: string;
   phone: number;
 };
-export interface AuthContextData {
+interface AuthContextData {
   currentUser: any;
   login: (email: string, password: string) => Promise<void>;
   authenticateWithGoogle: () => Promise<void>;
@@ -35,13 +34,12 @@ export interface AuthContextData {
   savePersonalData: (userData: AdditionalUserInfo) => Promise<void>;
 }
 
-
-export const AuthContext = createContext<AuthContextData | null>(null);
+const AuthContext = createContext<AuthContextData | null>(null);
 
 const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   const addNewUserToDatabase = async (user: any) => {
     const usersdata = await getDocs(collection(db, "Users"));
@@ -147,8 +145,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log('User from onAuthStateChanged:', user); // Debug log
       if (user) {
         const dbUser = await getUserFromDatabase(user.uid);
+        console.log('User from database:', dbUser); // Debug log
         if (dbUser) {
           setCurrentUser({
             ...user,
