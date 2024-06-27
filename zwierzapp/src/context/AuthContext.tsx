@@ -29,12 +29,15 @@ export interface User {
   descShort?: string;
 }
 
-type AdditionalUserInfo = {
+
+export type AdditionalUserInfo = {
   name: string;
   surname: string;
   city: string;
-  phone: number;
+  phone: string;
 };
+
+
 interface AuthContextData {
   currentUser: any;
   login: (email: string, password: string) => Promise<void>;
@@ -64,6 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateUserToDatabase = async (uid: string, data: any) => {
+    // zapis Usera do bazy aktualizacji do firebase, nie zapisuje do aplikacji, nie zmienia stanu (cosnole.log nie ma)
     const usersSnapshot = await getDocs(
       query(collection(db, "Users"), where("uid", "==", uid))
     );
@@ -96,7 +100,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return toast.promise(signInWithEmailAndPassword(auth, email, password), {
       loading: "Logowanie...",
       success: <b>Zostałeś zalogowany</b>,
-      error: (err) => <b>Błąd: {err.message}</b>,
+      error: <b>Podany adres email lub hasło są niepoprawne!</b>,
     });
   }
 
@@ -126,7 +130,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       {
         loading: "Rejestrowanie",
         success: <b>Zarejestrowanie poprawnie!</b>,
-        error: "Niepoprawny adres e-mail",
+        error: (err) => {
+          if (err.code === "auth/email-already-in-use") {
+            return <b>Istnieje już użytkownik o takim adresie email!</b>;
+          }
+          return <b>Rejestracja nie powiodła się!</b>;
+        },
       }
     );
   }
@@ -143,6 +152,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return toast.promise(
       new Promise(async (resolve) => {
         await updateUserToDatabase(currentUser.uid, userData);
+
+        setCurrentUser((prev) => ({
+          ...prev,
+          ...userData,
+        }));
+        // linijka 137, te dane pokazują się w console.log, bez nich dane tylko się zapisywały w firebase + aktualizują stan, widać w aplikacxji i console.log
+
         resolve(undefined);
       }),
       {
@@ -156,17 +172,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const dbUser = await getUserFromDatabase(user.uid);
+        //<- true / każdy false to też null
+        const dbUser = await getUserFromDatabase(user.uid); // sprawdzamy czy w bazie został zalogowany użytkownik
         if (dbUser) {
           setCurrentUser({
             ...user,
             ...dbUser,
-          });
+          }); // jeśli ma powyżej to ustawimamy obiekt
         } else {
-          setCurrentUser(user);
+          setCurrentUser(user); // jeśli nie to wrzuć dane usera
         }
       } else {
-        setCurrentUser(user);
+        setCurrentUser(user); // null
       }
     });
     return () => unsubscribe();
