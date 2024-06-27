@@ -11,10 +11,9 @@ import useData from '../../context/DataContext';
 
 
 function AddPetsitter(){
-
-    const {saveUserToDatabase, updateUserToDatabase,getUserFromDatabase} = useData() || {};
+    const dataContext = useData();
+    const authContext = useAuth();
     const [isFirstTime, setIsFirstTime] = useState(false);
-    const { currentUser } = useAuth() || {};
     const [isEditMode, setIsEditMode] = useState(false);
     const [checkboxes, setCheckboxes] = useState([{
         cat: false,
@@ -49,66 +48,75 @@ function AddPetsitter(){
 const dogObj = checkboxes[1];
 const catObj = checkboxes[0];
 
-    const [prices, setPrices] = useState([
-        { catWalkPrice: 0, catAccomPrice: 0, catHomeVisitPrice: 0 },
-        { dogWalkPrice: 0, dogAccomPrice: 0, dogHomeVisitPrice: 0 }
-    ]);
+const [prices, setPrices] = useState([
+    { catWalkPrice: 0, catAccomPrice: 0, catHomeVisitPrice: 0 },
+    { dogWalkPrice: 0, dogAccomPrice: 0, dogHomeVisitPrice: 0 }
+]);
 
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, checked } = event.target;
-        const [animal, key] = id.split('.');
-
-        setCheckboxes((prev) => {
-            const updated = [...prev];
-            const index = animal === 'cat' ? 0 : 1;
-            updated[index] = {
-                ...updated[index],
-                [key]: checked,
-            };
-            return updated;
-        })
-    };
-
-    console.log('current user: ', currentUser)
-    const uid = currentUser.uid
-
-    useEffect(() => {
-        console.log('Current user in AddPetsitter:', currentUser); // Debug log
-      }, [currentUser]);
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-          const userData = await getUserFromDatabase('Petsitters',uid);
-          if (userData) {
-            setCheckboxes(userData.checkboxes || []);
-            setPrices(userData.prices || []);
-            setIsEditMode(false);
-            setIsFirstTime(false);
-          }else{
-            console.error('Current user is null or undefined');
-            setIsFirstTime(true)
-          }
+const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, checked } = event.target;
+    const [animal, key] = id.split('.');
+    
+    setCheckboxes((prev) => {
+        const updated = [...prev];
+        const index = animal === 'cat' ? 0 : 1;
+        updated[index] = {
+            ...updated[index],
+            [key]: checked,
         };
-        fetchData();
-    }, [uid,getUserFromDatabase]);
-  
+        return updated;
+    })
+};
+
+
+useEffect(() => {
+    const fetchData = async () => {
+
+        if(dataContext && authContext) {   
+            const {getUserFromDatabase} = dataContext;
+            const {currentUser} = authContext;
+            const uid = currentUser.uid;
+            const userData = await getUserFromDatabase('Petsitters',uid);
+            console.log('currentUser:', currentUser)
+
+            if(userData) {
+                setCheckboxes(userData.checkboxes || []);
+                setPrices(userData.prices || []);
+                setIsEditMode(false);
+                setIsFirstTime(false);
+            }else{
+                console.error('Current user nie jest petsitterem');
+                setIsFirstTime(true)
+            }
+        }else {
+            console.error('Current user or data context is null or undefined');
+        }
+    }
+    fetchData();
+    });
+
+        
     const handleEditClick = () => {
-      setIsEditMode(true);
+        setIsEditMode(true);
     };
 
     const handleSaveClick = async () => {
         const loadingToastId = toast.loading('Aktualizowanie danych...');
         try {
-            await updateUserToDatabase(uid, checkboxes);
+          if (dataContext && authContext && authContext.currentUser) {
+            const { currentUser } = authContext;
+            const { saveUserToDatabase } = dataContext;
+            const uid = currentUser.uid;
+      
+            await saveUserToDatabase('Petsitters', uid, { prices, checkboxes });
             toast.success('Dane zaktualizowane', { id: loadingToastId });
             setIsEditMode(false);
+          }
         } catch (error) {
-            toast.dismiss(loadingToastId);
-            toast.error('Błąd podczas aktualizacji danych');
+          toast.dismiss(loadingToastId);
+          toast.error('Błąd podczas aktualizacji danych');
         }
-    };
-
+      };
 
     const handlePriceInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -153,28 +161,34 @@ const catObj = checkboxes[0];
         }
 
     
-        
         try {
-            if (isFirstTime) {
+            if (dataContext && authContext && authContext.currentUser) {
+              const { currentUser } = authContext;
+              const { saveUserToDatabase } = dataContext;
+              const uid = currentUser.uid;
+          
+              if (isFirstTime) {
                 await addDoc(collection(db, 'Petsitters'), {
-                    prices: prices,
-                    checkboxes: checkboxes,
-                    userId: currentUser.uid,
+                  prices: prices,
+                  checkboxes: checkboxes,
+                  userId: currentUser.uid,
                 });
                 toast.success('Przesłano dane', { id: loadingToastId });
-            } else {
-                await saveUserToDatabase(uid, { prices, checkboxes });
+              } else {
+                await saveUserToDatabase('Petsitters', uid, { prices, checkboxes });
                 toast.success('Zaktualizowano dane', { id: loadingToastId });
                 setIsEditMode(false);
-            }
-            setTimeout(() => {
+              }
+          
+              setTimeout(() => {
                 navigate('/profile');
-            }, 2000);
-        } catch (error) {
+              }, 2000);
+            }
+          } catch (error) {
             toast.dismiss(loadingToastId);
             toast.error('Błąd podczas zapisywania danych');
-        }
-    };
+          }
+          
 
  
 
@@ -518,6 +532,6 @@ const catObj = checkboxes[0];
         </div>
     );
 
-}
+}}
 
 export default AddPetsitter

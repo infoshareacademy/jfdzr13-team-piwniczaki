@@ -47,6 +47,7 @@ function NavBar() {
           <>
             <Link to="/filter" className={styles.linkElemenets}>Znajdź Petsittera</Link>
             <NavProfile />
+            <Link to="/addpetsitter">Addpetsitter</Link>
           </>
         ) : (
           <>
