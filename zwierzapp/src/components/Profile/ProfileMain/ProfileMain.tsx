@@ -10,6 +10,7 @@ import getPetsitterData, {
 } from "../../../hooks/getPetsitterData";
 
 function ProfileMain(passedData: { uid?: string }) {
+  const petsitterDocument: PetsitterDocument | null = getPetsitterData();
   const { currentUser }: { currentUser: User | null } = useAuth() || {
     currentUser: null,
   };
@@ -24,28 +25,23 @@ function ProfileMain(passedData: { uid?: string }) {
     }
   }, [passedUser]);
 
-  const petsitterDocument: PetsitterDocument | null = getPetsitterData();
-
   return (
     <main className={styles.container}>
       <div className={styles.top}>
         <h1>
           {user ? `${user.name} ${user.surname}` : "Anonimowy użytkownik"}
         </h1>
-        {(user?.descLong && <p>{user.descLong}</p>) || (
-          <button>Dodaj opis</button>
-        )}
       </div>
-      <PriceSection />
       <PetSection />
+      <PriceSection />
       {petsitterDocument &&
-      petsitterDocument.checkboxes &&
-      (petsitterDocument.checkboxes[0].cat ||
-        petsitterDocument.checkboxes[0].dog) ? (
-        <Link to="/addpetsitter">
-          <button>Edytuj dane</button>
-        </Link>
-      ) : null}
+        petsitterDocument.checkboxes &&
+        (petsitterDocument.checkboxes[0].cat ||
+        petsitterDocument.checkboxes[0].dog ? (
+          <Link to="/addpetsitter">
+            <button>Edytuj dane</button>
+          </Link>
+        ) : null)}
     </main>
   );
 }

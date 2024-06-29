@@ -129,56 +129,6 @@ const PetSection = () => {
       {(checkboxes.dog.isAvailable || checkboxes.cat.isAvailable) && (
         <div>
           <h1>Jakimi zwierzakami się zajmujesz</h1>
-          {/* render dog section */}
-          {checkboxes.dog.isAvailable && <h2>Pies</h2>}
-          {checkboxes.dog.isAvailable &&
-            renderPetSection({
-              animal: {
-                attr0: checkboxes.dog.weight0,
-                attr1: checkboxes.dog.weight1,
-                attr2: checkboxes.dog.weight2,
-                attr3: checkboxes.dog.weight3,
-                attr4: checkboxes.dog.weight4,
-                attr5: checkboxes.dog.weight5,
-              },
-              labels: {
-                title: "Wielkość zwierzaka",
-                attr0: "0-5kg",
-                attr1: "5-10kg",
-                attr2: "10-15kg",
-                attr3: "15-20kg",
-                attr4: "20-25kg",
-                attr5: "25-30kg",
-              },
-            })}
-          {checkboxes.dog.isAvailable &&
-            renderPetSection({
-              animal: {
-                attr0: checkboxes.dog.activity0,
-                attr1: checkboxes.dog.activity1,
-                attr2: checkboxes.dog.activity2,
-              },
-              labels: {
-                title: "Aktywność fizyczna",
-                attr0: "Leniuch",
-                attr1: "Normalny",
-                attr2: "Średniak",
-              },
-            })}
-          {checkboxes.dog.isAvailable &&
-            renderPetSection({
-              animal: {
-                attr0: checkboxes.dog.walk,
-                attr1: checkboxes.dog.accom,
-                attr2: checkboxes.dog.homeVisit,
-              },
-              labels: {
-                title: "Oferta",
-                attr0: "Spacer",
-                attr1: "Nocleg",
-                attr2: "Wizyta domowa",
-              },
-            })}
           {/* render cat section */}
           {checkboxes.cat.isAvailable && <h2>Kot</h2>}
           {checkboxes.cat.isAvailable &&
@@ -221,6 +171,56 @@ const PetSection = () => {
                 attr0: checkboxes.cat.walk,
                 attr1: checkboxes.cat.accom,
                 attr2: checkboxes.cat.homeVisit,
+              },
+              labels: {
+                title: "Oferta",
+                attr0: "Spacer",
+                attr1: "Nocleg",
+                attr2: "Wizyta domowa",
+              },
+            })}
+          {/* render dog section */}
+          {checkboxes.dog.isAvailable && <h2>Pies</h2>}
+          {checkboxes.dog.isAvailable &&
+            renderPetSection({
+              animal: {
+                attr0: checkboxes.dog.weight0,
+                attr1: checkboxes.dog.weight1,
+                attr2: checkboxes.dog.weight2,
+                attr3: checkboxes.dog.weight3,
+                attr4: checkboxes.dog.weight4,
+                attr5: checkboxes.dog.weight5,
+              },
+              labels: {
+                title: "Wielkość zwierzaka",
+                attr0: "0-5kg",
+                attr1: "5-10kg",
+                attr2: "10-15kg",
+                attr3: "15-20kg",
+                attr4: "20-25kg",
+                attr5: "25-30kg",
+              },
+            })}
+          {checkboxes.dog.isAvailable &&
+            renderPetSection({
+              animal: {
+                attr0: checkboxes.dog.activity0,
+                attr1: checkboxes.dog.activity1,
+                attr2: checkboxes.dog.activity2,
+              },
+              labels: {
+                title: "Aktywność fizyczna",
+                attr0: "Leniuch",
+                attr1: "Normalny",
+                attr2: "Średniak",
+              },
+            })}
+          {checkboxes.dog.isAvailable &&
+            renderPetSection({
+              animal: {
+                attr0: checkboxes.dog.walk,
+                attr1: checkboxes.dog.accom,
+                attr2: checkboxes.dog.homeVisit,
               },
               labels: {
                 title: "Oferta",
