@@ -33,6 +33,7 @@ function ProfileMain(passedData: { uid?: string }) {
         </h1>
       </div>
       <PetSection />
+
       <PriceSection />
       {petsitterDocument &&
         petsitterDocument.checkboxes &&
