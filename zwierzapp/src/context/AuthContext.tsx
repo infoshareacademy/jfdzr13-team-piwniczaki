@@ -18,6 +18,7 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { auth, db } from "../utils/firebase";
+import Loading from "../components/Loading/Loading";
 
 export interface User {
   uid: string;
@@ -204,7 +205,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     savePersonalData,
   };
   if(isLoading){
-    return <>Loading...</>
+    return <Loading message="Ładowanie użytkownika"/>
   }
 
   return (
