@@ -12,20 +12,21 @@ export interface PetDocument {
   weight: string;
 }
 
-const getPetData = (user: string): PetDocument | null => {
+const getPetData = (user: string): PetDocument[] => {
   const currentUserId = user;
   const pets: PetDocument[] = useFirebaseData("Pets");
-  const [petDocument, setPetsitterDocument] = useState<PetDocument | null>(
-    null
-  );
+  const [petDocuments, setPetDocuments] = useState<PetDocument[]>([]);
 
   useEffect(() => {
     if (currentUserId && pets.length > 0) {
-      const foundPetDocument = pets.find((pet) => pet.userID === currentUserId);
-      setPetsitterDocument(foundPetDocument || null);
+      const foundPetDocuments = pets.filter(
+        (pet) => pet.userID === currentUserId
+      );
+      setPetDocuments(foundPetDocuments);
     }
   }, [currentUserId, pets]);
-  return petDocument;
+
+  return petDocuments;
 };
 
 export default getPetData;
