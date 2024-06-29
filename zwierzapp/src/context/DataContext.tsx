@@ -11,10 +11,9 @@ import {
   
 
 interface DataContextInterface {
-    saveUserToDatabase: (uid: string, data: any) => Promise<void>;
     updateUserToDatabase: (collectionName: string, uid: string, data: any) => Promise<void>;
     getUsersDocs: (collectionName: string, uid: string) => Promise<any[] | null>;
-    getUserFromDatabase:(collectionName: string, uid: string, data: any) => Promise<void>;
+    getUserFromDatabase:(collectionName: string, uid: string) => Promise<any>;
     currentUser: any;
 
   }
@@ -27,10 +26,6 @@ interface DataContextInterface {
   export const DataProvider = ({ children }: { children: React.ReactNode }) => {
  
    
-   const saveUserToDatabase = async (uid:string, data:any) => {
-    const docRef = doc(collection(db, 'petsitters'), uid);
-    await setDoc(docRef, data);
-      };
 
   const updateUserToDatabase = async (collectionName:string, uid: string, data: any) => {
     const usersSnapshot = await getDocs(
@@ -80,7 +75,6 @@ interface DataContextInterface {
 
   const passedData = {
     getUsersDocs,
-    saveUserToDatabase,
     updateUserToDatabase,
     getUserFromDatabase
   };
