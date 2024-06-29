@@ -4,7 +4,7 @@ import useAuth, { User } from "../../../context/AuthContext";
 import PetSection from "./PetSection";
 import { useEffect, useState } from "react";
 import getUserData from "../../../hooks/getUserData";
-
+import {Link} from 'react-router-dom' 
 function ProfileMain(passedData: { uid?: string }) {
   const { currentUser }: { currentUser: User | null } = useAuth() || {
     currentUser: null,
@@ -32,7 +32,7 @@ function ProfileMain(passedData: { uid?: string }) {
       </div>
       <PriceSection />
       <PetSection />
-      <button>Edytuj dane</button>
+      <Link to='/addpetsitter'><button >Edytuj dane</button></Link>
     </main>
   );
 }

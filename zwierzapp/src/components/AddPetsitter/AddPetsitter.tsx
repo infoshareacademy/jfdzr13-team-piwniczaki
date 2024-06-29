@@ -54,8 +54,8 @@ const [prices, setPrices] = useState([
 ]);
 
 const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, checked } = event.target;
-    const [animal, key] = id.split('.');
+    const { name, checked } = event.target;
+    const [animal, key] = name.split('.');
     
     setCheckboxes((prev) => {
         const updated = [...prev];
@@ -67,7 +67,9 @@ const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         return updated;
     })
 };
-
+useEffect(()=>{
+    console.log(prices)
+})
 
 useEffect(() => {
     const fetchData = async () => {
@@ -103,15 +105,18 @@ useEffect(() => {
 
 
     const handlePriceInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    const [animal, key] = id.split('.');
-    const index = animal === 'cat' ? 0 : 1;
+        const { name, value } = event.target;
+        const [animal, key] = name.split('.');
+        const index = animal === 'cat' ? 0 : 1;
+        console.log(value)
+        console.log(prices)
 
     setPrices((prev) => {
         const updated = [...prev];
+        console.log(updated)
         updated[index] = {
             ...updated[index],
-            [key]: Number(value),
+            [key]: value ? parseInt(value) : null,
         };
         return updated;
     });
@@ -150,7 +155,16 @@ useEffect(() => {
                 const { currentUser } = authContext;
                 const { updateUserToDatabase } = dataContext;
                 const uid = currentUser.uid;
-            
+                prices.map((price)=>{for(const key in price){
+                    if(price[key]=== null){
+                        price[key]=0
+                    }
+
+                    }return price
+                })
+                console.log('sprawdzam prices',prices)
+
+
                     if (isFirstTime) {
                         await addDoc(collection(db, 'Petsitters'), {
                         prices: prices,
@@ -186,11 +200,10 @@ useEffect(() => {
                     <div className={styles.inputWrapper}>
                         <div className={styles.dog}>
                             <div className="dogRace">
-                                <label htmlFor="dog.dog">
+                                <label>
                                     <input
-                                        id='dog.dog'
+                                        name='dog.dog'
                                         type='checkbox'
-                                        name='race'
                                         onChange={handleCheckboxChange}
                                         checked={dogObj.dog}
                                         disabled={!isEditMode}
@@ -203,33 +216,30 @@ useEffect(() => {
                                     <div className="dogActivity">
                                         <h3>Aktywność Fizyczna</h3>
                                         <div className={styles.dog}>
-                                            <label htmlFor="dog.dogActivity0">
+                                            <label>
                                                 <input
-                                                    id='dog.dogActivity0'
+                                                    name='dog.dogActivity0'
                                                     type='checkbox'
-                                                    name='activity'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogActivity0}
                                                     disabled={!isEditMode}
                                                 />
                                                 LENIUCH
                                             </label>
-                                            <label htmlFor="dog.dogActivity1">
+                                            <label>
                                                 <input
-                                                    id='dog.dogActivity1'
+                                                    name='dog.dogActivity1'
                                                     type='checkbox'
-                                                    name='activity'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogActivity1}
                                                     disabled={!isEditMode}
                                                 />
                                                 ŚREDNIAK
                                             </label>
-                                            <label htmlFor="dog.dogActivity2">
+                                            <label>
                                                 <input
-                                                    id='dog.dogActivity2'
+                                                    name='dog.dogActivity2'
                                                     type='checkbox'
-                                                    name='activity'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogActivity2}
                                                     disabled={!isEditMode}
@@ -241,55 +251,50 @@ useEffect(() => {
                                     <div className='dogWeight'>
                                         <h3>WAGA</h3>
                                         <div>
-                                            <label htmlFor="dog.dogWeight0">
+                                            <label>
                                                 <input
-                                                    id='dog.dogWeight0'
+                                                    name='dog.dogWeight0'
                                                     type='checkbox'
-                                                    name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight0}
                                                     disabled={!isEditMode}
                                                 />
                                                 &lt;5kg
                                             </label>
-                                            <label htmlFor="dog.dogWeight1">
+                                            <label>
                                                 <input
-                                                    id='dog.dogWeight1'
+                                                    name='dog.dogWeight1'
                                                     type='checkbox'
-                                                    name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight1}
                                                     disabled={!isEditMode}
                                                 />
                                                 5-10kg
                                             </label>
-                                            <label htmlFor="dog.dogWeight2">
+                                            <label>
                                                 <input
-                                                    id='dog.dogWeight2'
+                                                    name='dog.dogWeight2'
                                                     type='checkbox'
-                                                    name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight2}
                                                     disabled={!isEditMode}
                                                 />
                                                 10-15kg
                                             </label>
-                                            <label htmlFor="dog.dogWeight3">
+                                            <label>
                                                 <input
-                                                    id='dog.dogWeight3'
+                                                    name='dog.dogWeight3'
                                                     type='checkbox'
-                                                    name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight3}
                                                     disabled={!isEditMode}
                                                 />
                                                 15-20kg
                                             </label>
-                                            <label htmlFor="dog.dogWeight4">
+                                            <label>
                                                 <input
-                                                    id='dog.dogWeight4'
+                                                    name='dog.dogWeight4'
                                                     type='checkbox'
-                                                    name='weight'
                                                     onChange={handleCheckboxChange}
                                                     checked={dogObj.dogWeight4}
                                                     disabled={!isEditMode}
@@ -300,11 +305,10 @@ useEffect(() => {
                                     </div>
                                     <div className='dogOffer'>
                                         <h3>OFERTA </h3>
-                                        <label htmlFor="dog.dogWalk">
+                                        <label>
                                             <input
                                                 type='checkbox'
-                                                id='dog.dogWalk'
-                                                name='offer'
+                                                name='dog.dogWalk'
                                                 onChange={handleCheckboxChange}
                                                 checked={dogObj.dogWalk}
                                                 disabled={!isEditMode}
@@ -312,24 +316,21 @@ useEffect(() => {
                                             SPACER
                                         </label>
                                         {dogObj.dogWalk && 
-                                        <label htmlFor='dog.dogWalkPrice'>
+                                        <label>
                                             <input 
                                                 type='number' 
-                                                id='dog.dogWalkPrice' 
-                                                name='price' 
-                                                
-                                                value={prices[1]?.dogWalkPrice || 0}
-                                                min='0'
+                                                name='dog.dogWalkPrice' 
+                                                value={prices[1]?.dogWalkPrice}
+                                                min={0}
                                                 onChange={handlePriceInput}
                                             />
                                             <span>PLN</span>
                                         </label>}
 
-                                        <label htmlFor="dog.dogAccom">
+                                        <label>
                                             <input
                                                 type='checkbox'
-                                                id='dog.dogAccom'
-                                                name='offer'
+                                                name='dog.dogAccom'
                                                 onChange={handleCheckboxChange}
                                                 checked={dogObj.dogAccom}
                                                 disabled={!isEditMode}
@@ -337,24 +338,21 @@ useEffect(() => {
                                             NOCLEG
                                         </label>
                                         {dogObj.dogAccom && 
-                                        <label htmlFor='dog.dogAccom'>
+                                        <label>
                                             <input 
                                                 type='number' 
-                                                id='dog.dogAccom' 
-                                                name='price' 
-                                                 
-                                                value={prices[1]?.dogAccomPrice || 0}
-                                                min='0'
+                                                name='dog.dogAccomPrice' 
+                                                value={prices[1]?.dogAccomPrice}
+                                                min={0}
                                                 onChange={handlePriceInput}
                                             />
                                             <span>PLN</span>
                                         </label>}
 
-                                        <label htmlFor="dog.dogHomeVisit">
+                                        <label >
                                             <input
                                                 type='checkbox'
-                                                id='dog.dogHomeVisit'
-                                                name='offer'
+                                                name='dog.dogHomeVisit'
                                                 onChange={handleCheckboxChange}
                                                 checked={dogObj.dogHomeVisit}
                                                 disabled={!isEditMode}
@@ -362,14 +360,12 @@ useEffect(() => {
                                             WIZYTA DOMOWA
                                         </label>
                                         {dogObj.dogHomeVisit && 
-                                        <label htmlFor='dog.dogHomeVisit'>
+                                        <label>
                                             <input 
                                                 type='number' 
-                                                id='dog.dogHomeVisit' 
-                                                name='price' 
-                                                
-                                                value={prices[1]?.dogHomeVisitPrice || 0}
-                                                min='0'
+                                                name='dog.dogHomeVisitPrice' 
+                                                value={prices[1]?.dogHomeVisitPrice}
+                                                min={0}
                                                 onChange={handlePriceInput}
                                             />
                                             <span>PLN</span>
@@ -380,11 +376,10 @@ useEffect(() => {
                         </div>
                         <div className={styles.cat}>
                             <div className='catRace'>
-                                <label htmlFor="cat.cat">
+                                <label>
                                     <input
-                                        id='cat.cat'
+                                        name='cat.cat'
                                         type='checkbox'
-                                        name='race'
                                         onChange={handleCheckboxChange}
                                         checked={catObj.cat}
                                         disabled={!isEditMode}
@@ -396,33 +391,30 @@ useEffect(() => {
                                 <>
                                     <div className="catActivity">
                                         <h3>AKTYWNOŚĆ FIZYCZNA</h3>
-                                        <label htmlFor="cat.catActivity0">
+                                        <label>
                                             <input
-                                                id='cat.catActivity0'
+                                                name='cat.catActivity0'
                                                 type='checkbox'
-                                                name='activity'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catActivity0}
                                                 disabled={!isEditMode}
                                             />
                                             LENIUCH
                                         </label>
-                                        <label htmlFor="cat.catActivity1">
+                                        <label>
                                             <input
-                                                id='cat.catActivity1'
+                                                name='cat.catActivity1'
                                                 type='checkbox'
-                                                name='activity'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catActivity1}
                                                 disabled={!isEditMode}
                                             />
                                             ŚREDNIAK
                                         </label>
-                                        <label htmlFor="cat.catActivity2">
+                                        <label>
                                             <input
-                                                id='cat.catActivity2'
+                                                name='cat.catActivity2'
                                                 type='checkbox'
-                                                name='activity'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catActivity2}
                                                 disabled={!isEditMode}
@@ -432,55 +424,50 @@ useEffect(() => {
                                     </div>
                                     <div className='catWeight'>
                                         <h3>WAGA</h3>
-                                        <label htmlFor="cat.catWeight0">
+                                        <label>
                                             <input
-                                                id='cat.catWeight0'
+                                                name='cat.catWeight0'
                                                 type='checkbox'
-                                                name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight0}
                                                 disabled={!isEditMode}
                                             />
                                             &lt;2kg
                                         </label>
-                                        <label htmlFor="cat.catWeight1">
+                                        <label>
                                             <input
-                                                id='cat.catWeight1'
+                                                name='cat.catWeight1'
                                                 type='checkbox'
-                                                name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight1}
                                                 disabled={!isEditMode}
                                             />
                                             2-4kg
                                         </label>
-                                        <label htmlFor="cat.catWeight2">
+                                        <label>
                                             <input
-                                                id='cat.catWeight2'
+                                                name='cat.catWeight2'
                                                 type='checkbox'
-                                                name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight2}
                                                 disabled={!isEditMode}
                                             />
                                             4-6kg
                                         </label>
-                                        <label htmlFor="cat.catWeight3">
+                                        <label>
                                             <input
-                                                id='cat.catWeight3'
+                                                name='cat.catWeight3'
                                                 type='checkbox'
-                                                name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight3}
                                                 disabled={!isEditMode}
                                             />
                                             6-8kg
                                         </label>
-                                        <label htmlFor="cat.catWeight4">
+                                        <label>
                                             <input
-                                                id='cat.catWeight4'
+                                                name='cat.catWeight4'
                                                 type='checkbox'
-                                                name='weight'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWeight4}
                                                 disabled={!isEditMode}
@@ -490,11 +477,10 @@ useEffect(() => {
                                     </div>
                                     <div className='catOffer'>
                                         <h3>OFERTA </h3>
-                                        <label htmlFor="cat.catWalk">
+                                        <label>
                                             <input
                                                 type='checkbox'
-                                                id='cat.catWalk'
-                                                name='offer'
+                                                name='cat.catWalk'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catWalk}
                                                 disabled={!isEditMode}
@@ -502,22 +488,19 @@ useEffect(() => {
                                             SPACER
                                         </label>
                                         {catObj.catWalk && 
-                                            <label htmlFor='cat.catWalkPrice'>
+                                            <label>
                                                 <input 
                                                     type='number' 
-                                                    id='cat.catWalkPrice' 
-                                                    name='price' 
-                                                    placeholder='0' 
+                                                    name='cat.catWalkPrice' 
                                                     value={prices[0].catWalkPrice}
                                                     onChange={handlePriceInput}
                                                 />
                                                 <span>PLN</span>
                                             </label>}
-                                        <label htmlFor="cat.catAccom">
+                                        <label>
                                             <input
                                                 type='checkbox'
-                                                id='cat.catAccom'
-                                                name='offer'
+                                                name='cat.catAccom'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catAccom}
                                                 disabled={!isEditMode}
@@ -525,22 +508,19 @@ useEffect(() => {
                                             NOCLEG
                                         </label>
                                         {catObj.catAccom &&
-                                            <label htmlFor='cat.catAccomPrice'>
+                                            <label>
                                                 <input 
                                                     type='number' 
-                                                    id='cat.catAccomPrice' 
-                                                    name='price' 
-                                                    placeholder='0'
+                                                    name='cat.catAccomPrice'  
                                                     value={prices[0].catAccomPrice} 
                                                     onChange={handlePriceInput}
                                                 />
                                                 <span>PLN</span>
                                             </label>}
-                                        <label htmlFor="cat.catHomeVisit">
+                                        <label>
                                             <input
                                                 type='checkbox'
-                                                id='cat.catHomeVisit'
-                                                name='offer'
+                                                name='cat.catHomeVisit'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catHomeVisit}
                                                 disabled={!isEditMode}
@@ -548,12 +528,10 @@ useEffect(() => {
                                             WIZYTA DOMOWA
                                         </label>
                                         {catObj.catHomeVisit && 
-                                            <label htmlFor='cat.catHomeVisit'>
+                                            <label>
                                                 <input 
                                                     type='number' 
-                                                    id='cat.catHomeVisit' 
-                                                    name='price'
-                                                    placeholder='0'
+                                                    name='cat.catHomeVisitPrice'
                                                     value={prices[0].catHomeVisitPrice} 
                                                     onChange={handlePriceInput}
                                                 />
