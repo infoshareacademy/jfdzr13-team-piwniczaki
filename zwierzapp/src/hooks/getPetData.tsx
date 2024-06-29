@@ -6,10 +6,10 @@ export interface PetDocument {
   age?: string;
   behavior?: string;
   description?: string;
-  name: string;
-  race: string;
-  sex: string;
-  weight: string;
+  name?: string;
+  race?: string;
+  sex?: string;
+  weight?: string;
 }
 
 const getPetData = (user: string): PetDocument[] => {
