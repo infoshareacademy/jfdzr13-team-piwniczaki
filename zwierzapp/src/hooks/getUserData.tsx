@@ -2,12 +2,8 @@ import { useEffect, useState } from "react";
 import useFirebaseData from "./useFirebaseData";
 import { User } from "../context/AuthContext";
 
-export interface PassedUserId {
-  uid: string;
-}
-
-const getUserData = (user: PassedUserId): User | null => {
-  const currentUserId = user.uid;
+const getUserData = (user: string): User | null => {
+  const currentUserId = user;
   const users: User[] = useFirebaseData("Users");
   const [userDocument, setUserDocument] = useState<User | null>(null);
   useEffect(() => {
