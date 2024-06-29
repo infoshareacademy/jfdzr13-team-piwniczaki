@@ -3,7 +3,7 @@ import Layout from "./Layout/Layout";
 import AddCare from "./components/Profile/ProfileRightSidebar/AccessibilityInfo/AddCare/AddCare";
 import AddDataForm from "./components/AddDataForm/AddDataForm";
 import AddPet from "./components/AddPet/AddPet";
-import Filter from "./components/Filter/Filter";
+import Filter from "./components/Filter/SearchPetsitters/SearchPetsitters";
 import Form from "./components/Form/Form";
 import Login from "./components/Login/Login";
 import MainPage from "./components/MainPage/MainPage";

@@ -108,8 +108,6 @@ useEffect(() => {
         const { name, value } = event.target;
         const [animal, key] = name.split('.');
         const index = animal === 'cat' ? 0 : 1;
-        console.log(value)
-        console.log(prices)
 
     setPrices((prev) => {
         const updated = [...prev];
