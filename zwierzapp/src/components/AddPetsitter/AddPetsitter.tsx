@@ -101,34 +101,17 @@ useEffect(() => {
         setIsEditMode(true);
     };
 
-    const handleSaveClick = async () => {
-        const loadingToastId = toast.loading('Aktualizowanie danych...');
-        try {
-          if (dataContext && authContext && authContext.currentUser) {
-            const { currentUser } = authContext;
-            const { saveUserToDatabase } = dataContext;
-            const uid = currentUser.uid;
-      
-            await saveUserToDatabase('Petsitters', uid, { prices, checkboxes });
-            toast.success('Dane zaktualizowane', { id: loadingToastId });
-            setIsEditMode(false);
-          }
-        } catch (error) {
-          toast.dismiss(loadingToastId);
-          toast.error('Błąd podczas aktualizacji danych');
-        }
-      };
 
     const handlePriceInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     const [animal, key] = id.split('.');
+    const index = animal === 'cat' ? 0 : 1;
 
     setPrices((prev) => {
         const updated = [...prev];
-        const index = animal === 'cat' ? 0 : 1;
         updated[index] = {
             ...updated[index],
-            [key]: parseFloat(value),
+            [key]: Number(value),
         };
         return updated;
     });
@@ -165,7 +148,7 @@ useEffect(() => {
         try {
                 if (dataContext && authContext && authContext.currentUser) {
                 const { currentUser } = authContext;
-                const { saveUserToDatabase } = dataContext;
+                const { updateUserToDatabase } = dataContext;
                 const uid = currentUser.uid;
             
                     if (isFirstTime) {
@@ -176,7 +159,7 @@ useEffect(() => {
                         });
                         toast.success('Przesłano dane', { id: loadingToastId });
                     } else {
-                        await saveUserToDatabase('Petsitters', uid, { prices, checkboxes });
+                        await updateUserToDatabase('Petsitters', uid, { prices, checkboxes });
                         toast.success('Zaktualizowano dane', { id: loadingToastId });
                         setIsEditMode(false);
                     }
@@ -327,7 +310,19 @@ useEffect(() => {
                                             />
                                             SPACER
                                         </label>
-                                        {dogObj.dogWalk && <label htmlFor='dog.dogWalkPrice'><input type='number' id='dog.dogWalkPrice' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
+                                        {dogObj.dogWalk && 
+                                        <label htmlFor='dog.dogWalkPrice'>
+                                            <input 
+                                                type='number' 
+                                                id='dog.dogWalkPrice' 
+                                                name='price' 
+                                                
+                                                value={prices[1]?.dogWalkPrice || 0}
+                                                min='0'
+                                                onChange={handlePriceInput}
+                                            />
+                                            <span>PLN</span>
+                                        </label>}
 
                                         <label htmlFor="dog.dogAccom">
                                             <input
@@ -340,7 +335,19 @@ useEffect(() => {
                                             />
                                             NOCLEG
                                         </label>
-                                        {dogObj.dogAccom && <label htmlFor='dog.dogAccom'><input type='number' id='dog.dogAccom' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
+                                        {dogObj.dogAccom && 
+                                        <label htmlFor='dog.dogAccom'>
+                                            <input 
+                                                type='number' 
+                                                id='dog.dogAccom' 
+                                                name='price' 
+                                                 
+                                                value={prices[1]?.dogAccomPrice || 0}
+                                                min='0'
+                                                onChange={handlePriceInput}
+                                            />
+                                            <span>PLN</span>
+                                        </label>}
 
                                         <label htmlFor="dog.dogHomeVisit">
                                             <input
@@ -353,7 +360,19 @@ useEffect(() => {
                                             />
                                             WIZYTA DOMOWA
                                         </label>
-                                        {dogObj.dogHomeVisit && <label htmlFor='dog.dogHomeVisit'><input type='number' id='dog.dogHomeVisit' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
+                                        {dogObj.dogHomeVisit && 
+                                        <label htmlFor='dog.dogHomeVisit'>
+                                            <input 
+                                                type='number' 
+                                                id='dog.dogHomeVisit' 
+                                                name='price' 
+                                                
+                                                value={prices[1]?.dogHomeVisitPrice || 0}
+                                                min='0'
+                                                onChange={handlePriceInput}
+                                            />
+                                            <span>PLN</span>
+                                        </label>}
                                     </div>
                                 </>
                             )}
@@ -481,7 +500,18 @@ useEffect(() => {
                                             />
                                             SPACER
                                         </label>
-                                        {catObj.catWalk && <label htmlFor='cat.catWalkPrice'><input type='number' id='cat.catWalkPrice' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
+                                        {catObj.catWalk && 
+                                            <label htmlFor='cat.catWalkPrice'>
+                                                <input 
+                                                    type='number' 
+                                                    id='cat.catWalkPrice' 
+                                                    name='price' 
+                                                    placeholder='0' 
+                                                    value={prices[0].catWalkPrice}
+                                                    onChange={handlePriceInput}
+                                                />
+                                                <span>PLN</span>
+                                            </label>}
                                         <label htmlFor="cat.catAccom">
                                             <input
                                                 type='checkbox'
@@ -493,20 +523,41 @@ useEffect(() => {
                                             />
                                             NOCLEG
                                         </label>
-                                        {catObj.catAccom && <label htmlFor='cat.catAccomPrice'><input type='number' id='cat.catAccomPrice' name='price' placeholder='0' onChange={handlePriceInput}/><span>PLN</span></label>}
+                                        {catObj.catAccom &&
+                                            <label htmlFor='cat.catAccomPrice'>
+                                                <input 
+                                                    type='number' 
+                                                    id='cat.catAccomPrice' 
+                                                    name='price' 
+                                                    placeholder='0'
+                                                    value={prices[0].catAccomPrice} 
+                                                    onChange={handlePriceInput}
+                                                />
+                                                <span>PLN</span>
+                                            </label>}
                                         <label htmlFor="cat.catHomeVisit">
                                             <input
                                                 type='checkbox'
                                                 id='cat.catHomeVisit'
                                                 name='offer'
-                                                placeholder='0'
                                                 onChange={handleCheckboxChange}
                                                 checked={catObj.catHomeVisit}
                                                 disabled={!isEditMode}
                                             />
                                             WIZYTA DOMOWA
                                         </label>
-                                        {catObj.catHomeVisit && <label htmlFor='cat.catHomeVisit'><input type='number' id='cat.catHomeVisit' name='price' onChange={handlePriceInput}/><span>PLN</span></label>}
+                                        {catObj.catHomeVisit && 
+                                            <label htmlFor='cat.catHomeVisit'>
+                                                <input 
+                                                    type='number' 
+                                                    id='cat.catHomeVisit' 
+                                                    name='price'
+                                                    placeholder='0'
+                                                    value={prices[0].catHomeVisitPrice} 
+                                                    onChange={handlePriceInput}
+                                                />
+                                            <span>PLN</span>
+                                        </label>}
                                     </div>
                                 </>
                             )}
@@ -518,15 +569,10 @@ useEffect(() => {
                                 Edytuj
                             </button>
                         )}
-                        {isFirstTime || isEditMode ? (
-                            <button type="submit">
-                                Zapisz
-                            </button>
-                        ) : (
-                            <button type="button" onClick={handleSaveClick}>
-                                Zapisz
-                            </button>
-                        )}
+                        
+                        <button type="submit">
+                            Zapisz
+                        </button>
                     </div>
                 </form>
             </article>
