@@ -27,8 +27,8 @@ function App() {
           <Route path="/filter" element={<Filter />} />
           <Route path="/form" element={<Form />} />
           <Route path="/personal-data" element={<AddDataForm />} />
-          <Route path="/profile" element={<Profile />} /> 
-          <Route path="/addpetsitter" element={<AddPetsitter />} /> 
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/addpetsitter" element={<AddPetsitter />} />
         </Route>
       </Route>
     </Routes>

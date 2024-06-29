@@ -13,7 +13,7 @@ function AddCare() {
   const [documentId, setDocumentId] = useState<string | null>(null);
   const database = useFirebaseData("Petsitters");
   const currentDate = new Date().toISOString().split('T')[0];
-
+  console.log(database)
   useEffect(() => {
     if (currentUser && database.length > 0) {
       const userEntry = database.find(element => element.userId.includes(currentUser.uid));
