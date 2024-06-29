@@ -3,7 +3,7 @@ import getPetsitterData, {
   PetsitterDocument,
 } from "../../../hooks/getPetsitterData";
 
-interface Services {
+interface Checkboxes {
   isAvailable?: boolean;
   accom?: boolean;
   activity0?: boolean;
@@ -22,7 +22,7 @@ interface Services {
 const PetSection = () => {
   const petsitterDocument: PetsitterDocument | null = getPetsitterData();
 
-  const initialServices: Services = {
+  const initialCheckboxes: Checkboxes = {
     isAvailable: false,
     accom: false,
     activity0: false,
@@ -38,45 +38,48 @@ const PetSection = () => {
     weight5: false,
   };
 
-  const [services, setServices] = useState<{ dog: Services; cat: Services }>({
-    dog: initialServices,
-    cat: initialServices,
+  const [checkboxes, setServices] = useState<{
+    dog: Checkboxes;
+    cat: Checkboxes;
+  }>({
+    dog: initialCheckboxes,
+    cat: initialCheckboxes,
   });
 
   useEffect(() => {
     if (petsitterDocument) {
-      const { animals } = petsitterDocument;
-      if (animals) {
+      const { checkboxes } = petsitterDocument;
+      if (checkboxes) {
         setServices({
           dog: {
-            isAvailable: animals?.[1]?.dog || false,
-            accom: animals?.[1]?.dogAccom || false,
-            activity0: animals?.[1]?.dogActivity0 || false,
-            activity1: animals?.[1]?.dogActivity1 || false,
-            activity2: animals?.[1]?.dogActivity2 || false,
-            homeVisit: animals?.[1]?.dogHomeVisit || false,
-            walk: animals?.[1]?.dogWalk || false,
-            weight0: animals?.[1]?.dogWeight0 || false,
-            weight1: animals?.[1]?.dogWeight1 || false,
-            weight2: animals?.[1]?.dogWeight2 || false,
-            weight3: animals?.[1]?.dogWeight3 || false,
-            weight4: animals?.[1]?.dogWeight4 || false,
-            weight5: animals?.[1]?.dogWeight5 || false,
+            isAvailable: checkboxes?.[1]?.dog || false,
+            accom: checkboxes?.[1]?.dogAccom || false,
+            activity0: checkboxes?.[1]?.dogActivity0 || false,
+            activity1: checkboxes?.[1]?.dogActivity1 || false,
+            activity2: checkboxes?.[1]?.dogActivity2 || false,
+            homeVisit: checkboxes?.[1]?.dogHomeVisit || false,
+            walk: checkboxes?.[1]?.dogWalk || false,
+            weight0: checkboxes?.[1]?.dogWeight0 || false,
+            weight1: checkboxes?.[1]?.dogWeight1 || false,
+            weight2: checkboxes?.[1]?.dogWeight2 || false,
+            weight3: checkboxes?.[1]?.dogWeight3 || false,
+            weight4: checkboxes?.[1]?.dogWeight4 || false,
+            weight5: checkboxes?.[1]?.dogWeight5 || false,
           },
           cat: {
-            isAvailable: animals?.[0]?.cat || false,
-            accom: animals?.[0]?.catAccom || false,
-            activity0: animals?.[0]?.catActivity0 || false,
-            activity1: animals?.[0]?.catActivity1 || false,
-            activity2: animals?.[0]?.catActivity2 || false,
-            homeVisit: animals?.[0]?.catHomeVisit || false,
-            walk: animals?.[0]?.catWalk || false,
-            weight0: animals?.[0]?.catWeight0 || false,
-            weight1: animals?.[0]?.catWeight1 || false,
-            weight2: animals?.[0]?.catWeight2 || false,
-            weight3: animals?.[0]?.catWeight3 || false,
-            weight4: animals?.[0]?.catWeight4 || false,
-            weight5: animals?.[0]?.catWeight5 || false,
+            isAvailable: checkboxes?.[0]?.cat || false,
+            accom: checkboxes?.[0]?.catAccom || false,
+            activity0: checkboxes?.[0]?.catActivity0 || false,
+            activity1: checkboxes?.[0]?.catActivity1 || false,
+            activity2: checkboxes?.[0]?.catActivity2 || false,
+            homeVisit: checkboxes?.[0]?.catHomeVisit || false,
+            walk: checkboxes?.[0]?.catWalk || false,
+            weight0: checkboxes?.[0]?.catWeight0 || false,
+            weight1: checkboxes?.[0]?.catWeight1 || false,
+            weight2: checkboxes?.[0]?.catWeight2 || false,
+            weight3: checkboxes?.[0]?.catWeight3 || false,
+            weight4: checkboxes?.[0]?.catWeight4 || false,
+            weight5: checkboxes?.[0]?.catWeight5 || false,
           },
         });
       }
@@ -123,20 +126,20 @@ const PetSection = () => {
 
   return (
     <>
-      {(services.dog.isAvailable || services.cat.isAvailable) && (
+      {(checkboxes.dog.isAvailable || checkboxes.cat.isAvailable) && (
         <div>
           <h1>Jakimi zwierzakami się zajmujesz</h1>
           {/* render dog section */}
-          {services.dog.isAvailable && <h2>Pies</h2>}
-          {services.dog.isAvailable &&
+          {checkboxes.dog.isAvailable && <h2>Pies</h2>}
+          {checkboxes.dog.isAvailable &&
             renderPetSection({
               animal: {
-                attr0: services.dog.weight0,
-                attr1: services.dog.weight1,
-                attr2: services.dog.weight2,
-                attr3: services.dog.weight3,
-                attr4: services.dog.weight4,
-                attr5: services.dog.weight5,
+                attr0: checkboxes.dog.weight0,
+                attr1: checkboxes.dog.weight1,
+                attr2: checkboxes.dog.weight2,
+                attr3: checkboxes.dog.weight3,
+                attr4: checkboxes.dog.weight4,
+                attr5: checkboxes.dog.weight5,
               },
               labels: {
                 title: "Wielkość zwierzaka",
@@ -148,12 +151,12 @@ const PetSection = () => {
                 attr5: "25-30kg",
               },
             })}
-          {services.dog.isAvailable &&
+          {checkboxes.dog.isAvailable &&
             renderPetSection({
               animal: {
-                attr0: services.dog.activity0,
-                attr1: services.dog.activity1,
-                attr2: services.dog.activity2,
+                attr0: checkboxes.dog.activity0,
+                attr1: checkboxes.dog.activity1,
+                attr2: checkboxes.dog.activity2,
               },
               labels: {
                 title: "Aktywność fizyczna",
@@ -162,12 +165,12 @@ const PetSection = () => {
                 attr2: "Średniak",
               },
             })}
-          {services.dog.isAvailable &&
+          {checkboxes.dog.isAvailable &&
             renderPetSection({
               animal: {
-                attr0: services.dog.walk,
-                attr1: services.dog.accom,
-                attr2: services.dog.homeVisit,
+                attr0: checkboxes.dog.walk,
+                attr1: checkboxes.dog.accom,
+                attr2: checkboxes.dog.homeVisit,
               },
               labels: {
                 title: "Oferta",
@@ -177,16 +180,16 @@ const PetSection = () => {
               },
             })}
           {/* render cat section */}
-          {services.cat.isAvailable && <h2>Kot</h2>}
-          {services.cat.isAvailable &&
+          {checkboxes.cat.isAvailable && <h2>Kot</h2>}
+          {checkboxes.cat.isAvailable &&
             renderPetSection({
               animal: {
-                attr0: services.cat.weight0,
-                attr1: services.cat.weight1,
-                attr2: services.cat.weight2,
-                attr3: services.cat.weight3,
-                attr4: services.cat.weight4,
-                attr5: services.cat.weight5,
+                attr0: checkboxes.cat.weight0,
+                attr1: checkboxes.cat.weight1,
+                attr2: checkboxes.cat.weight2,
+                attr3: checkboxes.cat.weight3,
+                attr4: checkboxes.cat.weight4,
+                attr5: checkboxes.cat.weight5,
               },
               labels: {
                 title: "Wielkość zwierzaka",
@@ -198,12 +201,12 @@ const PetSection = () => {
                 attr5: "25-30kg",
               },
             })}
-          {services.cat.isAvailable &&
+          {checkboxes.cat.isAvailable &&
             renderPetSection({
               animal: {
-                attr0: services.cat.activity0,
-                attr1: services.cat.activity1,
-                attr2: services.cat.activity2,
+                attr0: checkboxes.cat.activity0,
+                attr1: checkboxes.cat.activity1,
+                attr2: checkboxes.cat.activity2,
               },
               labels: {
                 title: "Aktywność fizyczna",
@@ -212,12 +215,12 @@ const PetSection = () => {
                 attr2: "Średniak",
               },
             })}
-          {services.cat.isAvailable &&
+          {checkboxes.cat.isAvailable &&
             renderPetSection({
               animal: {
-                attr0: services.cat.walk,
-                attr1: services.cat.accom,
-                attr2: services.cat.homeVisit,
+                attr0: checkboxes.cat.walk,
+                attr1: checkboxes.cat.accom,
+                attr2: checkboxes.cat.homeVisit,
               },
               labels: {
                 title: "Oferta",
