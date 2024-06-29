@@ -33,12 +33,11 @@ function ProfileMain(passedData: { uid?: string }) {
         </h1>
       </div>
       <PetSection />
-
       <PriceSection />
       {petsitterDocument &&
         petsitterDocument.checkboxes &&
         (petsitterDocument.checkboxes[0].cat ||
-        petsitterDocument.checkboxes[0].dog ? (
+        petsitterDocument.checkboxes[1].dog ? (
           <Link to="/addpetsitter">
             <button>Edytuj dane</button>
           </Link>
