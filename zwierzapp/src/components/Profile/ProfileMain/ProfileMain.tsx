@@ -16,7 +16,7 @@ function ProfileMain(passedData: { uid?: string }) {
   };
   const [user, setUser] = useState<User | null>(null);
   const uid: string = passedData.uid || "";
-  const passedUser: User | null = getUserData({ uid });
+  const passedUser: User | null = getUserData(uid);
   useEffect(() => {
     if (passedUser) {
       setUser(passedUser);
