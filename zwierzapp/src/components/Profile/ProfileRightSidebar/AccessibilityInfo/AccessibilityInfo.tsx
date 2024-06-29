@@ -10,23 +10,27 @@ const AccessibilityInfo = () => {
   const [isThereADate, setDates] = useState(false);
   const [accesDates, setAccesDates] = useState<{ startDate: string, endDate: string }[]>([]);
   const databasePetsitter = getPetsitterData(currentUser.uid);
-
+  console.log(databasePetsitter)
   const transformDate = (dateStr:string) => {
     const parts = dateStr.split('-');
     return `${parts[1]}-${parts[0]}`;
   };
 
   useEffect(() => {
-    if (databasePetsitter && databasePetsitter.access) {
-      setPetsitter(true)
-      const transformedAccess = databasePetsitter.access.map(access => ({
-        startDate: transformDate(access.startDate.replace('2024-', '')),
-        endDate: transformDate(access.endDate.replace('2024-', ''))
-      }));
-      setAccesDates(transformedAccess);
-      setDates(transformedAccess.length > 0);
+    if (databasePetsitter && databasePetsitter.userId) {
+      setPetsitter(true);
+      if (databasePetsitter.access) {
+        console.log(databasePetsitter);
+        setPetsitter(true);
+        const transformedAccess = databasePetsitter.access.map(access => ({
+          startDate: transformDate(access.startDate.replace('2024-', '')),
+          endDate: transformDate(access.endDate.replace('2024-', ''))
+        }));
+        setAccesDates(transformedAccess);
+        setDates(transformedAccess.length > 0);
+      }
     }
-  }, [databasePetsitter]); 
+  }, [databasePetsitter]);
 
   return (
     <div className={styles.accessContainer}>
