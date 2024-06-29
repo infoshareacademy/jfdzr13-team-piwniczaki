@@ -13,7 +13,7 @@ import useData from '../../context/DataContext';
 function AddPetsitter(){
     const dataContext = useData();
     const authContext = useAuth();
-    const [isFirstTime, setIsFirstTime] = useState(false);
+    const [isFirstTime, setIsFirstTime] = useState(true);
     const [isEditMode, setIsEditMode] = useState(false);
     const [checkboxes, setCheckboxes] = useState([{
         cat: false,
@@ -158,6 +158,7 @@ useEffect(() => {
                         userId: currentUser.uid,
                         });
                         toast.success('Przesłano dane', { id: loadingToastId });
+                        setIsFirstTime(false)
                     } else {
                         await updateUserToDatabase('Petsitters', uid, { prices, checkboxes });
                         toast.success('Zaktualizowano dane', { id: loadingToastId });

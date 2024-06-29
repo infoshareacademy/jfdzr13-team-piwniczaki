@@ -14,7 +14,7 @@ export interface PetsitterDocument {
       catWalkPrice?: number;
     };
   };
-  animals?: {
+  checkboxes?: {
     [key: number]: {
       catActivity2: boolean;
       catWeight5: boolean;

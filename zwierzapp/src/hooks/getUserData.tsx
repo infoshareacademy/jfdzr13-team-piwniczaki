@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useFirebaseData from "./useFirebaseData";
 import { User } from "../context/AuthContext";
 
-interface PassedUserId {
+export interface PassedUserId {
   uid: string;
 }
 
