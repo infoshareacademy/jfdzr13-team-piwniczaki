@@ -52,7 +52,9 @@ export const AuthContext = createContext<AuthContextData | null>(null);
 const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [ isLoading, setLoading ] = useState(true)
+  const [ currentUser, setCurrentUser] = useState<any>(null);
+
 
   const addNewUserToDatabase = async (user: any) => {
     const usersdata = await getDocs(collection(db, "Users"));
@@ -170,6 +172,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   useEffect(() => {
+    setLoading(true)
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         //<- true / każdy false to też null
@@ -178,12 +181,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setCurrentUser({
             ...user,
             ...dbUser,
-          }); // jeśli ma powyżej to ustawimamy obiekt
+          });
+          setLoading(false) // jeśli ma powyżej to ustawimamy obiekt
         } else {
           setCurrentUser(user); // jeśli nie to wrzuć dane usera
+          setLoading(false)
         }
       } else {
         setCurrentUser(user); // null
+        setLoading(false)
       }
     });
     return () => unsubscribe();
@@ -197,6 +203,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     logout,
     savePersonalData,
   };
+  if(isLoading){
+    return <>Loading...</>
+  }
 
   return (
     <AuthContext.Provider value={passedData}>{children}</AuthContext.Provider>
