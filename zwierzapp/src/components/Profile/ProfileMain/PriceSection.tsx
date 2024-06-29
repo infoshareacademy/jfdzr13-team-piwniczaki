@@ -93,31 +93,37 @@ const PriceSection = () => {
         <div>
           <h1>Cennik</h1>
           <div>
-            <h2>Pies</h2>
-            {services.dog.accom && (
-              <span>Nocleg {prices.dog?.dogAccomPrice || "0"}zł</span>
+            {services.cat.isAvailable && (
+              <div>
+                <h2>Kot</h2>
+                {services.cat.accom && (
+                  <span>Nocleg {prices.cat?.catAccomPrice || "0"}zł</span>
+                )}
+                {services.cat.homeVisit && (
+                  <span>
+                    Wizyta domowa {prices.cat?.catHomeVisitPrice || "0"}zł
+                  </span>
+                )}
+                {services.cat.walk && (
+                  <span>Spacer {prices.cat?.catWalkPrice || "0"}zł</span>
+                )}
+              </div>
             )}
-            {services.dog.homeVisit && (
-              <span>
-                Wizyta domowa {prices.dog?.dogHomeVisitPrice || "0"}zł
-              </span>
-            )}
-            {services.dog.walk && (
-              <span>Spacer {prices.dog?.dogWalkPrice || "0"}zł</span>
-            )}
-          </div>
-          <div>
-            <h2>Kot</h2>
-            {services.cat.accom && (
-              <span>Nocleg {prices.cat?.catAccomPrice || "0"}zł</span>
-            )}
-            {services.cat.homeVisit && (
-              <span>
-                Wizyta domowa {prices.cat?.catHomeVisitPrice || "0"}zł
-              </span>
-            )}
-            {services.cat.walk && (
-              <span>Spacer {prices.cat?.catWalkPrice || "0"}zł</span>
+            {services.dog.isAvailable && (
+              <div>
+                <h2>Pies</h2>
+                {services.dog.accom && (
+                  <span>Nocleg {prices.dog?.dogAccomPrice || "0"}zł</span>
+                )}
+                {services.dog.homeVisit && (
+                  <span>
+                    Wizyta domowa {prices.dog?.dogHomeVisitPrice || "0"}zł
+                  </span>
+                )}
+                {services.dog.walk && (
+                  <span>Spacer {prices.dog?.dogWalkPrice || "0"}zł</span>
+                )}
+              </div>
             )}
           </div>
         </div>
