@@ -2,22 +2,23 @@ import React, { useEffect, useState } from "react";
 import styles from "./SearchPetsitters.module.scss";
 import getPetData from "../../../hooks/getPetData";
 import useAuth from "../../../context/AuthContext";
-import MultiRangeSlider from "multi-range-slider-react";
 import { useSearchParams } from "react-router-dom";
-
 interface FormField {
   [key: string]: string | number;
 }
 
-const initialFormData: FormField[] = [
-  { petName: "" },
-  { serviceType: "" },
-  { city: "" },
-  { startDate: "" },
-  { endDate: "" },
-  { minValue: 1 },
-  { maxValue: 200 },
-];
+const initialFormData: FormField = {
+   petId: "",
+   serviceType: "",
+   city: "",
+   startDate: "",
+   endDate: "",
+   minPrice: 1,
+   maxPrice: 200,
+};
+
+
+
 
 const SearchPetsitters = () => {
   const [formData, setFormData] = useState<FormField>(initialFormData);
@@ -26,6 +27,9 @@ const SearchPetsitters = () => {
   const petsArr = getPetData(currentUser.uid);
   const currentDate = new Date().toISOString().split("T")[0];
 
+
+
+  //ustawienie formy parametrów przy pierwszym i kolejnych parametrach
   useEffect(() => {
     let initialSearchQuery = "";
 
@@ -35,6 +39,7 @@ const SearchPetsitters = () => {
           initialSearchQuery += `&${paramName}=${formData[paramName]}`;
         } else {
           initialSearchQuery += `${paramName}=${formData[paramName]}`;
+          //tutaj można ustawić wartości domyślne
         }
       }
     });
@@ -42,18 +47,36 @@ const SearchPetsitters = () => {
     setSearchParams(initialSearchQuery);
   }, []);
 
-  const handlePriceChange = (e: {
-    min: number;
-    max: number;
-    minValue: number;
-    maxValue: number;
-  }) => {
-    setFormData({
-      ...formData,
-      minValue: Number(e.minValue),
-      maxValue: Number(e.maxValue),
-    });
-  };
+
+
+
+
+  // const handlePriceChange = (e: {
+  //   min: number;
+  //   max: number;
+  //   minValue: number;
+  //   maxValue: number;
+  // }) => {
+  //   setFormData({
+  //     ...formData,
+  //     minValue: Number(e.minValue),
+  //     maxValue: Number(e.maxValue),
+  //   });
+  //   // console.log('heja z handlePriceChane', formData)
+  // };
+
+  // const handlePriceChange = useCallback((e: { min: number; max: number; minValue: number; maxValue: number }) => {
+  //   setFormData({
+  //     ...formData,
+  //     minValue: Number(e.minValue),
+  //     maxValue: Number(e.maxValue),
+  //   });
+  //   console.log('heja z handlePriceChane', formData)
+  // }, []);
+  
+  
+
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -62,14 +85,9 @@ const SearchPetsitters = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handlePetSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedPetId = e.target.value;
-    const selectedPet = petsArr.find((pet) => pet.id === selectedPetId);
-  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const formValues = new FormData(e.target as HTMLFormElement);
 
     let searchQuery = "";
@@ -84,22 +102,22 @@ const SearchPetsitters = () => {
       }
     });
 
-    if (formData.minValue) {
-      if (searchQuery) {
-        searchQuery += `&minValue=${formData.minValue}`;
-      } else {
-        searchQuery += `minValue=${formData.minValue}`;
-      }
-    }
+    // if (formData.minValue) {
+    //   if (searchQuery) {
+    //     searchQuery += `&minValue=${formData.minValue}`;
+    //   } else {
+    //     searchQuery += `minValue=${formData.minValue}`;
+    //   }
+    // }
 
-    if (formData.maxValue) {
-      if (searchQuery) {
-        searchQuery += `&minValue=${formData.maxValue}`;
-      } else {
-        searchQuery += `minValue=${formData.maxValue}`;
-      }
-    }
-
+    // if (formData.maxValue) {
+    //   if (searchQuery) {
+    //     searchQuery += `&minValue=${formData.maxValue}`;
+    //   } else {
+    //     searchQuery += `minValue=${formData.maxValue}`;
+    //   }
+    
+    console.log('heja z submita', formData)
     setSearchParams(new URLSearchParams(searchQuery));
   };
 
@@ -109,7 +127,7 @@ const SearchPetsitters = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <label>
           Imię zwierzaka
-          <select name="petName" onChange={handleChange}>
+          <select name="petId" onChange={handleChange}>
             {petsArr.length >= 1 &&
               petsArr.map((pet) => (
                 <option key={pet.id} value={pet.id}>
@@ -183,14 +201,32 @@ const SearchPetsitters = () => {
 
         <label>
           Cena
-          <MultiRangeSlider
+          {/* <MultiRangeSlider
             min={0}
             max={200}
             step={10}
             minValue={formData.minValue}
             maxValue={formData.maxValue}
             onInput={handlePriceChange}
-          />
+          /> */}
+          <label>
+            min
+            <input
+              type="number"
+              name="minPrice"
+              value={formData.minPrice}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            max
+            <input
+              type="number"
+              name="maxPrice"
+              value={formData.maxPrice}
+              onChange={handleChange}
+            />
+          </label>
         </label>
 
         <button type="submit">Szukaj</button>
