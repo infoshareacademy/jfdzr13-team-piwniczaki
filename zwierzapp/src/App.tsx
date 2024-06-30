@@ -24,7 +24,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/addcare" element={<AddCare />} />
           <Route path="/addpet" element={<AddPet />} />
-          <Route path="/filter" element={<Filter />} />
+          <Route path="/search" element={<Filter />} />
           <Route path="/form" element={<Form />} />
           <Route path="/personal-data" element={<AddDataForm />} />
           <Route path="/profile" element={<Profile />} />

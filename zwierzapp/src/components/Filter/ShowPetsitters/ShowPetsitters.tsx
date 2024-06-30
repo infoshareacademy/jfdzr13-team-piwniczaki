@@ -1,11 +1,7 @@
-import React from 'react'
+import styles from "./ShowPetsitters.module.scss";
 
 const ShowPetsitters = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div className={styles.petsittersContainer}>Petistterzy</div>;
+};
 
-export default ShowPetsitters
+export default ShowPetsitters;
