@@ -3,7 +3,6 @@ import styles from "./SearchPetsitters.module.scss";
 import getPetData from "../../../hooks/getPetData";
 import useAuth from "../../../context/AuthContext";
 import MultiRangeSlider from "multi-range-slider-react";
-import { useNavigate } from "react-router";
 import { useSearchParams } from "react-router-dom";
 
 interface FormField {
@@ -12,34 +11,47 @@ interface FormField {
 
 const initialFormData: FormField[] = [
   { petName: "" },
-  { serviceType: "walk" },
+  { serviceType: "" },
   { city: "" },
   { startDate: "" },
   { endDate: "" },
-  { minValue: 0 },
+  { minValue: 1 },
   { maxValue: 200 },
 ];
 
 const SearchPetsitters = () => {
-  const [formData, setFormData] = useState<FormField[]>([
-    { petName: "" },
-    { serviceType: "walk" },
-    { city: "" },
-    { startDate: "" },
-    { endDate: "" },
-    { minValue: 0 },
-    { maxValue: 200 },
-  ]);
+  const [formData, setFormData] = useState<FormField>(initialFormData);
+  const [searchParams, setSearchParams] = useSearchParams();
   const { currentUser } = useAuth() || {};
   const petsArr = getPetData(currentUser.uid);
   const currentDate = new Date().toISOString().split("T")[0];
-  const navigate = useNavigate();
 
-  const handlePriceChange = (e: { minValue: number; maxValue: number }) => {
+  useEffect(() => {
+    let initialSearchQuery = "";
+
+    Object.keys(formData).forEach((paramName) => {
+      if (formData[paramName]) {
+        if (initialSearchQuery) {
+          initialSearchQuery += `&${paramName}=${formData[paramName]}`;
+        } else {
+          initialSearchQuery += `${paramName}=${formData[paramName]}`;
+        }
+      }
+    });
+
+    setSearchParams(initialSearchQuery);
+  }, []);
+
+  const handlePriceChange = (e: {
+    min: number;
+    max: number;
+    minValue: number;
+    maxValue: number;
+  }) => {
     setFormData({
       ...formData,
-      minValue: e.minValue,
-      maxValue: e.maxValue,
+      minValue: Number(e.minValue),
+      maxValue: Number(e.maxValue),
     });
   };
 
@@ -47,10 +59,7 @@ const SearchPetsitters = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handlePetSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,54 +67,40 @@ const SearchPetsitters = () => {
     const selectedPet = petsArr.find((pet) => pet.id === selectedPetId);
   };
 
-  //
-
-  useEffect(() => {
-    let searchQuery = "";
-
-    // paramObj -> key: petName, value: ""
-
-    for (let i = 0; i < formData.length; i++) {
-      const paramObj = formData[i];
-
-      if (Object.values(paramObj)[0]) {
-        // console.log(Object.values(paramObj)[0]);
-        if (searchQuery.length === 0) {
-          // searchQuery = ""
-          searchQuery += `${Object.keys(paramObj)[0]}=${
-            Object.values(paramObj)[0]
-          }`; // petName=antek
-        } else {
-          // searchQuery = "petName=antek"
-          searchQuery += `&${Object.keys(paramObj)[0]}=${
-            Object.values(paramObj)[0]
-          }`; // petName=antek&serviceType=walk
-        }
-      }
-    }
-    // "" || 0 || undefined -> false
-    console.log("before nav", searchQuery);
-
-    if (searchQuery) {
-      console.log("while nav", searchQuery);
-      navigate(`/search?${searchQuery}`);
-    }
-  }, [formData]);
-
-  // useEffect(() => {});
-
-  // useEffect(() => {
-  //   setSearchQuery(
-  //     `${formData.petName}&${formData.serviceType}&${formData.city}&${formData.startDate}&${formData.endDate}&${formData.minValue}&${formData.maxValue}`
-  //   );
-  //   setSearchParams({ q: searchQuery });
-  //   navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-  // }, [formData]);
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(formData);
+    const formValues = new FormData(e.target as HTMLFormElement);
+
+    let searchQuery = "";
+
+    formValues.entries().forEach(([paramName, paramValue]) => {
+      if (paramValue) {
+        if (searchQuery) {
+          searchQuery += `&${paramName}=${paramValue}`;
+        } else {
+          searchQuery += `${paramName}=${paramValue}`;
+        }
+      }
+    });
+
+    if (formData.minValue) {
+      if (searchQuery) {
+        searchQuery += `&minValue=${formData.minValue}`;
+      } else {
+        searchQuery += `minValue=${formData.minValue}`;
+      }
+    }
+
+    if (formData.maxValue) {
+      if (searchQuery) {
+        searchQuery += `&minValue=${formData.maxValue}`;
+      } else {
+        searchQuery += `minValue=${formData.maxValue}`;
+      }
+    }
+
+    setSearchParams(new URLSearchParams(searchQuery));
   };
 
   return (
