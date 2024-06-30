@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useFirebaseData from "./useFirebaseData";
 
-export interface PetDocument {
-  userID: string;
+export interface PetsDocuments {
+  userID?: string;
   age?: string;
   behavior?: string;
   description?: string;
@@ -10,13 +10,13 @@ export interface PetDocument {
   race?: string;
   sex?: string;
   weight?: string;
-  id:string;
+  id?: string;
 }
 
-const getPetData = (user: string): PetDocument[] => {
+const getPetData = (user: string) => {
   const currentUserId = user;
-  const pets: PetDocument[] = useFirebaseData("Pets");
-  const [petDocuments, setPetDocuments] = useState<PetDocument[]>([]);
+  const pets: PetsDocuments[] = useFirebaseData("Pets");
+  const [petDocuments, setPetDocuments] = useState<PetsDocuments[]>([]);
 
   useEffect(() => {
     if (currentUserId && pets.length > 0) {
