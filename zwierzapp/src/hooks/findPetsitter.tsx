@@ -60,6 +60,7 @@ const findPetsitter = () => {
       petWeight: petObject?.weight || null,
     }));
   }, []); //tutaj w tablicy ma być queryParams, ale nie dodaję bo wpada w loopa
+  // Uwagaaaaaaaaaa, bo jak dopiszecie to zablokuje firebase, więc dlatestu dopisać zeby zaktualizowalo i od razu usunac
 
   const filterPetSitters = () => {
     return filters;
