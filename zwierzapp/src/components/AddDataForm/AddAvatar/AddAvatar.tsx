@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import avatarOne from "../../../assets/Avatars/Avatar 1.svg";
 import avatarTwo from "../../../assets/Avatars/Avatar 2.svg";
 import avatarThree from "../../../assets/Avatars/Avatar 3.svg";
@@ -11,7 +11,7 @@ import styles from "./addAvatar.module.scss";
 
 export type Avatar = { id: number; photo: string; alt: string };
 
-const AddAvatar = () => {
+const AddAvatar = ({ avatar, setAvatar }) => {
   const avatars: Avatar[] = [
     { id: 1, photo: avatarOne, alt: "Avatar one" },
     { id: 2, photo: avatarTwo, alt: "Avatar two" },
@@ -21,8 +21,12 @@ const AddAvatar = () => {
     { id: 6, photo: avatarSix, alt: "Avatar six" },
   ];
 
+  useEffect(() => {
+    setAvatar(avatars[0]);
+  }, []);
+
   const [isClicked, setClick] = useState(false);
-  const [avatar, setAvatar] = useState(avatars[0]);
+  // const [avatar, setAvatar] = useState(avatars[0]);
 
   function toggleMenu(id?: number) {
     setClick(!isClicked);

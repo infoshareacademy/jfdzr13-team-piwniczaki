@@ -1,3 +1,4 @@
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useAuth, { AdditionalUserInfo } from "../../context/AuthContext";
@@ -7,6 +8,8 @@ import styles from "./addDataForm.module.scss";
 const AddDataForm = () => {
   const { savePersonalData, currentUser } = useAuth() || {}; // pusty obiekt zwróci się wtedy kiedy w useAuth mamy null (pustą wartość)
   const navigate = useNavigate();
+
+  const [avatar, setAvatar] = useState(""); // dodałam stan do rodzica
   console.log(currentUser);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,11 +36,6 @@ const AddDataForm = () => {
       return;
     }
 
-    if (!/^\d{3}-\d{3}-\d{3}$/.test(phone)) {
-      toast.error("Numer telefonu musi mieć format 000-000-000");
-      return;
-    }
-
     try {
       if (savePersonalData !== undefined)
         await savePersonalData(additionalUserData);
@@ -47,28 +45,35 @@ const AddDataForm = () => {
     }
   };
 
+  console.log(avatar);
+
+  // one way data binding, jednostronny przepływ danych w React, tzn. rodzic może przekazać coś dziecku, ale dziecko nie może przekazać rodzicowi.
+  // Jeśli istnieje potrzeba aby rodzic otrzymał od dziecka stan i zmiany tego stanu to jedyna możliwość polega na tym aby stworzyć stan w rodzicu i przekazać stan i funkcję zmieniającą stan do dziecka w formie propsów!!!!!! REDUX przechowywanie stanu globalnego.
+
   return (
     <div className={styles.loginContainer}>
       <div className={styles.boxLogin}>
         <h1>UZUPEŁNIJ DANE</h1>
         <form onSubmit={handleSubmit} className={styles.formContainer}>
-          <AddAvatar />
+          <AddAvatar avatar={avatar} setAvatar={setAvatar} />
+          {/* tutaj przekazuję propsy dzieciakowi */}
           <input maxLength={15} type="text" name="name" placeholder="IMIĘ" />
           <input
-            maxLength={15}
+            maxLength={30}
             autoComplete="on"
             type="text"
             name="surname"
             placeholder="NAZWISKO"
           />
           <input
+            maxLength={9}
             autoComplete="on"
             type="tel"
             name="phone"
             placeholder="NUMER TELEFONU"
           />
           <input
-            maxLength={15}
+            maxLength={30}
             autoComplete="on"
             type="text"
             name="city"
