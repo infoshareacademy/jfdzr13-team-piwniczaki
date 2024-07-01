@@ -7,9 +7,6 @@ interface FormField {
   [key: string]: string | number;
 }
 
-
-
-
 const SearchPetsitters = () => {
   const { currentUser } = useAuth() || {};
   const petsArr = getPetData(currentUser.uid);
@@ -27,15 +24,27 @@ const SearchPetsitters = () => {
     minPrice: 10,
     maxPrice: 200,
   };
-  
   const [formData, setFormData] = useState<FormField>(initialFormData);
   const [searchParams, setSearchParams] = useSearchParams();
   
   //ustawienie formy parametrów przy pierwszym i kolejnych parametrach
+  useEffect(()=>{
+    // let searchQuery = "";
+
+    //     if (searchQuery) {
+    //       searchQuery += `&petId=${petsArr[0].id}`;
+    //     }
+
+    // setSearchParams(new URLSearchParams(searchQuery));
+    setFormData(initialFormData)
+    console.log('heja z search query',searchQuery)
+  },[petsArr])
+
+
+
+
   useEffect(() => {
     let initialSearchQuery = "";
-
-    console.log('heja z useEffect formData - domyślne',formData)
     Object.keys(formData).forEach((paramName) => {
       if (formData[paramName]) {
         if (initialSearchQuery) {
@@ -45,37 +54,9 @@ const SearchPetsitters = () => {
         }
       }
     });
-    console.log('heja z search params w useEffect',searchParams)
+    
     setSearchParams(initialSearchQuery);
   }, []);
-
-
-
-
-
-  // const handlePriceChange = (e: {
-  //   min: number;
-  //   max: number;
-  //   minValue: number;
-  //   maxValue: number;
-  // }) => {
-  //   setFormData({
-  //     ...formData,
-  //     minValue: Number(e.minValue),
-  //     maxValue: Number(e.maxValue),
-  //   });
-  //   // console.log('heja z handlePriceChane', formData)
-  // };
-
-  // const handlePriceChange = useCallback((e: { min: number; max: number; minValue: number; maxValue: number }) => {
-  //   setFormData({
-  //     ...formData,
-  //     minValue: Number(e.minValue),
-  //     maxValue: Number(e.maxValue),
-  //   });
-  //   console.log('heja z handlePriceChane', formData)
-  // }, []);
-  
   
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -86,10 +67,15 @@ const SearchPetsitters = () => {
   };
 
 
+
+const [searchQuery, setSearchQuery] = useState("")
+
+
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formValues = new FormData(e.target as HTMLFormElement);
-    let searchQuery = "";
+    // let searchQuery = "";
 
     formValues.entries().forEach(([paramName, paramValue]) => {
       if (paramName === "city" && typeof paramValue === "string") {
@@ -97,28 +83,12 @@ const SearchPetsitters = () => {
       }
       if (paramValue) {
         if (searchQuery) {
-          searchQuery += `&${paramName}=${paramValue}`;
+          setSearchQuery(`&${paramName}=${paramValue}`);
         } else {
-          searchQuery += `${paramName}=${paramValue}`;
+          setSearchQuery(searchQuery + `${paramName}=${paramValue}`);
         }
       }
     });
-
-    // if (formData.minValue) {
-    //   if (searchQuery) {
-    //     searchQuery += `&minValue=${formData.minValue}`;
-    //   } else {
-    //     searchQuery += `minValue=${formData.minValue}`;
-    //   }
-    // }
-
-    // if (formData.maxValue) {
-    //   if (searchQuery) {
-    //     searchQuery += `&minValue=${formData.maxValue}`;
-    //   } else {
-    //     searchQuery += `minValue=${formData.maxValue}`;
-    //   }
-    
     console.log('heja z submita', formData)
     setSearchParams(new URLSearchParams(searchQuery));
   };
@@ -131,7 +101,7 @@ const SearchPetsitters = () => {
           <form className={styles.form} onSubmit={handleSubmit}>
             <label>
               Imię zwierzaka
-              <select name="petId" defaultValue={formData.petId} onChange={handleChange}>
+              <select name="petId" value={formData.petId} onChange={handleChange}>
                 {petsArr.length >= 1 &&
                   petsArr.map((pet) => (
                     <option key={pet.id} value={pet.id}>
@@ -206,14 +176,6 @@ const SearchPetsitters = () => {
 
             <label>
               Cena
-              {/* <MultiRangeSlider
-                min={0}
-                max={200}
-                step={10}
-                minValue={formData.minValue}
-                maxValue={formData.maxValue}
-                onInput={handlePriceChange}
-              /> */}
               <label>
                 min
                 <input
