@@ -29,6 +29,7 @@ function App() {
           <Route path="/personal-data" element={<AddDataForm />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/addpetsitter" element={<AddPetsitter />} />
+          <Route path="/addpet/:petId" Component={AddPet} />
         </Route>
       </Route>
     </Routes>
