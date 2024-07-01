@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import getSinglePetData, { PetDocument } from "./getSinglePetData";
+import { useLocation } from "react-router";
 
 interface Filters {
-  petID: string | null;
+  petId: string | null;
   petAge: string | null;
   petBehavior: string | null;
   petDescription: string | null;
@@ -10,8 +11,8 @@ interface Filters {
   petRace: string | null;
   petSex: string | null;
   petWeight: string | null;
-  minValue: string | null;
-  maxValue: string | null;
+  minPrice: string | null;
+  maxPrice: string | null;
   startDate: string | null;
   endDate: string | null;
   city: string | null;
@@ -19,20 +20,23 @@ interface Filters {
 }
 
 const findPetsitter = () => {
-  const queryParameters = new URLSearchParams(window.location.search);
+  const location = useLocation();
+  const [queryParameters, setQueryParameters] = useState(
+    new URLSearchParams(window.location.search)
+  );
 
-  const petID = queryParameters.get("petName");
-  const petObject: PetDocument | undefined = getSinglePetData(petID);
-
-  const minValue = queryParameters.get("minValue") || null;
-  const maxValue = queryParameters.get("maxValue") || null;
-  const startDate = queryParameters.get("startDate") || null;
-  const endDate = queryParameters.get("endDate") || null;
-  const city = queryParameters.get("city") || null;
-  const serviceType = queryParameters.get("serviceType");
+  // const petObject: PetDocument | undefined = getSinglePetData(petID);
+  const [petObject, setPetObject] = useState<PetDocument | undefined>();
+  const [petID, setPetID] = useState(null);
+  const [minPrice, setMinPrice] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [city, setCity] = useState(null);
+  const [serviceType, setServiceType] = useState(null);
 
   const [filters, setFilters] = useState<Filters>({
-    petID: petID,
+    petId: petID,
     petAge: null,
     petBehavior: null,
     petDescription: null,
@@ -40,8 +44,8 @@ const findPetsitter = () => {
     petRace: null,
     petSex: null,
     petWeight: null,
-    minValue: minValue,
-    maxValue: maxValue,
+    minPrice: minPrice,
+    maxPrice: maxPrice,
     startDate: startDate,
     endDate: endDate,
     city: city,
@@ -49,8 +53,23 @@ const findPetsitter = () => {
   });
 
   useEffect(() => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
+    setPetObject(getSinglePetData());
+    setQueryParameters(new URLSearchParams(window.location.search));
+    setPetID(queryParameters.get("petId"));
+    setMinPrice(queryParameters.get("minPrice") || null);
+    setMaxPrice(queryParameters.get("maxPrice") || null);
+    setStartDate(queryParameters.get("startDate") || null);
+    setEndDate(queryParameters.get("endDate") || null);
+    setCity(queryParameters.get("city") || null);
+    setServiceType(queryParameters.get("serviceType"));
+    setFilters(() => ({
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      startDate: startDate,
+      endDate: endDate,
+      city: city,
+      serviceType: serviceType,
+      petID: petObject?.id || null,
       petAge: petObject?.age || null,
       petBehavior: petObject?.behavior || null,
       petDescription: petObject?.description || null,
@@ -59,8 +78,7 @@ const findPetsitter = () => {
       petSex: petObject?.sex || null,
       petWeight: petObject?.weight || null,
     }));
-  }, []); //tutaj w tablicy ma być queryParams, ale nie dodaję bo wpada w loopa
-  // Uwagaaaaaaaaaa, bo jak dopiszecie to zablokuje firebase, więc dlatestu dopisać zeby zaktualizowalo i od razu usunac
+  }, [location, getSinglePetData]);
 
   const filterPetSitters = () => {
     return filters;

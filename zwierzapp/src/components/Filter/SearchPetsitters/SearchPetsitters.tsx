@@ -3,22 +3,20 @@ import styles from "./SearchPetsitters.module.scss";
 import getPetData from "../../../hooks/getPetData";
 import useAuth from "../../../context/AuthContext";
 import { useSearchParams } from "react-router-dom";
+import findPetsitter from "../../../hooks/findPetsitter";
 interface FormField {
   [key: string]: string | number;
 }
 
 const initialFormData: FormField = {
-   petId: "",
-   serviceType: "",
-   city: "",
-   startDate: "",
-   endDate: "",
-   minPrice: 1,
-   maxPrice: 200,
+  petId: "",
+  serviceType: "",
+  city: "Wejherowo",
+  startDate: "",
+  endDate: "",
+  minPrice: 1,
+  maxPrice: 200,
 };
-
-
-
 
 const SearchPetsitters = () => {
   const [formData, setFormData] = useState<FormField>(initialFormData);
@@ -26,8 +24,6 @@ const SearchPetsitters = () => {
   const { currentUser } = useAuth() || {};
   const petsArr = getPetData(currentUser.uid);
   const currentDate = new Date().toISOString().split("T")[0];
-
-
 
   //ustawienie formy parametrów przy pierwszym i kolejnych parametrach
   useEffect(() => {
@@ -47,44 +43,12 @@ const SearchPetsitters = () => {
     setSearchParams(initialSearchQuery);
   }, []);
 
-
-
-
-
-  // const handlePriceChange = (e: {
-  //   min: number;
-  //   max: number;
-  //   minValue: number;
-  //   maxValue: number;
-  // }) => {
-  //   setFormData({
-  //     ...formData,
-  //     minValue: Number(e.minValue),
-  //     maxValue: Number(e.maxValue),
-  //   });
-  //   // console.log('heja z handlePriceChane', formData)
-  // };
-
-  // const handlePriceChange = useCallback((e: { min: number; max: number; minValue: number; maxValue: number }) => {
-  //   setFormData({
-  //     ...formData,
-  //     minValue: Number(e.minValue),
-  //     maxValue: Number(e.maxValue),
-  //   });
-  //   console.log('heja z handlePriceChane', formData)
-  // }, []);
-  
-  
-
-
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,22 +66,6 @@ const SearchPetsitters = () => {
       }
     });
 
-    // if (formData.minValue) {
-    //   if (searchQuery) {
-    //     searchQuery += `&minValue=${formData.minValue}`;
-    //   } else {
-    //     searchQuery += `minValue=${formData.minValue}`;
-    //   }
-    // }
-
-    // if (formData.maxValue) {
-    //   if (searchQuery) {
-    //     searchQuery += `&minValue=${formData.maxValue}`;
-    //   } else {
-    //     searchQuery += `minValue=${formData.maxValue}`;
-    //   }
-    
-    console.log('heja z submita', formData)
     setSearchParams(new URLSearchParams(searchQuery));
   };
 
