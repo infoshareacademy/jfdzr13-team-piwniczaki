@@ -19,6 +19,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { auth, db } from "../utils/firebase";
 import Loading from "../components/Loading/Loading";
+import avatars from "../components/AddDataForm/AddAvatar/AddAvatar";
 
 export interface User {
   uid: string;
@@ -36,6 +37,7 @@ export type AdditionalUserInfo = {
   surname: string;
   city: string;
   phone: string;
+  avatar: {id: number, photo: string, alt: string};
 };
 
 
@@ -46,6 +48,8 @@ interface AuthContextData {
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   savePersonalData: (userData: AdditionalUserInfo) => Promise<void>;
+  avatar: {id: number, photo: string, alt: string};
+  handleAvatar: () => void;
 }
 
 export const AuthContext = createContext<AuthContextData | null>(null);
@@ -55,6 +59,8 @@ const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [ isLoading, setLoading ] = useState(true)
   const [ currentUser, setCurrentUser] = useState<any>(null);
+  const [avatar, setAvatar] = useState(avatars[0])
+  console.log("AVATAR", avatar)
 
 
   const addNewUserToDatabase = async (user: any) => {
@@ -172,11 +178,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
+ const handleAvatar = (avatarEntry: {id: number, photo: string, alt: string}) => {
+  setAvatar(avatarEntry)
+ }
+
   useEffect(() => {
     setLoading(true)
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        //<- true / każdy false to też null
         const dbUser = await getUserFromDatabase(user.uid); // sprawdzamy czy w bazie został zalogowany użytkownik
         if (dbUser) {
           setCurrentUser({
@@ -203,6 +212,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     register,
     logout,
     savePersonalData,
+    avatar,
+    handleAvatar,
   };
   if(isLoading){
     return <Loading message="Ładowanie użytkownika"/>
