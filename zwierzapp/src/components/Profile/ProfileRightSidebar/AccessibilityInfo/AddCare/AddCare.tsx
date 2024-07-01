@@ -1,28 +1,31 @@
 import styles from "./addCare.module.scss";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import useFirebaseData from '../../../../../hooks/useFirebaseData';
 import useAuth from "../../../../../context/AuthContext";
 import { db } from "../../../../../utils/firebase";
 import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import getPetsitterData from "../../../../../hooks/getPetsitterData";
 import toast from 'react-hot-toast';
+import Loading from "../../../../Loading/Loading";
 
 function AddCare() {
+  const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth() || {};
   const [accessDates, setAccessDates] = useState([]);
   const [documentId, setDocumentId] = useState<string | null>(null);
-  const database = useFirebaseData("Petsitters");
   const currentDate = new Date().toISOString().split('T')[0];
-  console.log(database)
+  const databasePetsitter = getPetsitterData(currentUser?.uid);
+
   useEffect(() => {
-    if (currentUser && database.length > 0) {
-      const userEntry = database.find(element => element.userId.includes(currentUser.uid));
-      if (userEntry) {
-        setAccessDates(userEntry.access || []);
-        setDocumentId(userEntry.id);
-      }
+    setLoading(true)
+    if (databasePetsitter) {
+      setAccessDates(databasePetsitter.access || []);
+      setDocumentId(databasePetsitter.id);
     }
-  }, [database, currentUser]);
+    if(databasePetsitter){
+      setLoading(false)
+    }
+  }, [databasePetsitter]);
 
   const addNewDate = async (e) => {
     e.preventDefault();
@@ -30,15 +33,14 @@ function AddCare() {
     const formData = new FormData(form);
     const startDate = formData.get("startDate");
     const endDate = formData.get("endDate");
+    const careCity = formData.get("city");
 
-
-
-    if (documentId && startDate && endDate) {
+    if (documentId && startDate && endDate && careCity) {
       if (endDate < startDate) {
         toast.error("Wybrana data początkowy jest póżniejsza niż wybrana data końcowa");
-        return
+        return;
       }
-      const newDate = { startDate, endDate };
+      const newDate = { startDate, endDate, careCity };
       try {
         const docRef = doc(db, "Petsitters", documentId);
         await updateDoc(docRef, {
@@ -49,6 +51,7 @@ function AddCare() {
         form.reset();
       } catch (error) {
         toast.error("Błąd wysyłania danych");
+
       }
     } else {
       toast.error("Nie znaleziono użytkownika lub brak daty");
@@ -70,10 +73,12 @@ function AddCare() {
     } else {
       toast.error("Nie znaleziono użytkownika");
     }
+    
   };
 
-
-
+  if (loading) {
+    return <Loading message={`Ładowanie danych`} />
+  }
   return (
     <div className={styles.addcareContainer}>
       {accessDates.length === 0 ? (
@@ -83,22 +88,24 @@ function AddCare() {
           <div className={styles.dateTittle}>
             <span className={styles.tittleAcc}>Początek</span>
             <span className={styles.tittleAcc}>Koniec</span>
+            <span className={styles.tittleAcc}>Lokalizacja</span>
           </div>
           {accessDates.map((date, index) => (
             <div key={index} className={styles.dateContainer}>
               <input type="date" value={date.startDate} readOnly></input>
               <input type="date" value={date.endDate} readOnly></input>
+              <input type="text" value={date.careCity} readOnly></input>
               <button onClick={() => removeRecord(date)}>Skasuj</button>
             </div>
           ))}
-
         </>
       )}
       <div className={styles.formContainer}>
         <form onSubmit={addNewDate} className={styles.dateContainer}>
-            <input type="date" name="startDate" min={currentDate} required></input>
-            <input type="date" name="endDate" min={currentDate} required></input>
-            <button type="submit">Dodaj</button>
+          <input type="date" name="startDate" min={currentDate} required></input>
+          <input type="date" name="endDate" min={currentDate} required></input>
+          <input type="text" name="city" required></input>
+          <button type="submit">Dodaj</button>
         </form>
       </div>
       <Link to="/profile" className={styles.becomePetSitterLink}>Wróć</Link>
