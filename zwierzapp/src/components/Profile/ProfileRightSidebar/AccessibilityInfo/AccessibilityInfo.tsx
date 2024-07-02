@@ -12,11 +12,13 @@ const AccessibilityInfo = () => {
   const { currentUser } = useAuth() || {};
   const [isPetSitter, setPetsitter] = useState(false);
   const [isThereADate, setDates] = useState(false);
-  const [accessDates, setAccessDates] = useState<{ startDate: string, endDate: string }[]>([]);
+  const [accessDates, setAccessDates] = useState<
+    { startDate: string; endDate: string }[]
+  >([]);
   const databasePetsitter = getPetsitterData(currentUser.uid);
-  
+
   const transformDate = (dateStr: string) => {
-    const parts = dateStr.split('-');
+    const parts = dateStr.split("-");
     return `${parts[1]}-${parts[0]}`;
   };
 
@@ -24,10 +26,10 @@ const AccessibilityInfo = () => {
     const fetchAccessDates = async (docId) => {
       const accessCollectionRef = collection(db, "Petsitters", docId, "access");
       const snapshot = await getDocs(accessCollectionRef);
-      const dates = snapshot.docs.map(doc => doc.data());
-      const transformedAccess = dates.map(access => ({
-        startDate: transformDate(access.startDate.replace('2024-', '')),
-        endDate: transformDate(access.endDate.replace('2024-', ''))
+      const dates = snapshot.docs.map((doc) => doc.data());
+      const transformedAccess = dates.map((access) => ({
+        startDate: transformDate(access.startDate.replace("2024-", "")),
+        endDate: transformDate(access.endDate.replace("2024-", "")),
       }));
       setAccessDates(transformedAccess);
       setDates(transformedAccess.length > 0);
@@ -37,7 +39,9 @@ const AccessibilityInfo = () => {
     if (databasePetsitter && databasePetsitter.userId) {
       setPetsitter(true);
       fetchAccessDates(databasePetsitter.id);
-    } 
+    } else {
+      setLoading(false);
+    }
   }, [databasePetsitter]);
 
   if (loading) {
@@ -53,21 +57,23 @@ const AccessibilityInfo = () => {
               <span className={styles.titleAccess}>Dostępność</span>
               {accessDates.map((date, index) => (
                 <div key={index}>
-                  <p className={styles.dateElement}>Od {date.startDate} Do {date.endDate}</p>
+                  <p className={styles.dateElement}>
+                    Od {date.startDate} Do {date.endDate}
+                  </p>
                 </div>
               ))}
             </>
           ) : (
-            <>
-              Coś tu pusto
-            </>
+            <>Coś tu pusto</>
           )}
           <Link to="/addcare" className={styles.becomePetSitterLink}>
             Zarządzaj dostępnością
           </Link>
         </div>
       ) : (
-        <Link to="/addpetsitter" className={styles.becomePetSitterLink}>Zostań petsitterem</Link>
+        <Link to="/addpetsitter" className={styles.becomePetSitterLink}>
+          Zostań petsitterem
+        </Link>
       )}
     </div>
   );
