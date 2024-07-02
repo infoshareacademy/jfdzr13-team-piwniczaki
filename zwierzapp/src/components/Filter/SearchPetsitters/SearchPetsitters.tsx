@@ -3,29 +3,32 @@ import styles from "./SearchPetsitters.module.scss";
 import getPetData from "../../../hooks/getPetData";
 import useAuth from "../../../context/AuthContext";
 import { useSearchParams } from "react-router-dom";
-import findPetsitter from "../../../hooks/findPetsitter";
 interface FormField {
   [key: string]: string | number;
 }
 
-const initialFormData: FormField = {
-  petId: "",
-  serviceType: "",
-  city: "Wejherowo",
-  startDate: "",
-  endDate: "",
-  minPrice: 1,
-  maxPrice: 200,
-};
-
 const SearchPetsitters = () => {
-  const [formData, setFormData] = useState<FormField>(initialFormData);
-  const [searchParams, setSearchParams] = useSearchParams();
   const { currentUser } = useAuth() || {};
   const petsArr = getPetData(currentUser.uid);
-  const currentDate = new Date().toISOString().split("T")[0];
 
-  //ustawienie formy parametrów przy pierwszym i kolejnych parametrach
+  const currentDate = new Date().toISOString().split("T")[0];
+  const nextDate = new Date(currentDate);
+  nextDate.setDate(nextDate.getDate() + 1);
+  const nextDateString = nextDate.toISOString().split("T")[0];
+
+  const initialFormData: FormField = {
+    petId: petsArr.length >= 1 ? petsArr[0].id : "",
+    serviceType: "walk",
+    city: currentUser.city,
+    startDate: currentDate,
+    endDate: nextDateString,
+    minPrice: 10,
+    maxPrice: 200,
+  };
+
+  const [formData, setFormData] = useState<FormField>(initialFormData);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
     let initialSearchQuery = "";
 
@@ -35,7 +38,6 @@ const SearchPetsitters = () => {
           initialSearchQuery += `&${paramName}=${formData[paramName]}`;
         } else {
           initialSearchQuery += `${paramName}=${formData[paramName]}`;
-          //tutaj można ustawić wartości domyślne
         }
       }
     });
@@ -149,14 +151,6 @@ const SearchPetsitters = () => {
 
         <label>
           Cena
-          {/* <MultiRangeSlider
-            min={0}
-            max={200}
-            step={10}
-            minValue={formData.minValue}
-            maxValue={formData.maxValue}
-            onInput={handlePriceChange}
-          /> */}
           <label>
             min
             <input
