@@ -38,7 +38,7 @@ const PetSection = () => {
     weight5: false,
   };
 
-  const [checkboxes, setServices] = useState<{
+  const [checkboxes, setCheckboxes] = useState<{
     dog: Checkboxes;
     cat: Checkboxes;
   }>({
@@ -50,36 +50,36 @@ const PetSection = () => {
     if (petsitterDocument) {
       const { checkboxes } = petsitterDocument;
       if (checkboxes) {
-        setServices({
+        setCheckboxes({
           dog: {
-            isAvailable: checkboxes?.[1]?.dog || false,
-            accom: checkboxes?.[1]?.dogAccom || false,
-            activity0: checkboxes?.[1]?.dogActivity0 || false,
-            activity1: checkboxes?.[1]?.dogActivity1 || false,
-            activity2: checkboxes?.[1]?.dogActivity2 || false,
-            homeVisit: checkboxes?.[1]?.dogHomeVisit || false,
-            walk: checkboxes?.[1]?.dogWalk || false,
-            weight0: checkboxes?.[1]?.dogWeight0 || false,
-            weight1: checkboxes?.[1]?.dogWeight1 || false,
-            weight2: checkboxes?.[1]?.dogWeight2 || false,
-            weight3: checkboxes?.[1]?.dogWeight3 || false,
-            weight4: checkboxes?.[1]?.dogWeight4 || false,
-            weight5: checkboxes?.[1]?.dogWeight5 || false,
+            isAvailable: checkboxes?.dog || false,
+            accom: checkboxes?.dogAccom || false,
+            activity0: checkboxes?.dogActivity0 || false,
+            activity1: checkboxes?.dogActivity1 || false,
+            activity2: checkboxes?.dogActivity2 || false,
+            homeVisit: checkboxes?.dogHomeVisit || false,
+            walk: checkboxes?.dogWalk || false,
+            weight0: checkboxes?.dogWeight0 || false,
+            weight1: checkboxes?.dogWeight1 || false,
+            weight2: checkboxes?.dogWeight2 || false,
+            weight3: checkboxes?.dogWeight3 || false,
+            weight4: checkboxes?.dogWeight4 || false,
+            weight5: checkboxes?.dogWeight5 || false,
           },
           cat: {
-            isAvailable: checkboxes?.[0]?.cat || false,
-            accom: checkboxes?.[0]?.catAccom || false,
-            activity0: checkboxes?.[0]?.catActivity0 || false,
-            activity1: checkboxes?.[0]?.catActivity1 || false,
-            activity2: checkboxes?.[0]?.catActivity2 || false,
-            homeVisit: checkboxes?.[0]?.catHomeVisit || false,
-            walk: checkboxes?.[0]?.catWalk || false,
-            weight0: checkboxes?.[0]?.catWeight0 || false,
-            weight1: checkboxes?.[0]?.catWeight1 || false,
-            weight2: checkboxes?.[0]?.catWeight2 || false,
-            weight3: checkboxes?.[0]?.catWeight3 || false,
-            weight4: checkboxes?.[0]?.catWeight4 || false,
-            weight5: checkboxes?.[0]?.catWeight5 || false,
+            isAvailable: checkboxes?.cat || false,
+            accom: checkboxes?.catAccom || false,
+            activity0: checkboxes?.catActivity0 || false,
+            activity1: checkboxes?.catActivity1 || false,
+            activity2: checkboxes?.catActivity2 || false,
+            homeVisit: checkboxes?.catHomeVisit || false,
+            walk: checkboxes?.catWalk || false,
+            weight0: checkboxes?.catWeight0 || false,
+            weight1: checkboxes?.catWeight1 || false,
+            weight2: checkboxes?.catWeight2 || false,
+            weight3: checkboxes?.catWeight3 || false,
+            weight4: checkboxes?.catWeight4 || false,
+            weight5: checkboxes?.catWeight5 || false,
           },
         });
       }
@@ -129,7 +129,6 @@ const PetSection = () => {
       {(checkboxes.dog.isAvailable || checkboxes.cat.isAvailable) && (
         <div>
           <h1>Jakimi zwierzakami się zajmujesz</h1>
-          {/* render cat section */}
           {checkboxes.cat.isAvailable && <h2>Kot</h2>}
           {checkboxes.cat.isAvailable &&
             renderPetSection({
@@ -179,7 +178,6 @@ const PetSection = () => {
                 attr2: "Wizyta domowa",
               },
             })}
-          {/* render dog section */}
           {checkboxes.dog.isAvailable && <h2>Pies</h2>}
           {checkboxes.dog.isAvailable &&
             renderPetSection({
