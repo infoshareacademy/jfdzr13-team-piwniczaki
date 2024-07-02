@@ -40,7 +40,12 @@ const SearchPetsitters = () => {
     console.log('heja z search query',searchQuery)
   },[petsArr])
 
-
+//useEffect do poprawnej daty
+useEffect(()=>{
+  if(formData.endDate < formData.startDate){
+    setFormData({ ...formData, endDate: formData.startDate });
+  }else{}
+},[formData.startDate, formData.endDate])
 
 
   useEffect(() => {
@@ -58,11 +63,10 @@ const SearchPetsitters = () => {
     setSearchParams(initialSearchQuery);
   }, []);
   
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    console.log("handleChange - name:", name, "value:", value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -162,7 +166,6 @@ const [searchQuery, setSearchQuery] = useState("")
                 name="startDate"
                 value={formData.startDate}
                 min={currentDate}
-                max={formData.endDate}
                 onChange={handleChange}
               />
               <input
