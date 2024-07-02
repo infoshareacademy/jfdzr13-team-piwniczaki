@@ -3,9 +3,20 @@ import styles from "./SearchPetsitters.module.scss";
 import getPetData from "../../../hooks/getPetData";
 import useAuth from "../../../context/AuthContext";
 import { useSearchParams } from "react-router-dom";
+import findPetsitter from "../../../hooks/findPetsitter";
 interface FormField {
   [key: string]: string | number;
 }
+
+const initialFormData: FormField = {
+  petId: "",
+  serviceType: "",
+  city: "Wejherowo",
+  startDate: "",
+  endDate: "",
+  minPrice: 1,
+  maxPrice: 200,
+};
 
 const SearchPetsitters = () => {
   const { currentUser } = useAuth() || {};
@@ -41,8 +52,7 @@ const SearchPetsitters = () => {
   },[petsArr])
 
 
-
-
+  //ustawienie formy parametrów przy pierwszym i kolejnych parametrach
   useEffect(() => {
     let initialSearchQuery = "";
     Object.keys(formData).forEach((paramName) => {
@@ -57,7 +67,7 @@ const SearchPetsitters = () => {
     
     setSearchParams(initialSearchQuery);
   }, []);
-  
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -66,12 +76,7 @@ const SearchPetsitters = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-
-
 const [searchQuery, setSearchQuery] = useState("")
-
-
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formValues = new FormData(e.target as HTMLFormElement);
@@ -90,6 +95,7 @@ const [searchQuery, setSearchQuery] = useState("")
       }
     });
     console.log('heja z submita', formData)
+
     setSearchParams(new URLSearchParams(searchQuery));
   };
 

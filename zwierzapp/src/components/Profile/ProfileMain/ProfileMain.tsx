@@ -36,8 +36,8 @@ function ProfileMain(passedData: { uid?: string }) {
       <PriceSection />
       {petsitterDocument &&
         petsitterDocument.checkboxes &&
-        (petsitterDocument.checkboxes[0].cat ||
-        petsitterDocument.checkboxes[1].dog ? (
+        (petsitterDocument.checkboxes.cat ||
+        petsitterDocument.checkboxes.dog ? (
           <Link to="/addpetsitter">
             <button>Edytuj dane</button>
           </Link>

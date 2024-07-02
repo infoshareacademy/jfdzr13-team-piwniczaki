@@ -2,58 +2,60 @@ import styles from "./AccessibilityInfo.module.scss";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../../../context/AuthContext";
-import getPetsitterData from '../../../../hooks/getPetsitterData';
+import { db } from "../../../../utils/firebase";
+import { collection, getDocs } from "firebase/firestore";
 import Loading from "../../../Loading/Loading";
+import getPetsitterData from "../../../../hooks/getPetsitterData";
 
 const AccessibilityInfo = () => {
-  const [ isLoading, setLoading ] = useState(true)
+  const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth() || {};
   const [isPetSitter, setPetsitter] = useState(false);
   const [isThereADate, setDates] = useState(false);
-  const [accesDates, setAccesDates] = useState<{ startDate: string, endDate: string }[]>([]);
+  const [accessDates, setAccessDates] = useState<{ startDate: string, endDate: string }[]>([]);
   const databasePetsitter = getPetsitterData(currentUser.uid);
-  console.log(databasePetsitter)
-  const transformDate = (dateStr:string) => {
+  
+  const transformDate = (dateStr: string) => {
     const parts = dateStr.split('-');
     return `${parts[1]}-${parts[0]}`;
   };
 
   useEffect(() => {
+    const fetchAccessDates = async (docId) => {
+      const accessCollectionRef = collection(db, "Petsitters", docId, "access");
+      const snapshot = await getDocs(accessCollectionRef);
+      const dates = snapshot.docs.map(doc => doc.data());
+      const transformedAccess = dates.map(access => ({
+        startDate: transformDate(access.startDate.replace('2024-', '')),
+        endDate: transformDate(access.endDate.replace('2024-', ''))
+      }));
+      setAccessDates(transformedAccess);
+      setDates(transformedAccess.length > 0);
+      setLoading(false);
+    };
+
     if (databasePetsitter && databasePetsitter.userId) {
       setPetsitter(true);
-      if (databasePetsitter.access) {
-        console.log(databasePetsitter);
-        setPetsitter(true);
-        setLoading(false)
-        const transformedAccess = databasePetsitter.access.map(access => ({
-          startDate: transformDate(access.startDate.replace('2024-', '')),
-          endDate: transformDate(access.endDate.replace('2024-', ''))
-        }));
-        setAccesDates(transformedAccess);
-        setDates(transformedAccess.length > 0);
-        setLoading(false)
-      }
-    }
-    setLoading(false)
+      fetchAccessDates(databasePetsitter.id);
+    } 
   }, [databasePetsitter]);
-  if(isLoading){
-    return <Loading message="Pobieranie dat"/>
+
+  if (loading) {
+    return <Loading message="Ładowanie danych..." />;
   }
 
   return (
     <div className={styles.accessContainer}>
       {isPetSitter ? (
-        <div className={styles.listOfAcces}>
+        <div className={styles.listOfAccess}>
           {isThereADate ? (
             <>
-              <span className={styles.tittleAcc}>Dostępność</span>
-              {
-                accesDates.map((date, index) => (
-                  <div key={index}>
-                    <p className={styles.dateElement}>Od {date.startDate} Do {date.endDate}</p>
-                  </div>
-                ))
-              }
+              <span className={styles.titleAccess}>Dostępność</span>
+              {accessDates.map((date, index) => (
+                <div key={index}>
+                  <p className={styles.dateElement}>Od {date.startDate} Do {date.endDate}</p>
+                </div>
+              ))}
             </>
           ) : (
             <>
