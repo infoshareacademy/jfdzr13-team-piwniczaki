@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
-import getSinglePetData, { PetDocument } from "./getSinglePetData";
+import { PetDocument } from "./getSinglePetData";
+import { useSearchParams } from "react-router-dom";
+import useFirebaseData from "./useFirebaseData";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
 interface Filters {
-  petID: string | null;
+  petId: string | null;
   petAge: string | null;
   petBehavior: string | null;
   petDescription: string | null;
@@ -10,8 +14,8 @@ interface Filters {
   petRace: string | null;
   petSex: string | null;
   petWeight: string | null;
-  minValue: string | null;
-  maxValue: string | null;
+  minPrice: string | null;
+  maxPrice: string | null;
   startDate: string | null;
   endDate: string | null;
   city: string | null;
@@ -19,20 +23,11 @@ interface Filters {
 }
 
 const findPetsitter = () => {
-  const queryParameters = new URLSearchParams(window.location.search);
-
-  const petID = queryParameters.get("petName");
-  const petObject: PetDocument | undefined = getSinglePetData(petID);
-
-  const minValue = queryParameters.get("minValue") || null;
-  const maxValue = queryParameters.get("maxValue") || null;
-  const startDate = queryParameters.get("startDate") || null;
-  const endDate = queryParameters.get("endDate") || null;
-  const city = queryParameters.get("city") || null;
-  const serviceType = queryParameters.get("serviceType");
-
+  const [queryParameters] = useSearchParams();
+  const pets: PetDocument[] = useFirebaseData("Pets");
+  const [petObject, setPetObject] = useState<PetDocument | undefined>();
   const [filters, setFilters] = useState<Filters>({
-    petID: petID,
+    petId: null,
     petAge: null,
     petBehavior: null,
     petDescription: null,
@@ -40,33 +35,106 @@ const findPetsitter = () => {
     petRace: null,
     petSex: null,
     petWeight: null,
-    minValue: minValue,
-    maxValue: maxValue,
-    startDate: startDate,
-    endDate: endDate,
-    city: city,
-    serviceType: serviceType,
+    minPrice: null,
+    maxPrice: null,
+    startDate: null,
+    endDate: null,
+    city: null,
+    serviceType: null,
   });
 
   useEffect(() => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      petAge: petObject?.age || null,
-      petBehavior: petObject?.behavior || null,
-      petDescription: petObject?.description || null,
-      petName: petObject?.name || null,
-      petRace: petObject?.race || null,
-      petSex: petObject?.sex || null,
-      petWeight: petObject?.weight || null,
-    }));
-  }, []); //tutaj w tablicy ma być queryParams, ale nie dodaję bo wpada w loopa
-  // Uwagaaaaaaaaaa, bo jak dopiszecie to zablokuje firebase, więc dlatestu dopisać zeby zaktualizowalo i od razu usunac
+    setFilters({
+      petId: queryParameters.get("petId"),
+      minPrice: queryParameters.get("minPrice"),
+      maxPrice: queryParameters.get("maxPrice"),
+      startDate: queryParameters.get("startDate"),
+      endDate: queryParameters.get("endDate"),
+      city: queryParameters.get("city"),
+      serviceType: queryParameters.get("serviceType"),
+      petAge: filters.petAge,
+      petBehavior: filters.petBehavior,
+      petDescription: filters.petDescription,
+      petName: filters.petName,
+      petRace: filters.petRace,
+      petSex: filters.petSex,
+      petWeight: filters.petWeight,
+    });
+  }, [queryParameters]);
 
-  const filterPetSitters = () => {
-    return filters;
+  useEffect(() => {
+    if (filters.petId && pets.length > 0) {
+      const foundPetDocument = pets.find((pet) => pet.id === filters.petId);
+      setPetObject(foundPetDocument);
+    }
+  }, [filters.petId, pets]);
+
+  useEffect(() => {
+    if (petObject) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        petAge: petObject.age || null,
+        petBehavior: petObject.behavior || null,
+        petDescription: petObject.description || null,
+        petName: petObject.name || null,
+        petRace: petObject.race || null,
+        petSex: petObject.sex || null,
+        petWeight: petObject.weight || null,
+      }));
+    }
+  }, [petObject]);
+
+  //start filters
+
+  // const isDog = filters.petRace === "dog";
+  const [isDog, setIsDog] = useState(false);
+  const [isCat, setIsCat] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+  const filterUsers = async () => {
+    if (filters.petRace === "dog") {
+      setIsDog(true);
+    } else {
+      setIsDog(false);
+    }
+    if (filters.petRace === "cat") {
+      setIsCat(true);
+    } else {
+      setIsCat(false);
+    }
+
+    if (isCat) {
+      const usersSnapshot: object | null = await getDocs(
+        query(collection(db, "Petsitters"), where("checkboxes.cat", "==", true))
+      );
+      if (usersSnapshot.docs) {
+        setFilteredUsers(
+          usersSnapshot.docs.map(
+            (doc) => doc._document.data.value.mapValue.fields.userId.stringValue
+          )
+        );
+      }
+    } else if (isDog) {
+      const usersSnapshot: object | null = await getDocs(
+        query(collection(db, "Petsitters"), where("checkboxes.dog", "==", true))
+      );
+      if (usersSnapshot.docs) {
+        setFilteredUsers(
+          usersSnapshot.docs.map(
+            (doc) => doc._document.data.value.mapValue.fields.userId.stringValue
+          )
+        );
+      }
+    }
   };
 
-  return filterPetSitters();
+  useEffect(() => {
+    filterUsers();
+  }, [filters, isDog, isCat]);
+
+  console.log(filteredUsers);
+
+  return [filters, filteredUsers];
 };
 
 export default findPetsitter;
