@@ -8,16 +8,6 @@ interface FormField {
   [key: string]: string | number;
 }
 
-const initialFormData: FormField = {
-  petId: "",
-  serviceType: "",
-  city: "Wejherowo",
-  startDate: "",
-  endDate: "",
-  minPrice: 1,
-  maxPrice: 200,
-};
-
 const SearchPetsitters = () => {
   const { currentUser } = useAuth() || {};
   const petsArr = getPetData(currentUser.uid);
@@ -51,8 +41,12 @@ const SearchPetsitters = () => {
     console.log('heja z search query',searchQuery)
   },[petsArr])
 
+useEffect(()=>{
+  if(formData.endDate < formData.startDate){
+    setFormData({ ...formData, endDate: formData.startDate });
+  }else{}
+},[formData.startDate, formData.endDate])
 
-  //ustawienie formy parametrów przy pierwszym i kolejnych parametrach
   useEffect(() => {
     let initialSearchQuery = "";
     Object.keys(formData).forEach((paramName) => {
@@ -68,11 +62,8 @@ const SearchPetsitters = () => {
     setSearchParams(initialSearchQuery);
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    console.log("handleChange - name:", name, "value:", value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -168,7 +159,6 @@ const [searchQuery, setSearchQuery] = useState("")
                 name="startDate"
                 value={formData.startDate}
                 min={currentDate}
-                max={formData.endDate}
                 onChange={handleChange}
               />
               <input
