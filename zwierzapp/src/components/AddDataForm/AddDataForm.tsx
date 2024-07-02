@@ -1,12 +1,11 @@
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useAuth, { AdditionalUserInfo } from "../../context/AuthContext";
-import AddAvatar from "./AddAvatar/AddAvatar";
-import styles from "./addDataForm.module.scss";
+import styles from "../AddDataForm/addDataForm.module.scss";
+import AddAvatar, { avatars } from "./AddAvatar/AddAvatar";
 
 const AddDataForm = () => {
-  const { savePersonalData, currentUser, avatar, handleAvatar } =
-    useAuth() || {}; // pusty obiekt zwróci się wtedy kiedy w useAuth mamy null (pustą wartość)
+  const { savePersonalData, currentUser, avatar } = useAuth() || {}; // pusty obiekt zwróci się wtedy kiedy w useAuth mamy null (pustą wartość)
   const navigate = useNavigate();
 
   console.log(currentUser);
@@ -23,7 +22,7 @@ const AddDataForm = () => {
       surname,
       city,
       phone,
-      avatar,
+      avatar: avatar ?? avatars[0],
     };
 
     if (
@@ -45,16 +44,13 @@ const AddDataForm = () => {
     }
   };
 
-  // one way data binding, jednostronny przepływ danych w React, tzn. rodzic może przekazać coś dziecku, ale dziecko nie może przekazać rodzicowi.
-  // Jeśli istnieje potrzeba aby rodzic otrzymał od dziecka stan i zmiany tego stanu to jedyna możliwość polega na tym aby stworzyć stan w rodzicu i przekazać stan i funkcję zmieniającą stan do dziecka w formie propsów!!!!!! REDUX przechowywanie stanu globalnego.
-
   return (
     <div className={styles.loginContainer}>
       <div className={styles.boxLogin}>
         <h1>UZUPEŁNIJ DANE</h1>
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           <div>
-            <AddAvatar avatar={avatar} setAvatar={handleAvatar} />
+            <AddAvatar />
           </div>
           <input maxLength={15} type="text" name="name" placeholder="IMIĘ" />
           <input

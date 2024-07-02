@@ -17,9 +17,9 @@ import {
 } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { auth, db } from "../utils/firebase";
+import { avatars } from "../components/AddDataForm/AddAvatar/AddAvatar";
 import Loading from "../components/Loading/Loading";
-import avatars from "../components/AddDataForm/AddAvatar/AddAvatar";
+import { auth, db } from "../utils/firebase";
 
 export interface User {
   uid: string;
@@ -31,15 +31,13 @@ export interface User {
   descShort?: string;
 }
 
-
 export type AdditionalUserInfo = {
   name: string;
   surname: string;
   city: string;
   phone: string;
-  avatar: {id: number, photo: string, alt: string};
+  avatar: { id: number; photo: string; alt: string };
 };
-
 
 interface AuthContextData {
   currentUser: any;
@@ -48,8 +46,12 @@ interface AuthContextData {
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   savePersonalData: (userData: AdditionalUserInfo) => Promise<void>;
-  avatar: {id: number, photo: string, alt: string};
-  handleAvatar: () => void;
+  avatar: { id: number; photo: string; alt: string };
+  handleAvatar: (avatarEntry: {
+    id: number;
+    photo: string;
+    alt: string;
+  }) => void;
 }
 
 export const AuthContext = createContext<AuthContextData | null>(null);
@@ -57,11 +59,9 @@ export const AuthContext = createContext<AuthContextData | null>(null);
 const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [ isLoading, setLoading ] = useState(true)
-  const [ currentUser, setCurrentUser] = useState<any>(null);
-  const [avatar, setAvatar] = useState(avatars[0])
-  console.log("AVATAR", avatar)
-
+  const [isLoading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [avatar, setAvatar] = useState(avatars[0]);
 
   const addNewUserToDatabase = async (user: any) => {
     const usersdata = await getDocs(collection(db, "Users"));
@@ -76,7 +76,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateUserToDatabase = async (uid: string, data: any) => {
-    // zapis Usera do bazy aktualizacji do firebase, nie zapisuje do aplikacji, nie zmienia stanu (cosnole.log nie ma)
     const usersSnapshot = await getDocs(
       query(collection(db, "Users"), where("uid", "==", uid))
     );
@@ -157,49 +156,47 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }
 
-  function savePersonalData(userData: AdditionalUserInfo) {
-    return toast.promise(
-      new Promise(async (resolve) => {
-        await updateUserToDatabase(currentUser.uid, userData);
+  async function savePersonalData(userData: AdditionalUserInfo) {
+    try {
+      await updateUserToDatabase(currentUser.uid, userData);
 
-        setCurrentUser((prev) => ({
-          ...prev,
-          ...userData,
-        }));
-        // linijka 137, te dane pokazują się w console.log, bez nich dane tylko się zapisywały w firebase + aktualizują stan, widać w aplikacxji i console.log
+      setCurrentUser((prev: any) => ({
+        ...prev,
+        ...userData,
+      }));
 
-        resolve(undefined);
-      }),
-      {
-        loading: "Zapisanie danych...",
-        success: <b>Zapisano dane</b>,
-        error: (err) => <b>Błąd: {err.message}</b>,
-      }
-    );
+      toast.success("Zapisano poprawnie dane");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
- const handleAvatar = (avatarEntry: {id: number, photo: string, alt: string}) => {
-  setAvatar(avatarEntry)
- }
+  const handleAvatar = (avatarEntry: {
+    id: number;
+    photo: string;
+    alt: string;
+  }) => {
+    setAvatar(avatarEntry);
+  };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const dbUser = await getUserFromDatabase(user.uid); // sprawdzamy czy w bazie został zalogowany użytkownik
+        const dbUser = await getUserFromDatabase(user.uid);
         if (dbUser) {
           setCurrentUser({
             ...user,
             ...dbUser,
           });
-          setLoading(false) // jeśli ma powyżej to ustawimamy obiekt
+          setLoading(false);
         } else {
-          setCurrentUser(user); // jeśli nie to wrzuć dane usera
-          setLoading(false)
+          setCurrentUser(user);
+          setLoading(false);
         }
       } else {
         setCurrentUser(user); // null
-        setLoading(false)
+        setLoading(false);
       }
     });
     return () => unsubscribe();
@@ -215,8 +212,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     avatar,
     handleAvatar,
   };
-  if(isLoading){
-    return <Loading message="Ładowanie użytkownika"/>
+  if (isLoading) {
+    return <Loading message="Ładowanie użytkownika" />;
   }
 
   return (

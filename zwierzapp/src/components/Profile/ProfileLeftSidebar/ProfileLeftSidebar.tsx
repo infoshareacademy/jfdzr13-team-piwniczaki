@@ -1,10 +1,10 @@
 import { useState } from "react";
 import useAuth from "../../../context/AuthContext";
-import styles from "./ProfileLeftSidebar.module.scss";
 import AddAvatar from "../../AddDataForm/AddAvatar/AddAvatar";
+import styles from "./ProfileLeftSidebar.module.scss";
 
 const ProfileLeftSidebar = () => {
-  const { currentUser, savePersonalData, avatar, handleAvatar } = useAuth() || {};
+  const { currentUser, savePersonalData } = useAuth() || {};
   const [isEditing, setIsEditing] = useState(false);
 
   const [inputs, setInputs] = useState({
@@ -22,14 +22,14 @@ const ProfileLeftSidebar = () => {
     setIsEditing(false);
   };
 
-console.log({currentUser});
+  console.log({ currentUser });
 
   return (
     <>
       <div className={styles.container}>
         {isEditing ? (
           <form className={styles.formContainer} onSubmit={handleUpdateData}>
-      <AddAvatar avatar={currentUser.avatar} setAvatar={handleAvatar} />
+            <AddAvatar />
             <textarea
               className={styles.shortDescription}
               id="shortDescription"
@@ -92,7 +92,7 @@ console.log({currentUser});
           </form>
         ) : (
           <>
-               <AddAvatar avatar={avatar} setAvatar={handleAvatar} isEditing={true} />
+            <AddAvatar isEditing={true} />
             <p>
               <strong>IMIĘ:</strong> {inputs.name}
             </p>

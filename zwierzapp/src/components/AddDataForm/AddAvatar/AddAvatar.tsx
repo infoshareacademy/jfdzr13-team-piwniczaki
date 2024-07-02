@@ -6,9 +6,9 @@ import avatarFour from "../../../assets/Avatars/Avatar 4.svg";
 import avatarFive from "../../../assets/Avatars/Avatar 5.svg";
 import avatarSix from "../../../assets/Avatars/Avatar 6.svg";
 import edit from "../../../assets/Icons/pencil-edit.svg";
+import useAuth from "../../../context/AuthContext";
 import AvatarModal from "../AvatarModal/AvatarModal";
 import styles from "./addAvatar.module.scss";
-import useAuth from "../../../context/AuthContext";
 
 export type Avatar = { id: number; photo: string; alt: string };
 
@@ -20,15 +20,13 @@ export const avatars: Avatar[] = [
   { id: 5, photo: avatarFive, alt: "Avatar five" },
   { id: 6, photo: avatarSix, alt: "Avatar six" },
 ];
-const AddAvatar = (props: {isEditing: boolean}) => {
-const {handleAvatar, avatar} = useAuth() || {};
-const avatarTest = avatar ?? avatars[0]
-console.log(avatarTest)
+const AddAvatar = (props: { isEditing?: boolean }) => {
+  const { handleAvatar, avatar } = useAuth() || {};
   const [isClicked, setClick] = useState(false);
 
   function toggleMenu(id?: number) {
     setClick(!isClicked);
-    if (id) {
+    if (id && handleAvatar) {
       handleAvatar(avatars[id - 1]);
     }
   }
@@ -36,18 +34,20 @@ console.log(avatarTest)
   return (
     <>
       <div className={styles.avatarContainer}>
-{   !props.isEditing &&     <button
-          className={styles.avatarChangeButton}
-          type="button"
-          onClick={() => toggleMenu()}
-        >
-          <img className={styles.avatarEditImage} src={edit} />
-        </button>}
+        {!props.isEditing && (
+          <button
+            className={styles.avatarChangeButton}
+            type="button"
+            onClick={() => toggleMenu()}
+          >
+            <img className={styles.avatarEditImage} src={edit} />
+          </button>
+        )}
         <img
           className={styles.avatarMain}
-          src={avatarTest.photo}
-          alt={avatarTest.alt}
-          />
+          src={avatar?.photo ?? avatars[0].photo}
+          alt={avatar?.alt ?? avatars[0].alt}
+        />
 
         {isClicked ? (
           <AvatarModal avatars={avatars} toggleMenu={toggleMenu} />
