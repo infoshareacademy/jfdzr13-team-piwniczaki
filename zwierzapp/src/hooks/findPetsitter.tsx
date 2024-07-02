@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import getSinglePetData, { PetDocument } from "./getSinglePetData";
-import { useLocation } from "react-router";
+import { PetDocument } from "./getSinglePetData";
+import { useSearchParams } from "react-router-dom";
+import useFirebaseData from "./useFirebaseData";
 
 interface Filters {
   petId: string | null;
@@ -20,23 +21,11 @@ interface Filters {
 }
 
 const findPetsitter = () => {
-  const location = useLocation();
-  const [queryParameters, setQueryParameters] = useState(
-    new URLSearchParams(window.location.search)
-  );
+  const [queryParameters] = useSearchParams();
 
-  // const petObject: PetDocument | undefined = getSinglePetData(petID);
   const [petObject, setPetObject] = useState<PetDocument | undefined>();
-  const [petID, setPetID] = useState(null);
-  const [minPrice, setMinPrice] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [city, setCity] = useState(null);
-  const [serviceType, setServiceType] = useState(null);
-
   const [filters, setFilters] = useState<Filters>({
-    petId: petID,
+    petId: null,
     petAge: null,
     petBehavior: null,
     petDescription: null,
@@ -44,41 +33,56 @@ const findPetsitter = () => {
     petRace: null,
     petSex: null,
     petWeight: null,
-    minPrice: minPrice,
-    maxPrice: maxPrice,
-    startDate: startDate,
-    endDate: endDate,
-    city: city,
-    serviceType: serviceType,
+    minPrice: null,
+    maxPrice: null,
+    startDate: null,
+    endDate: null,
+    city: null,
+    serviceType: null,
   });
 
   useEffect(() => {
-    setPetObject(getSinglePetData());
-    setQueryParameters(new URLSearchParams(window.location.search));
-    setPetID(queryParameters.get("petId"));
-    setMinPrice(queryParameters.get("minPrice") || null);
-    setMaxPrice(queryParameters.get("maxPrice") || null);
-    setStartDate(queryParameters.get("startDate") || null);
-    setEndDate(queryParameters.get("endDate") || null);
-    setCity(queryParameters.get("city") || null);
-    setServiceType(queryParameters.get("serviceType"));
-    setFilters(() => ({
-      minPrice: minPrice,
-      maxPrice: maxPrice,
-      startDate: startDate,
-      endDate: endDate,
-      city: city,
-      serviceType: serviceType,
-      petID: petObject?.id || null,
-      petAge: petObject?.age || null,
-      petBehavior: petObject?.behavior || null,
-      petDescription: petObject?.description || null,
-      petName: petObject?.name || null,
-      petRace: petObject?.race || null,
-      petSex: petObject?.sex || null,
-      petWeight: petObject?.weight || null,
-    }));
-  }, [location, getSinglePetData]);
+    setFilters({
+      petId: queryParameters.get("petId"),
+      minPrice: queryParameters.get("minPrice"),
+      maxPrice: queryParameters.get("maxPrice"),
+      startDate: queryParameters.get("startDate"),
+      endDate: queryParameters.get("endDate"),
+      city: queryParameters.get("city"),
+      serviceType: queryParameters.get("serviceType"),
+      petAge: filters.petAge,
+      petBehavior: filters.petBehavior,
+      petDescription: filters.petDescription,
+      petName: filters.petName,
+      petRace: filters.petRace,
+      petSex: filters.petSex,
+      petWeight: filters.petWeight,
+    });
+  }, [queryParameters]);
+
+  const pets: PetDocument[] = useFirebaseData("Pets");
+
+  useEffect(() => {
+    if (filters.petId && pets.length > 0) {
+      const foundPetDocument = pets.find((pet) => pet.id === filters.petId);
+      setPetObject(foundPetDocument);
+    }
+  }, [filters.petId, pets]);
+
+  useEffect(() => {
+    if (petObject) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        petAge: petObject.age || null,
+        petBehavior: petObject.behavior || null,
+        petDescription: petObject.description || null,
+        petName: petObject.name || null,
+        petRace: petObject.race || null,
+        petSex: petObject.sex || null,
+        petWeight: petObject.weight || null,
+      }));
+    }
+  }, [petObject]);
 
   const filterPetSitters = () => {
     return filters;
