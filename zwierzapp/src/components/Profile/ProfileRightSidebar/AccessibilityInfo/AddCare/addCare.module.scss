@@ -12,8 +12,8 @@
 }
 .dateTittle{
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
-    width: 30%;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
+    width: 40%;
     justify-content: center;
     align-items: center;
     gap:15px
@@ -29,8 +29,8 @@
     justify-content: center;
 }
 .dateContainer{
-    width: 30%;
+    width: 40%;
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
     gap:15px
 }
