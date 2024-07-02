@@ -22,7 +22,7 @@ interface Filters {
   serviceType: string | null;
 }
 
-const findPetsitterByRace = () => {
+const findPetsittersByRace = () => {
   const [queryParameters] = useSearchParams();
   const pets: PetDocument[] = useFirebaseData("Pets");
   const [petObject, setPetObject] = useState<PetDocument | undefined>();
@@ -110,4 +110,4 @@ const findPetsitterByRace = () => {
   return [filters, filteredUsers];
 };
 
-export default findPetsitterByRace;
+export default findPetsittersByRace;
