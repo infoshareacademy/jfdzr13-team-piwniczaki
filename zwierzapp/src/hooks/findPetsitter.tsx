@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { PetDocument } from "./getSinglePetData";
 import { useSearchParams } from "react-router-dom";
 import useFirebaseData from "./useFirebaseData";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
 interface Filters {
   petId: string | null;
@@ -22,7 +24,7 @@ interface Filters {
 
 const findPetsitter = () => {
   const [queryParameters] = useSearchParams();
-
+  const pets: PetDocument[] = useFirebaseData("Pets");
   const [petObject, setPetObject] = useState<PetDocument | undefined>();
   const [filters, setFilters] = useState<Filters>({
     petId: null,
@@ -60,8 +62,6 @@ const findPetsitter = () => {
     });
   }, [queryParameters]);
 
-  const pets: PetDocument[] = useFirebaseData("Pets");
-
   useEffect(() => {
     if (filters.petId && pets.length > 0) {
       const foundPetDocument = pets.find((pet) => pet.id === filters.petId);
@@ -84,11 +84,57 @@ const findPetsitter = () => {
     }
   }, [petObject]);
 
-  const filterPetSitters = () => {
-    return filters;
+  //start filters
+
+  // const isDog = filters.petRace === "dog";
+  const [isDog, setIsDog] = useState(false);
+  const [isCat, setIsCat] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+  const filterUsers = async () => {
+    if (filters.petRace === "dog") {
+      setIsDog(true);
+    } else {
+      setIsDog(false);
+    }
+    if (filters.petRace === "cat") {
+      setIsCat(true);
+    } else {
+      setIsCat(false);
+    }
+
+    if (isCat) {
+      const usersSnapshot: object | null = await getDocs(
+        query(collection(db, "Petsitters"), where("checkboxes.cat", "==", true))
+      );
+      if (usersSnapshot.docs) {
+        setFilteredUsers(
+          usersSnapshot.docs.map(
+            (doc) => doc._document.data.value.mapValue.fields.userId.stringValue
+          )
+        );
+      }
+    } else if (isDog) {
+      const usersSnapshot: object | null = await getDocs(
+        query(collection(db, "Petsitters"), where("checkboxes.dog", "==", true))
+      );
+      if (usersSnapshot.docs) {
+        setFilteredUsers(
+          usersSnapshot.docs.map(
+            (doc) => doc._document.data.value.mapValue.fields.userId.stringValue
+          )
+        );
+      }
+    }
   };
 
-  return filterPetSitters();
+  useEffect(() => {
+    filterUsers();
+  }, [filters, isDog, isCat]);
+
+  console.log(filteredUsers);
+
+  return [filters, filteredUsers];
 };
 
 export default findPetsitter;
