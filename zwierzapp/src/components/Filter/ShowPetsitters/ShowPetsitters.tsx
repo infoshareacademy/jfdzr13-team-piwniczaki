@@ -1,9 +1,9 @@
-import findPetsitter from "../../../hooks/findPetsitter";
+import findPetsitterByRace from "../../../hooks/findPetsitterByRace";
 import styles from "./ShowPetsitters.module.scss";
 
 const ShowPetsitters = () => {
-  // console.log(findPetsitter());
-  findPetsitter();
+  console.log(findPetsitterByRace());
+  findPetsitterByRace();
   return <div className={styles.petsittersContainer}>Petistterzy</div>;
 };
 
