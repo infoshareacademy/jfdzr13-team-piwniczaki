@@ -3,6 +3,7 @@ import styles from "./SearchPetsitters.module.scss";
 import getPetData from "../../../hooks/getPetData";
 import useAuth from "../../../context/AuthContext";
 import { useSearchParams } from "react-router-dom";
+import findPetsitter from "../../../hooks/findPetsitter";
 interface FormField {
   [key: string]: string | number;
 }
@@ -40,13 +41,11 @@ const SearchPetsitters = () => {
     console.log('heja z search query',searchQuery)
   },[petsArr])
 
-//useEffect do poprawnej daty
 useEffect(()=>{
   if(formData.endDate < formData.startDate){
     setFormData({ ...formData, endDate: formData.startDate });
   }else{}
 },[formData.startDate, formData.endDate])
-
 
   useEffect(() => {
     let initialSearchQuery = "";
@@ -62,20 +61,13 @@ useEffect(()=>{
     
     setSearchParams(initialSearchQuery);
   }, []);
-  
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-
-
 const [searchQuery, setSearchQuery] = useState("")
-
-
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formValues = new FormData(e.target as HTMLFormElement);
@@ -94,6 +86,7 @@ const [searchQuery, setSearchQuery] = useState("")
       }
     });
     console.log('heja z submita', formData)
+
     setSearchParams(new URLSearchParams(searchQuery));
   };
 

@@ -13,18 +13,18 @@ export interface PetDocument {
   id?: string;
 }
 
-const getSinglePetData = (petID: string | null): PetDocument | undefined => {
+const getSinglePetData = (petId: string | null): PetDocument | undefined => {
   const pets: PetDocument[] = useFirebaseData("Pets");
   const [petDocument, setPetDocument] = useState<PetDocument | undefined>(
     undefined
   );
 
   useEffect(() => {
-    if (petID && pets.length > 0) {
-      const foundPetDocument = pets.find((pet) => pet.id === petID);
+    if (petId && pets.length > 0) {
+      const foundPetDocument = pets.find((pet) => pet.id === petId);
       setPetDocument(foundPetDocument);
     }
-  }, [petID, pets]);
+  }, [petId, pets]);
 
   return petDocument;
 };
