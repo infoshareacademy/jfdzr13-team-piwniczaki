@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../../../../context/AuthContext";
 import { db } from "../../../../../utils/firebase";
-import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { doc, collection, getDocs, addDoc, deleteDoc } from "firebase/firestore";
 import getPetsitterData from "../../../../../hooks/getPetsitterData";
 import toast from 'react-hot-toast';
 import Loading from "../../../../Loading/Loading";
@@ -17,13 +17,18 @@ function AddCare() {
   const databasePetsitter = getPetsitterData(currentUser?.uid);
 
   useEffect(() => {
-    setLoading(true)
+    const fetchAccessDates = async (docId) => {
+      const accessCollectionRef = collection(db, "Petsitters", docId, "access");
+      const snapshot = await getDocs(accessCollectionRef);
+      const dates = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAccessDates(dates);
+      setLoading(false);
+    };
+
     if (databasePetsitter) {
-      setAccessDates(databasePetsitter.access || []);
       setDocumentId(databasePetsitter.id);
-    }
-    if(databasePetsitter){
-      setLoading(false)
+      fetchAccessDates(databasePetsitter.id);
+      
     }
   }, [databasePetsitter]);
 
@@ -37,21 +42,18 @@ function AddCare() {
 
     if (documentId && startDate && endDate && careCity) {
       if (endDate < startDate) {
-        toast.error("Wybrana data początkowy jest póżniejsza niż wybrana data końcowa");
+        toast.error("Wybrana data początkowy jest późniejsza niż wybrana data końcowa");
         return;
       }
       const newDate = { startDate, endDate, careCity };
       try {
-        const docRef = doc(db, "Petsitters", documentId);
-        await updateDoc(docRef, {
-          access: arrayUnion(newDate),
-        });
+        const accessCollectionRef = collection(db, "Petsitters", documentId, "access");
+        const docRef = await addDoc(accessCollectionRef, newDate);
         toast.success("Dodano poprawnie");
-        setAccessDates(prevDates => [...prevDates, newDate]);
+        setAccessDates(prevDates => [...prevDates, { id: docRef.id, ...newDate }]);
         form.reset();
       } catch (error) {
         toast.error("Błąd wysyłania danych");
-
       }
     } else {
       toast.error("Nie znaleziono użytkownika lub brak daty");
@@ -59,26 +61,24 @@ function AddCare() {
   };
 
   const removeRecord = async (dateToRemove) => {
-    if (documentId) {
+    if (documentId && dateToRemove.id) {
       try {
-        const docRef = doc(db, "Petsitters", documentId);
-        await updateDoc(docRef, {
-          access: arrayRemove(dateToRemove),
-        });
+        const docRef = doc(db, "Petsitters", documentId, "access", dateToRemove.id);
+        await deleteDoc(docRef);
         toast.success("Skasowano poprawnie");
-        setAccessDates(prevDates => prevDates.filter(date => date !== dateToRemove));
+        setAccessDates(prevDates => prevDates.filter(date => date.id !== dateToRemove.id));
       } catch (error) {
         toast.error("Błąd usuwania danych");
       }
     } else {
       toast.error("Nie znaleziono użytkownika");
     }
-    
   };
 
   if (loading) {
-    return <Loading message={`Ładowanie danych`} />
+    return <Loading message="Ładowanie danych" />;
   }
+
   return (
     <div className={styles.addcareContainer}>
       {accessDates.length === 0 ? (
