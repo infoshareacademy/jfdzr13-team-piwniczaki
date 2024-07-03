@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styles from "./SearchPetsitters.module.scss";
-import getPetData from "../../../hooks/getPetData";
-import useAuth from "../../../context/AuthContext";
 import { useSearchParams } from "react-router-dom";
+import useAuth from "../../../context/AuthContext";
+import getPetData from "../../../hooks/getPetData";
+import styles from "./SearchPetsitters.module.scss";
 interface FormField {
   [key: string]: string | number;
 }
@@ -29,46 +29,68 @@ const SearchPetsitters = () => {
   const [formData, setFormData] = useState<FormField>(initialFormData);
   const [searchParams, setSearchParams] = useSearchParams();
 
+
+  const updateFormDataFromSearchParams = (searchParams, initialFormData) => {
+    const queryParameters = new URLSearchParams(searchParams.toString());
+    return {
+      petId: queryParameters.get("petId") || initialFormData.petId,
+      minPrice: queryParameters.get("minPrice") || initialFormData.minPrice,
+      maxPrice: queryParameters.get("maxPrice") || initialFormData.maxPrice,
+      startDate: queryParameters.get("startDate") || initialFormData.startDate,
+      endDate: queryParameters.get("endDate") || initialFormData.endDate,
+      city: queryParameters.get("city") || initialFormData.city,
+      serviceType: queryParameters.get("serviceType") || initialFormData.serviceType,
+    };
+  };
+
   useEffect(() => {
-    let initialSearchQuery = "";
+   setFormData(updateFormDataFromSearchParams(searchParams, initialFormData));
+   console.log('który burek będzie?',formData)
+  }, [searchParams])
 
-    Object.keys(formData).forEach((paramName) => {
-      if (formData[paramName]) {
-        if (initialSearchQuery) {
-          initialSearchQuery += `&${paramName}=${formData[paramName]}`;
-        } else {
-          initialSearchQuery += `${paramName}=${formData[paramName]}`;
+
+  useEffect(() => {
+    if (petsArr.length > 0) {
+      const newSearchParams = new URLSearchParams();
+      Object.keys(formData).forEach((paramName) => {
+        if (formData[paramName]) {
+          newSearchParams.set(paramName, formData[paramName].toString());
         }
-      }
-    });
-
-    setSearchParams(initialSearchQuery);
-  }, []);
+      });
+      setSearchParams(newSearchParams);
+    }
+  }, [formData, petsArr]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if ((name === 'startDate' || name === 'endDate') && name === 'startDate' && formData.endDate < value) {
+      setFormData(prevState => ({
+        ...prevState,
+        startDate: value,
+        endDate: value // Ustaw endDate na startDate, jeśli jest wcześniejsze
+      }));
+    } else {
+      setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formValues = new FormData(e.target as HTMLFormElement);
+    let newSearchParams = new URLSearchParams();
 
-    let searchQuery = "";
-
-    formValues.entries().forEach(([paramName, paramValue]) => {
-      if (paramValue) {
-        if (searchQuery) {
-          searchQuery += `&${paramName}=${paramValue}`;
-        } else {
-          searchQuery += `${paramName}=${paramValue}`;
-        }
+    formValues.forEach((paramValue, paramName) => {
+      if (paramName === "city" && typeof paramValue === "string") {
+        paramValue = paramValue.trim().toLowerCase().replace(/\s+/g, "-");
       }
+      newSearchParams.set(paramName, paramValue.toString());
     });
-
-    setSearchParams(new URLSearchParams(searchQuery));
+    setSearchParams(newSearchParams);
   };
 
   return (
@@ -144,7 +166,7 @@ const SearchPetsitters = () => {
             type="date"
             name="endDate"
             value={formData.endDate}
-            min={currentDate}
+            min={formData.startDate}
             onChange={handleChange}
           />
         </label>
@@ -163,10 +185,11 @@ const SearchPetsitters = () => {
           <label>
             max
             <input
-              type="number"
-              name="maxPrice"
-              value={formData.maxPrice}
-              onChange={handleChange}
+                type="number"
+                name="maxPrice"
+                value={formData.maxPrice}
+                min={formData.minPrice}
+                onChange={handleChange}
             />
           </label>
         </label>
