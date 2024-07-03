@@ -37,6 +37,7 @@ const SearchPetsitters = () => {
       .join(" ");
   }
 
+
   const updateFormDataFromSearchParams = (searchParams, initialFormData) => {
     const queryParameters = new URLSearchParams(searchParams.toString());
     return {
@@ -68,9 +69,6 @@ const SearchPetsitters = () => {
     }
   }, [formData, petsArr]);
 
-
-
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -101,7 +99,6 @@ const SearchPetsitters = () => {
       newSearchParams.set(paramName, paramValue.toString());
     });
     setSearchParams(newSearchParams);
-
   };
 
   return (
