@@ -54,7 +54,10 @@ const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
       //Sortowanie po mieście
       if (filters.city) {
         filteredPetsitters = filteredPetsitters.filter((el) =>
-          el.access.some((accessItem) => accessItem.careCity === filters.city)
+          el.access.some(
+            (accessItem) =>
+              accessItem.careCity.toLowerCase() === filters?.city?.toLowerCase()
+          )
         );
       }
       //Sortowanie jezeli pies
