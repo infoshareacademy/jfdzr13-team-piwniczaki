@@ -4,6 +4,7 @@ import useAuth, { User } from "../context/AuthContext";
 
 export interface PetsitterDocument {
   userId: string;
+  id?: string;
   prices?: {
     dogHomeVisitPrice?: number;
     dogAccomPrice?: number;
