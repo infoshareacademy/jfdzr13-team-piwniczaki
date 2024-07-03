@@ -1,15 +1,19 @@
-import findPetsitter from "../../../hooks/findPetsitter";
+import PetsitterBar from "../PetsitterBar/PetsitterBar";
 import styles from "./ShowPetsitters.module.scss";
-import {PetsitterBar} from '../PetsitterBar/PetsitterBar'
 const ShowPetsitters = () => {
-  // console.log(findPetsitter());
-  findPetsitter();
   return (
   <div className={styles.petsittersContainer}>
-  <PetsitterBar/>
-    
-    
-  </div>;
+    <label>
+      sortuj według
+      <select>
+        <option>kwota rosnąco</option>
+        <option>kwota malejąco</option>
+        <option>alfabetycznie (A-Z)</option>
+        <option>alfabetycznie (Z-A)</option>
+      </select>
+    </label>
+    <PetsitterBar/>
+  </div>
 )};
 
 export default ShowPetsitters;
