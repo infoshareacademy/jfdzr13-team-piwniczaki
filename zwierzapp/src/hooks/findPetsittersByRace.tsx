@@ -5,21 +5,21 @@ import useFirebaseData from "./useFirebaseData";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
-interface Filters {
-  petId: string | null;
-  petAge: string | null;
-  petBehavior: string | null;
-  petDescription: string | null;
-  petName: string | null;
-  petRace: string | null;
-  petSex: string | null;
-  petWeight: string | null;
-  minPrice: string | null;
-  maxPrice: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  city: string | null;
-  serviceType: string | null;
+export interface Filters {
+  petId?: string | null;
+  petAge?: string | null;
+  petBehavior?: string | null;
+  petDescription?: string | null;
+  petName?: string | null;
+  petRace?: string | null;
+  petSex?: string | null;
+  petWeight?: string | null;
+  minPrice?: string | null;
+  maxPrice?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  city?: string | null;
+  serviceType?: string | null;
 }
 
 const findPetsittersByRace = () => {
