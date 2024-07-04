@@ -12,9 +12,15 @@ function AddPetsitter() {
   const authContext = useAuth();
   const [isFirstTime, setIsFirstTime] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
-
+  
+  
   const initialCheckboxes = {
-    cat: false,
+    cat: false,    
+    catSex0: false,
+    catSex1: false,
+    catAge0:false,
+    catAge1:false,
+    catAge2:false,
     catActivity0: false,
     catActivity1: false,
     catActivity2: false,
@@ -27,6 +33,11 @@ function AddPetsitter() {
     catAccom: false,
     catHomeVisit: false,
     dog: false,
+    dogSex0:false,
+    dogSex1:false,
+    dogAge0:false,
+    dogAge1:false,
+    dogAge2:false,
     dogActivity0: false,
     dogActivity1: false,
     dogActivity2: false,
@@ -101,6 +112,31 @@ function AddPetsitter() {
     }));
   };
 
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    if (parseInt(value) === 0) {
+      setPrices((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    if (value === '') {
+      setPrices((prev) => ({
+        ...prev,
+        [name]: 0, 
+      }));
+    }
+  };
+  const handleReset = () => {
+    setCheckboxes(initialCheckboxes)
+  }
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -169,7 +205,44 @@ function AddPetsitter() {
       toast.error("Zaznacz przynajmniej jedną usługę", { id: "offer" });
       return;
     }
-
+    if (
+      (checkboxes.dog &&
+        !(
+          checkboxes.dogAge0 ||
+          checkboxes.dogAge1 ||
+          checkboxes.dogAge2
+        )) ||
+      (checkboxes.cat &&
+        !(
+          checkboxes.catAge0 ||
+          checkboxes.catAge1 ||
+          checkboxes.catAge2
+        ))
+    ) {
+      toast.dismiss(loadingToastId);
+      toast.error("Zaznacz przynajmniej jedną grupę wiekową ", {
+        id: "age",
+      });
+      return;
+    }
+    if (
+      (checkboxes.dog &&
+        !(
+          checkboxes.dogSex0 ||
+          checkboxes.dogSex1
+        )) ||
+      (checkboxes.cat &&
+        !(
+          checkboxes.catSex0 ||
+          checkboxes.catSex1
+        ))
+    ) {
+      toast.dismiss(loadingToastId);
+      toast.error("Zaznacz przynajmniej jedną płeć", {
+        id: "sex",
+      });
+      return;
+    }
     try {
       if (dataContext && authContext && authContext.currentUser) {
         const { currentUser } = authContext;
@@ -199,10 +272,17 @@ function AddPetsitter() {
       toast.error("Błąd podczas zapisywania danych");
     }
   };
-
+  const goBack = () => {
+    navigate('/profile')
+  }
   return (
     <div className={styles.AddPetsitterPage}>
       <article className={styles.addPetsitterContainer}>
+        {!isFirstTime && !isEditMode && (
+          <button type="button" onClick={goBack}>
+            <img src="/src/images/arrow_back.svg"></img>wróć
+          </button>
+            )}
         <h1>Zostań petsitterem!</h1>
         <h2>Jakimi zwierzętami chcesz się opiekować?</h2>
         <form onSubmit={handleSubmit}>
@@ -217,48 +297,102 @@ function AddPetsitter() {
                     checked={checkboxes.dog}
                     disabled={!isEditMode}
                   />
-                  PIES
+                  Pies
                 </label>
               </div>
               {checkboxes.dog && (
                 <>
+                  <div className="dogSex">
+                  <h3>Płeć</h3>
+                    <label>
+                        <input
+                          name="dogSex0"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.dogSex0}
+                          disabled={!isEditMode}
+                        />
+                          Pies
+                      </label>
+                    <label>
+                        <input
+                          name="dogSex1"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.dogSex1}
+                          disabled={!isEditMode}
+                        />
+                          Suczka 
+                      </label>
+                  </div>
+                  <div className="dogAge">
+                  <h3>Wiek</h3>
+                    <label>
+                        <input
+                          name="dogAge0"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.dogAge0}
+                          disabled={!isEditMode}
+                        />
+                          Młody
+                    </label>
+                    <label>
+                        <input
+                          name="dogAge1"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.dogAge1}
+                          disabled={!isEditMode}
+                        />
+                          Dorosły
+                    </label>
+                    <label>
+                        <input
+                          name="dogAge2"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.dogAge2}
+                          disabled={!isEditMode}
+                        />
+                          Stary
+                    </label>
+                  </div>
                   <div className="dogActivity">
                     <h3>Aktywność Fizyczna</h3>
-                    <div className={styles.dog}>
-                      <label>
-                        <input
-                          name="dogActivity0"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogActivity0}
-                          disabled={!isEditMode}
-                        />
-                        LENIUCH
-                      </label>
-                      <label>
-                        <input
-                          name="dogActivity1"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogActivity1}
-                          disabled={!isEditMode}
-                        />
-                        ŚREDNIAK
-                      </label>
-                      <label>
-                        <input
-                          name="dogActivity2"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogActivity2}
-                          disabled={!isEditMode}
-                        />
-                        WARIAT
-                      </label>
-                    </div>
+                    <label>
+                      <input
+                        name="dogActivity0"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogActivity0}
+                        disabled={!isEditMode}
+                      />
+                      Leniuch
+                    </label>
+                    <label>
+                      <input
+                        name="dogActivity1"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogActivity1}
+                        disabled={!isEditMode}
+                      />
+                      Średniak
+                    </label>
+                    <label>
+                      <input
+                        name="dogActivity2"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogActivity2}
+                        disabled={!isEditMode}
+                      />
+                      Wariat
+                    </label>
                   </div>
                   <div className="dogWeight">
-                    <h3>WAGA</h3>
+                    <h3>Waga</h3>
                     <div>
                       <label>
                         <input
@@ -313,7 +447,7 @@ function AddPetsitter() {
                     </div>
                   </div>
                   <div className="dogOffer">
-                    <h3>OFERTA </h3>
+                    <h3>Oferta</h3>
                     <label>
                       <input
                         type="checkbox"
@@ -322,7 +456,7 @@ function AddPetsitter() {
                         checked={checkboxes.dogWalk}
                         disabled={!isEditMode}
                       />
-                      SPACER
+                      Spacer
                     </label>
                     {checkboxes.dogWalk && (
                       <label>
@@ -331,7 +465,10 @@ function AddPetsitter() {
                           name="dogWalkPrice"
                           value={prices.dogWalkPrice}
                           min={0}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
                           onChange={handlePriceInput}
+                          disabled={!isEditMode}
                         />
                         <span>PLN</span>
                       </label>
@@ -345,7 +482,7 @@ function AddPetsitter() {
                         checked={checkboxes.dogAccom}
                         disabled={!isEditMode}
                       />
-                      NOCLEG
+                      Nocleg
                     </label>
                     {checkboxes.dogAccom && (
                       <label>
@@ -354,7 +491,10 @@ function AddPetsitter() {
                           name="dogAccomPrice"
                           value={prices.dogAccomPrice}
                           min={0}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
                           onChange={handlePriceInput}
+                          disabled={!isEditMode}
                         />
                         <span>PLN</span>
                       </label>
@@ -368,7 +508,7 @@ function AddPetsitter() {
                         checked={checkboxes.dogHomeVisit}
                         disabled={!isEditMode}
                       />
-                      WIZYTA DOMOWA
+                      Wizyta Domowa
                     </label>
                     {checkboxes.dogHomeVisit && (
                       <label>
@@ -377,7 +517,10 @@ function AddPetsitter() {
                           name="dogHomeVisitPrice"
                           value={prices.dogHomeVisitPrice}
                           min={0}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
                           onChange={handlePriceInput}
+                          disabled={!isEditMode}
                         />
                         <span>PLN</span>
                       </label>
@@ -396,13 +539,69 @@ function AddPetsitter() {
                     checked={checkboxes.cat}
                     disabled={!isEditMode}
                   />
-                  KOT
+                  Kot
                 </label>
               </div>
               {checkboxes.cat && (
                 <>
+                <div className="catSex">
+                  <h3>Płeć</h3>
+                    <label>
+                        <input
+                          name="catSex0"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.catSex0}
+                          disabled={!isEditMode}
+                        />
+                          Kot
+                      </label>
+                    <label>
+                        <input
+                          name="catSex1"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.catSex1}
+                          disabled={!isEditMode}
+                        />
+                          Kotka
+                      </label>
+                  </div>
+                  <div className="catAge">
+                  <h3>Wiek</h3>
+                    <label>
+                        <input
+                          name="catAge0"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.catAge0}
+                          disabled={!isEditMode}
+                        />
+                          Młody
+                    </label>
+                    <label>
+                        <input
+                          name="catAge1"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.catAge1}
+                          disabled={!isEditMode}
+                        />
+                          Dorosły
+                    </label>
+                    <label>
+                        <input
+                          name="catAge2"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.catAge2}
+                          disabled={!isEditMode}
+                        />
+                          Stary
+                    </label>
+                  </div>
                   <div className="catActivity">
-                    <h3>AKTYWNOŚĆ FIZYCZNA</h3>
+                    <h3>Akytwność Fizyczna</h3>
                     <label>
                       <input
                         name="catActivity0"
@@ -411,7 +610,7 @@ function AddPetsitter() {
                         checked={checkboxes.catActivity0}
                         disabled={!isEditMode}
                       />
-                      LENIUCH
+                      Leniuch
                     </label>
                     <label>
                       <input
@@ -421,7 +620,7 @@ function AddPetsitter() {
                         checked={checkboxes.catActivity1}
                         disabled={!isEditMode}
                       />
-                      ŚREDNIAK
+                      Średniak
                     </label>
                     <label>
                       <input
@@ -431,11 +630,11 @@ function AddPetsitter() {
                         checked={checkboxes.catActivity2}
                         disabled={!isEditMode}
                       />
-                      WARIAT
+                      Wariat
                     </label>
                   </div>
                   <div className="catWeight">
-                    <h3>WAGA</h3>
+                    <h3>Waga</h3>
                     <label>
                       <input
                         name="catWeight0"
@@ -488,7 +687,7 @@ function AddPetsitter() {
                     </label>
                   </div>
                   <div className="catOffer">
-                    <h3>OFERTA </h3>
+                    <h3>Oferta</h3>
                     <label>
                       <input
                         type="checkbox"
@@ -497,7 +696,7 @@ function AddPetsitter() {
                         checked={checkboxes.catWalk}
                         disabled={!isEditMode}
                       />
-                      SPACER
+                      Spacer
                     </label>
                     {checkboxes.catWalk && (
                       <label>
@@ -506,7 +705,10 @@ function AddPetsitter() {
                           name="catWalkPrice"
                           value={prices.catWalkPrice}
                           min={0}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
                           onChange={handlePriceInput}
+                          disabled={!isEditMode}
                         />
                         <span>PLN</span>
                       </label>
@@ -519,7 +721,7 @@ function AddPetsitter() {
                         checked={checkboxes.catAccom}
                         disabled={!isEditMode}
                       />
-                      NOCLEG
+                      Nocleg
                     </label>
                     {checkboxes.catAccom && (
                       <label>
@@ -528,7 +730,10 @@ function AddPetsitter() {
                           name="catAccomPrice"
                           value={prices.catAccomPrice}
                           min={0}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
                           onChange={handlePriceInput}
+                          disabled={!isEditMode}
                         />
                         <span>PLN</span>
                       </label>
@@ -541,7 +746,7 @@ function AddPetsitter() {
                         checked={checkboxes.catHomeVisit}
                         disabled={!isEditMode}
                       />
-                      WIZYTA DOMOWA
+                      Wizyta Domowa
                     </label>
                     {checkboxes.catHomeVisit && (
                       <label>
@@ -550,7 +755,10 @@ function AddPetsitter() {
                           name="catHomeVisitPrice"
                           value={prices.catHomeVisitPrice}
                           min={0}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
                           onChange={handlePriceInput}
+                          disabled={!isEditMode}
                         />
                         <span>PLN</span>
                       </label>
@@ -566,7 +774,11 @@ function AddPetsitter() {
                 Edytuj
               </button>
             )}
-
+              {!isFirstTime && isEditMode && (
+              <button type="button" onClick={handleReset}>
+                Wyczyść
+              </button>
+            )}
             <button type="submit">Zapisz</button>
           </div>
         </form>
