@@ -22,8 +22,6 @@ const ProfileLeftSidebar = () => {
     setIsEditing(false);
   };
 
-  console.log({ currentUser });
-
   return (
     <>
       <div className={styles.container}>

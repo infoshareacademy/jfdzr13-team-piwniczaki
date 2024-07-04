@@ -6,7 +6,6 @@ import { collection, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestor
 import { db } from "../../../utils/firebase";
 import { useNavigate, useParams } from 'react-router-dom';
 import getPetData from "../../../hooks/getPetData";
-import Loading from "../../Loading/Loading";
 
 function InputDatapet() {
     const navigate = useNavigate();
@@ -14,7 +13,7 @@ function InputDatapet() {
     const [isPies, czyWybranoPsa] = useState('');
     const [sexOptions, setSex] = useState({
         male: 'Pies/Kocur',
-        female: 'Suka/Kocica'
+        female: 'Suka/Kotka'
     });
     const [weightOptions, setWeight] = useState({
         weight0: "<5kg",
@@ -65,7 +64,7 @@ function InputDatapet() {
             } else if (pet.race === 'cat') {
                 setSex({
                     male: 'Kot',
-                    female: 'Kocica'
+                    female: 'Kotka'
                 });
                 setWeight({
                     weight0: "<2kg",
@@ -102,7 +101,7 @@ function InputDatapet() {
             } else if (value === 'cat') {
                 setSex({
                     male: 'Kot',
-                    female: 'Kocica'
+                    female: 'Kotka'
                 });
                 setWeight({
                     weight0: "<2kg",
@@ -196,7 +195,7 @@ function InputDatapet() {
             />
             <div className={styles.inputContainer}>
                 <div className={styles.inputWrapper}>
-                    <p className={styles.nameOfInput}>isPies</p>
+                    <p className={styles.nameOfInput}>Rasa</p>
                     <div className={styles.inputSelectWrapper}>
                         <label htmlFor="dog" className={styles.singleRadio}>
                             <input 

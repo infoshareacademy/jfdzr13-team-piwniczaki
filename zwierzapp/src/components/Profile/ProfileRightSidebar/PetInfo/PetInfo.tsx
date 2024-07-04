@@ -23,7 +23,6 @@ useEffect(()=>{
         const petData = await getUsersDocs('Pets', uid);
         if (petData) {
           setPets(petData);
-          console.log(petData);
         } else {
           console.error('Nie znaleziono żadnych zwierzaków');
         }
