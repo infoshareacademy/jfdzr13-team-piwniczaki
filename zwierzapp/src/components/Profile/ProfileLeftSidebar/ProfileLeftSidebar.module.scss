@@ -1,19 +1,28 @@
 @import "../../../styles/vars.scss";
 
+.container{
+  font-family: $font-poppins;
+  background-color: rgba(244, 244, 244, 1);
+  border-radius: 15px;
+  display: grid;
+}
+
 .formContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   font-family: $font-poppins;
   font-size: 18px;
   background-color: rgba(244, 244, 244, 1);
-  padding: 50px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  height: fit-content;
 }
-.formContainer input {
+.formContainer input,.formContainer p {
   background: white;
-  width: 100%;
+  width: 80%;
   border: none;
   border-radius: 26px;
   padding: 10px 20px;
@@ -25,6 +34,10 @@ input::placeholder {
   outline: none;
   border: none;
 }
+.avatarContainer{
+  width: 50%;
+  height: 50%;
+}
 
 .saveChangesButton,
 .editButton {
@@ -32,7 +45,7 @@ input::placeholder {
   color: $orange;
   border: 3px solid $orange;
   border-radius: 69px;
-  width: 100%;
+  width: 80%;
   padding: 10px;
   font-weight: 700;
   font-size: 20px;
@@ -44,7 +57,7 @@ input::placeholder {
 }
 
 .shortDescription {
-  width: 100%;
+  width: 80%;
   height: 100%;
   border: none;
   border-radius: 35px;

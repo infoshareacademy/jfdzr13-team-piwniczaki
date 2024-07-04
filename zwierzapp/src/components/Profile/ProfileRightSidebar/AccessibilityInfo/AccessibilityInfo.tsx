@@ -49,33 +49,35 @@ const AccessibilityInfo = () => {
   }
 
   return (
-    <div className={styles.accessContainer}>
+    <>
       {isPetSitter ? (
-        <div className={styles.listOfAccess}>
-          {isThereADate ? (
-            <>
-              <span className={styles.titleAccess}>Dostępność</span>
-              {accessDates.map((date, index) => (
-                <div key={index}>
-                  <p className={styles.dateElement}>
-                    Od {date.startDate} Do {date.endDate}
-                  </p>
-                </div>
-              ))}
-            </>
-          ) : (
-            <>Coś tu pusto</>
-          )}
-          <Link to="/addcare" className={styles.becomePetSitterLink}>
-            Zarządzaj dostępnością
-          </Link>
+        <div className={styles.accessContainer}>
+          <div className={styles.listOfAccess}>
+            {isThereADate ? (
+              <>
+                <span className={styles.titleAccess}>Dostępność</span>
+                {accessDates.map((date, index) => (
+                  <div key={index}>
+                    <p className={styles.dateElement}>
+                      Od {date.startDate} Do {date.endDate}
+                    </p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>Coś tu pusto</>
+            )}
+            <Link to="/addcare" className={styles.becomePetSitterLink}>
+              Zarządzaj dostępnością
+            </Link>
+          </div>
         </div>
       ) : (
         <Link to="/addpetsitter" className={styles.becomePetSitterLink}>
           Zostań petsitterem
         </Link>
       )}
-    </div>
+      </>
   );
 };
 

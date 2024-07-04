@@ -6,6 +6,7 @@ import { collection, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestor
 import { db } from "../../../utils/firebase";
 import { useNavigate, useParams } from 'react-router-dom';
 import getPetData from "../../../hooks/getPetData";
+import deleteBttn from  "../../../images/delete.svg"
 
 function InputDatapet() {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ function InputDatapet() {
         weight: '',
         description: ''
     });
-    const [isNewPet, setIsNewPet] = useState(true);  
+    const [isNewPet, setIsNewPet] = useState(true);
     const queryParams = useParams();
     const petData = getPetData(currentUser.uid);
 
@@ -48,7 +49,7 @@ function InputDatapet() {
                 description: pet.description
             });
             czyWybranoPsa(pet.race);
-            setIsNewPet(false);  
+            setIsNewPet(false);
             if (pet.race === 'dog') {
                 setSex({
                     male: 'Pies',
@@ -173,7 +174,7 @@ function InputDatapet() {
     };
 
     const handleDelete = async () => {
-        if (isNewPet) return; 
+        if (isNewPet) return;
         try {
             const petDoc = doc(db, "Pets", queryParams.petId);
             await deleteDoc(petDoc);
@@ -186,35 +187,40 @@ function InputDatapet() {
 
     return (
         <form className={styles.formWrapper} onSubmit={handleSubmit}>
-            <input 
-                className={styles.inputName} 
-                name="name" 
-                placeholder="WPISZ IMIĘ ZWIERZAKA" 
-                value={formData.name} 
-                onChange={handleChange} 
+            <div className={styles.tittleAndDelete}>
+            <input
+                className={styles.inputName}
+                name="name"
+                placeholder="WPISZ IMIĘ ZWIERZAKA"
+                value={formData.name}
+                onChange={handleChange}
             />
+            {!isNewPet && (
+                <img src={deleteBttn} onClick={handleDelete}/>
+            )}
+            </div>
             <div className={styles.inputContainer}>
                 <div className={styles.inputWrapper}>
                     <p className={styles.nameOfInput}>Rasa</p>
                     <div className={styles.inputSelectWrapper}>
                         <label htmlFor="dog" className={styles.singleRadio}>
-                            <input 
-                                id="dog" 
-                                type="radio" 
-                                name="race" 
-                                value="dog" 
-                                checked={isPies === 'dog'} 
-                                onChange={handleChange} 
+                            <input
+                                id="dog"
+                                type="radio"
+                                name="race"
+                                value="dog"
+                                checked={isPies === 'dog'}
+                                onChange={handleChange}
                             />Pies
                         </label>
                         <label htmlFor="cat" className={styles.singleRadio}>
-                            <input 
-                                id="cat" 
-                                type="radio" 
-                                name="race" 
-                                value="cat" 
-                                checked={isPies === 'cat'} 
-                                onChange={handleChange} 
+                            <input
+                                id="cat"
+                                type="radio"
+                                name="race"
+                                value="cat"
+                                checked={isPies === 'cat'}
+                                onChange={handleChange}
                             />Kot
                         </label>
                     </div>
@@ -223,23 +229,23 @@ function InputDatapet() {
                     <p className={styles.nameOfInput}>Płeć</p>
                     <div className={styles.inputSelectWrapper}>
                         <label htmlFor="male" className={styles.singleRadio}>
-                            <input 
-                                id="male" 
-                                type="radio" 
-                                name="sex" 
-                                value="male" 
-                                checked={formData.sex === 'male'} 
-                                onChange={handleChange} 
+                            <input
+                                id="male"
+                                type="radio"
+                                name="sex"
+                                value="male"
+                                checked={formData.sex === 'male'}
+                                onChange={handleChange}
                             />{sexOptions.male}
                         </label>
                         <label htmlFor="female" className={styles.singleRadio}>
-                            <input 
-                                id="female" 
-                                type="radio" 
-                                name="sex" 
-                                value="female" 
-                                checked={formData.sex === 'female'} 
-                                onChange={handleChange} 
+                            <input
+                                id="female"
+                                type="radio"
+                                name="sex"
+                                value="female"
+                                checked={formData.sex === 'female'}
+                                onChange={handleChange}
                             />{sexOptions.female}
                         </label>
                     </div>
@@ -248,33 +254,33 @@ function InputDatapet() {
                     <p className={styles.nameOfInput}>Wiek</p>
                     <div className={styles.inputSelectWrapper}>
                         <label htmlFor="young" className={styles.singleRadio}>
-                            <input 
-                                id="young" 
-                                type="radio" 
-                                name="age" 
-                                value="young" 
-                                checked={formData.age === 'young'} 
-                                onChange={handleChange} 
+                            <input
+                                id="young"
+                                type="radio"
+                                name="age"
+                                value="young"
+                                checked={formData.age === 'young'}
+                                onChange={handleChange}
                             />Młody
                         </label>
                         <label htmlFor="adult" className={styles.singleRadio}>
-                            <input 
-                                id="adult" 
-                                type="radio" 
-                                name="age" 
-                                value="adult" 
-                                checked={formData.age === 'adult'} 
-                                onChange={handleChange} 
+                            <input
+                                id="adult"
+                                type="radio"
+                                name="age"
+                                value="adult"
+                                checked={formData.age === 'adult'}
+                                onChange={handleChange}
                             />Dorosły
                         </label>
                         <label htmlFor="old" className={styles.singleRadio}>
-                            <input 
-                                id="old" 
-                                type="radio" 
-                                name="age" 
-                                value="old" 
-                                checked={formData.age === 'old'} 
-                                onChange={handleChange} 
+                            <input
+                                id="old"
+                                type="radio"
+                                name="age"
+                                value="old"
+                                checked={formData.age === 'old'}
+                                onChange={handleChange}
                             />Stary
                         </label>
                     </div>
@@ -283,33 +289,33 @@ function InputDatapet() {
                     <p className={styles.nameOfInput}>Aktywność</p>
                     <div className={styles.inputSelectWrapper}>
                         <label htmlFor="lazyBehavior" className={styles.singleRadio}>
-                            <input 
-                                id="lazyBehavior" 
-                                type="radio" 
-                                name="behavior" 
-                                value="lazyBehavior" 
-                                checked={formData.behavior === 'lazyBehavior'} 
-                                onChange={handleChange} 
+                            <input
+                                id="lazyBehavior"
+                                type="radio"
+                                name="behavior"
+                                value="lazyBehavior"
+                                checked={formData.behavior === 'lazyBehavior'}
+                                onChange={handleChange}
                             />Leniuch
                         </label>
                         <label htmlFor="averageBehavior" className={styles.singleRadio}>
-                            <input 
-                                id="averageBehavior" 
-                                type="radio" 
-                                name="behavior" 
-                                value="averageBehavior" 
-                                checked={formData.behavior === 'averageBehavior'} 
-                                onChange={handleChange} 
+                            <input
+                                id="averageBehavior"
+                                type="radio"
+                                name="behavior"
+                                value="averageBehavior"
+                                checked={formData.behavior === 'averageBehavior'}
+                                onChange={handleChange}
                             />Średniak
                         </label>
                         <label htmlFor="crazyBehavior" className={styles.singleRadio}>
-                            <input 
-                                id="crazyBehavior" 
-                                type="radio" 
-                                name="behavior" 
-                                value="crazyBehavior" 
-                                checked={formData.behavior === 'crazyBehavior'} 
-                                onChange={handleChange} 
+                            <input
+                                id="crazyBehavior"
+                                type="radio"
+                                name="behavior"
+                                value="crazyBehavior"
+                                checked={formData.behavior === 'crazyBehavior'}
+                                onChange={handleChange}
                             />Wariat
                         </label>
                     </div>
@@ -318,74 +324,71 @@ function InputDatapet() {
                     <p className={styles.nameOfInput}>Waga</p>
                     <div className={styles.inputSelectWrapper}>
                         <label htmlFor="weight0" className={styles.singleRadio}>
-                            <input 
-                                id="weight0" 
-                                type="radio" 
-                                name="weight" 
-                                value="weight0" 
-                                checked={formData.weight === 'weight0'} 
-                                onChange={handleChange} 
+                            <input
+                                id="weight0"
+                                type="radio"
+                                name="weight"
+                                value="weight0"
+                                checked={formData.weight === 'weight0'}
+                                onChange={handleChange}
                             />{weightOptions.weight0}
                         </label>
                         <label htmlFor="weight1" className={styles.singleRadio}>
-                            <input 
-                                id="weight1" 
-                                type="radio" 
-                                name="weight" 
-                                value="weight1" 
-                                checked={formData.weight === 'weight1'} 
-                                onChange={handleChange} 
+                            <input
+                                id="weight1"
+                                type="radio"
+                                name="weight"
+                                value="weight1"
+                                checked={formData.weight === 'weight1'}
+                                onChange={handleChange}
                             />{weightOptions.weight1}
                         </label>
                         <label htmlFor="weight2" className={styles.singleRadio}>
-                            <input 
-                                id="weight2" 
-                                type="radio" 
-                                name="weight" 
-                                value="weight2" 
-                                checked={formData.weight === 'weight2'} 
-                                onChange={handleChange} 
+                            <input
+                                id="weight2"
+                                type="radio"
+                                name="weight"
+                                value="weight2"
+                                checked={formData.weight === 'weight2'}
+                                onChange={handleChange}
                             />{weightOptions.weight2}
                         </label>
                         <label htmlFor="weight3" className={styles.singleRadio}>
-                            <input 
-                                id="weight3" 
-                                type="radio" 
-                                name="weight" 
-                                value="weight3" 
-                                checked={formData.weight === 'weight3'} 
-                                onChange={handleChange} 
+                            <input
+                                id="weight3"
+                                type="radio"
+                                name="weight"
+                                value="weight3"
+                                checked={formData.weight === 'weight3'}
+                                onChange={handleChange}
                             />{weightOptions.weight3}
                         </label>
                         <label htmlFor="weight4" className={styles.singleRadio}>
-                            <input 
-                                id="weight4" 
-                                type="radio" 
-                                name="weight" 
-                                value="weight4" 
-                                checked={formData.weight === 'weight4'} 
-                                onChange={handleChange} 
+                            <input
+                                id="weight4"
+                                type="radio"
+                                name="weight"
+                                value="weight4"
+                                checked={formData.weight === 'weight4'}
+                                onChange={handleChange}
                             />{weightOptions.weight4}
                         </label>
                     </div>
                 </div>
                 <div className={`${styles.inputWrapper} ${styles.fullWidth}`}>
                     <p className={styles.nameOfInput}>Uwagi</p>
-                    <textarea 
-                        id="description" 
-                        className={styles.descriptionStyle} 
-                        name="description" 
-                        maxLength='100' 
-                        placeholder="Tutaj wpisz dodatkowe uwagi. Przykładowo alergie/choroby/upodobania. Limit znaków 100" 
-                        value={formData.description} 
-                        onChange={handleChange} 
+                    <textarea
+                        id="description"
+                        className={styles.descriptionStyle}
+                        name="description"
+                        maxLength='100'
+                        placeholder="Tutaj wpisz dodatkowe uwagi. Przykładowo alergie/choroby/upodobania. Limit znaków 100"
+                        value={formData.description}
+                        onChange={handleChange}
                     />
                 </div>
             </div>
             <button className={styles.buttonToSave} type="submit"> Zapisz </button>
-            {!isNewPet && (
-                <button className={styles.buttonToSave} type="button" onClick={handleDelete}> Usuń zwierzaka </button>
-            )}
         </form>
     );
 }

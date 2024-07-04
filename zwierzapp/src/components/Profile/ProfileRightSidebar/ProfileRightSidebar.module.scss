@@ -1,7 +1,7 @@
 .container {
-    background-color: yellow;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    justify-content: start;
     width: 100%;
     gap: 30px;
+    height: fit-content;
 }

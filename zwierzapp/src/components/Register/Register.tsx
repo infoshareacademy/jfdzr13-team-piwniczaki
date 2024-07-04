@@ -52,7 +52,7 @@ function Register() {
   return (
     <div className={styles.registerPage}>
       <article className={styles.registerContainer}>
-        <h2> UTWÓRZ KONTO</h2>
+        <h1> UTWÓRZ KONTO</h1>
 
         <form onSubmit={handleSubmit}>
           <label htmlFor="email">

@@ -47,7 +47,7 @@ const Login = () => {
         </div>
         <button className={styles.googleLogin} onClick={authenticateWithGoogle}>
           <img className={styles.googleLogo} src={googleLogo} />
-          KONTYNUUJ Z UŻYCIEM KONTA GOOGLE
+          <p>KONTYNUUJ Z UŻYCIEM KONTA GOOGLE</p>
         </button>
         <Link to="/register" className={styles.registerLink}>
           NIE MASZ KONTA? ZAREJESTRUJ SIĘ!

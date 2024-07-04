@@ -27,20 +27,9 @@ const ProfileLeftSidebar = () => {
       <div className={styles.container}>
         {isEditing ? (
           <form className={styles.formContainer} onSubmit={handleUpdateData}>
-            <AddAvatar />
-            <textarea
-              className={styles.shortDescription}
-              id="shortDescription"
-              name="shortDescription"
-              value={inputs.shortDescription}
-              placeholder="Dodaj krótki opis"
-              onChange={(e) =>
-                setInputs((prev) => ({
-                  ...prev,
-                  shortDescription: e.target.value,
-                }))
-              }
-            ></textarea>
+            <div className={styles.avatarContainer}>
+              <AddAvatar />
+            </div>
             <input
               type="text"
               name="name"
@@ -84,27 +73,42 @@ const ProfileLeftSidebar = () => {
                 setInputs((prev) => ({ ...prev, city: e.target.value }))
               }
             />
+            <textarea
+              className={styles.shortDescription}
+              id="shortDescription"
+              name="shortDescription"
+              value={inputs.shortDescription}
+              placeholder="Dodaj krótki opis"
+              onChange={(e) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  shortDescription: e.target.value,
+                }))
+              }
+            ></textarea>
             <button className={styles.saveChangesButton} type="submit">
               Zapisz zmiany
             </button>
           </form>
         ) : (
-          <>
-            <AddAvatar isEditing={true} />
+          <div className={styles.formContainer}>
+            <div className={styles.avatarContainer}>
+              <AddAvatar isEditing={true} />
+            </div>
             <p>
-              <strong>IMIĘ:</strong> {inputs.name}
+              {inputs.name}
             </p>
             <p>
-              <strong>NAZWISKO:</strong> {inputs.surname}
+              {inputs.surname}
             </p>
             <p>
-              <strong>NUMER TELEFONU:</strong> {inputs.phone}
+              {inputs.phone}
             </p>
             <p>
-              <strong>MIASTO:</strong> {inputs.city}
+              {inputs.city}
             </p>
             <p>
-              <strong>OPIS:</strong> {inputs.shortDescription}
+              {inputs.shortDescription}
             </p>
             <button
               className={styles.editButton}
@@ -113,7 +117,7 @@ const ProfileLeftSidebar = () => {
             >
               Edytuj dane
             </button>
-          </>
+          </div>
         )}
       </div>
     </>

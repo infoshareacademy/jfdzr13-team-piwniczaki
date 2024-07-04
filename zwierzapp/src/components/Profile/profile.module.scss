@@ -1,9 +1,10 @@
 @import "../../styles/vars.scss";
 
 .profileContainer {
+    font-family: $font-poppins;
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2.4fr 1fr;
     width: 100%;
-    overflow-x: hidden;
-    padding: 20px;
+    padding: 10px 50px;
+    grid-gap: 30px;
 }

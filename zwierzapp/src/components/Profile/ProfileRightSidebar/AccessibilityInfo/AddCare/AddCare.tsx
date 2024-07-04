@@ -28,7 +28,7 @@ function AddCare() {
     if (databasePetsitter) {
       setDocumentId(databasePetsitter.id);
       fetchAccessDates(databasePetsitter.id);
-      
+
     }
   }, [databasePetsitter]);
 
@@ -82,7 +82,14 @@ function AddCare() {
   return (
     <div className={styles.addcareContainer}>
       {accessDates.length === 0 ? (
-        <p className={styles.emptyState}>Brak dostępnych dat</p>
+        <>
+          <p className={styles.emptyState}>Brak dostępnych dat</p>
+          <div className={styles.dateTittle}>
+            <span className={styles.tittleAcc}>Początek</span>
+            <span className={styles.tittleAcc}>Koniec</span>
+            <span className={styles.tittleAcc}>Lokalizacja</span>
+          </div>
+        </>
       ) : (
         <>
           <div className={styles.dateTittle}>
@@ -108,7 +115,7 @@ function AddCare() {
           <button type="submit">Dodaj</button>
         </form>
       </div>
-      <Link to="/profile" className={styles.becomePetSitterLink}>Wróć</Link>
+      <Link to="/profile" className={styles.returnButton}>Wróć</Link>
     </div>
   );
 }

@@ -99,3 +99,13 @@
 
     }
 }
+.tittleAndDelete{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tittleAndDelete img{
+    height: 32px;
+    width: 28px;
+    cursor: pointer;
+}

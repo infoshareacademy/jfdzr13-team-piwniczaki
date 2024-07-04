@@ -37,10 +37,12 @@ function ProfileMain(passedData: { uid?: string }) {
       {petsitterDocument &&
         petsitterDocument.checkboxes &&
         (petsitterDocument.checkboxes.cat ||
-        petsitterDocument.checkboxes.dog ? (
-          <Link to="/addpetsitter">
-            <button>Edytuj dane</button>
-          </Link>
+          petsitterDocument.checkboxes.dog ? (
+          <div className={styles.buttonConainter}>
+            <Link to="/addpetsitter" className={styles.editButton}>
+              Edytuj dane
+            </Link>
+          </div>
         ) : null)}
     </main>
   );
