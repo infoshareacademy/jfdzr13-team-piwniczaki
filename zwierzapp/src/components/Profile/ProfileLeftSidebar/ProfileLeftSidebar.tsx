@@ -29,6 +29,7 @@ const ProfileLeftSidebar = () => {
           <form className={styles.formContainer} onSubmit={handleUpdateData}>
             <AddAvatar />
             <textarea
+              required
               className={styles.shortDescription}
               id="shortDescription"
               name="shortDescription"
@@ -45,7 +46,6 @@ const ProfileLeftSidebar = () => {
               type="text"
               name="name"
               placeholder="IMIĘ"
-              required
               value={inputs.name}
               onChange={(e) =>
                 setInputs((prev) => ({ ...prev, name: e.target.value }))
@@ -56,7 +56,6 @@ const ProfileLeftSidebar = () => {
               type="text"
               name="surname"
               placeholder="NAZWISKO"
-              required
               value={inputs.surname}
               onChange={(e) =>
                 setInputs((prev) => ({ ...prev, surname: e.target.value }))
@@ -67,7 +66,6 @@ const ProfileLeftSidebar = () => {
               type="tel"
               name="phone"
               placeholder="NUMER TELEFONU"
-              required
               value={inputs.phone}
               onChange={(e) =>
                 setInputs((prev) => ({ ...prev, phone: e.target.value }))
@@ -78,7 +76,6 @@ const ProfileLeftSidebar = () => {
               type="text"
               name="city"
               placeholder="MIASTO"
-              required
               value={inputs.city}
               onChange={(e) =>
                 setInputs((prev) => ({ ...prev, city: e.target.value }))
