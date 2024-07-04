@@ -5,6 +5,7 @@ import useAuth from "../../context/AuthContext";
 import googleLogo from "../../images/googleLogo.svg";
 import styles from "./register.module.scss";
 
+
 function Register() {
   const { register, authenticateWithGoogle, currentUser } = useAuth() ?? {};
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ function Register() {
             />
           </label>
 
-          <button type="submit" className={styles.orangeBtn}>
+          <button type="submit" className={`${styles.orangeBtn} ${styles.primaryButton}`}>
             ZAREJESTRUJ SIĘ
           </button>
         </form>
