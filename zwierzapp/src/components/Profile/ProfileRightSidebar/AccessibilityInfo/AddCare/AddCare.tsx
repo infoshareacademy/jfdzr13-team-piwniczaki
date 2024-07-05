@@ -102,7 +102,7 @@ function AddCare() {
               <input type="date" value={date.startDate} readOnly></input>
               <input type="date" value={date.endDate} readOnly></input>
               <input type="text" value={date.careCity} readOnly></input>
-              <button onClick={() => removeRecord(date)}>Skasuj</button>
+              <button onClick={() => removeRecord(date)} className={`${styles.returnButton} ${styles.primaryButton}`}>Skasuj</button>
             </div>
           ))}
         </>

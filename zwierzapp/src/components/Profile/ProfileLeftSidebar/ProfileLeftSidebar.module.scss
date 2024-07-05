@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.formContainer {
+.formContainerProfile {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -23,7 +23,7 @@
   margin: 10px 0px;
   height: fit-content;
 }
-.formContainer input,.formContainer p {
+.formContainerProfile input,.formContainerPara {
   background: white;
   width: 80%;
   border: none;
@@ -33,7 +33,7 @@
 input::placeholder {
   color: black;
 }
-.formContainer input:focus {
+.formContainerProfile input:focus {
   outline: none;
   border: none;
 }

@@ -26,7 +26,7 @@ const ProfileLeftSidebar = () => {
     <>
       <div className={styles.container}>
         {isEditing ? (
-          <form className={styles.formContainer} onSubmit={handleUpdateData}>
+          <form className={styles.formContainerProfile} onSubmit={handleUpdateData}>
             <div className={styles.avatarContainer}>
               <AddAvatar />
             </div>
@@ -91,23 +91,23 @@ const ProfileLeftSidebar = () => {
             </button>
           </form>
         ) : (
-          <div className={styles.formContainer}>
+          <div className={styles.formContainerProfile}>
             <div className={styles.avatarContainer}>
               <AddAvatar isEditing={true} />
             </div>
-            <p>
+            <p className={styles.formContainerPara}>
               {inputs.name}
             </p>
-            <p>
+            <p className={styles.formContainerPara}>
               {inputs.surname}
             </p>
-            <p>
+            <p className={styles.formContainerPara}>
               {inputs.phone}
             </p>
-            <p>
+            <p className={styles.formContainerPara}>
               {inputs.city}
             </p>
-            <p>
+            <p className={styles.formContainerPara}>
               {inputs.shortDescription ? inputs.shortDescription : `Dodaj opis` }
             </p>
             <button
