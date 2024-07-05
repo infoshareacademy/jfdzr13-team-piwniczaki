@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import findPetsittersByRace, { Filters } from "./findPetsittersByRace";
 import { PetsitterDocument } from "./getPetsitterData";
-import useFirebaseData from "./useFirebaseData";
 import useSubcollectionData from "./useSubcollectionData";
+import findPetsittersByRace, { Filters } from "./findPetsittersByRace";
+import usePetsittersData from "./usePetsittersData";
+import useUsersData from "./useUsersData";
 
 interface ExtendedFilters extends Filters {
   experienceLevel?: string;
@@ -17,46 +18,96 @@ const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
   ];
   const [petsitters, setPetsitters] = useState<PetsitterDocument[]>([]);
   const [filteredPetsitters, setFilteredPetsitters] = useState<string[]>([]);
-
-  const petsittersData: PetsitterDocument[] = useFirebaseData("Petsitters");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAccessData = async () => {
-      const filteredPetsitters = petsittersData.filter((user) =>
-        petsitterIds.includes(user.userId)
-      );
+      setIsLoading(true);
+      try {
+        const petsittersData = await usePetsittersData();
 
-      const petsittersWithAccessData = await Promise.all(
-        filteredPetsitters.map(async (petsitter) => {
-          try {
-            const accessData = await useSubcollectionData(
-              "Petsitters",
-              "access",
-              petsitter.id
-            );
-            return { ...petsitter, access: accessData };
-          } catch (error) {
-            console.error(`Error fetching access data ${petsitter.id}`, error);
-            return { ...petsitter, access: [] };
-          }
-        })
-      );
+        // Filter the petsitters based on the given IDs
+        const filteredPetsitters = petsittersData.filter((petsitter) =>
+          petsitterIds.includes(petsitter.userId)
+        );
 
-      setPetsitters(petsittersWithAccessData);
+        // Fetch access data for each petsitter
+        const petsittersWithAccessData = await Promise.all(
+          filteredPetsitters.map(async (petsitter) => {
+            try {
+              const accessData = await useSubcollectionData(
+                "Petsitters",
+                "access",
+                petsitter.id
+              );
+              return { ...petsitter, access: accessData };
+            } catch (error) {
+              console.error(
+                `Error fetching access data for ${petsitter.id}`,
+                error
+              );
+              return { ...petsitter, access: [] };
+            }
+          })
+        );
+
+        // Fetch user data for each petsitter with access data
+        const petsittersWithUsersData = await Promise.all(
+          petsittersWithAccessData.map(async (petsitter) => {
+            try {
+              const usersData = await useUsersData();
+              const userData = usersData.find(
+                (user) => user.uid === petsitter.userId
+              );
+              return { ...petsitter, userData: userData };
+            } catch (error) {
+              console.error(
+                `Error fetching user data for ${petsitter.id}`,
+                error
+              );
+              return { ...petsitter, userData: {} };
+            }
+          })
+        );
+
+        // Update the state with the final combined data
+        setPetsitters(petsittersWithUsersData);
+      } catch (error) {
+        console.error("Error fetching petsitters data", error);
+      }
     };
 
     fetchAccessData();
-  }, [petsitterIds, petsittersData]);
+  }, [petsitterIds, filters]);
 
   useEffect(() => {
     if (petsitters) {
+      setIsLoading(true);
       let filteredPetsitters = petsitters;
       //Sortowanie po mieście
       if (filters.city) {
         filteredPetsitters = filteredPetsitters.filter((el) =>
-          el.access.some(
+          el.access?.some(
             (accessItem) =>
               accessItem.careCity.toLowerCase() === filters?.city?.toLowerCase()
+          )
+        );
+      }
+      //Sortowanie po dacie od
+      if (filters.startDate) {
+        const startDate = new Date(filters.startDate); // Convert filters.startDate to a Date object
+        filteredPetsitters = filteredPetsitters.filter((el) =>
+          el.access?.some(
+            (accessItem) => new Date(accessItem.startDate) >= startDate // Convert accessItem.startDate to a Date object for comparison
+          )
+        );
+      }
+      //Sortowanie po dacie do
+      if (filters.endDate) {
+        const endDate = new Date(filters.endDate); // Convert filters.startDate to a Date object
+        filteredPetsitters = filteredPetsitters.filter((el) =>
+          el.access?.some(
+            (accessItem) => new Date(accessItem.endDate) <= endDate // Convert accessItem.startDate to a Date object for comparison
           )
         );
       }
@@ -267,14 +318,16 @@ const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
         }
       }
       setFilteredPetsitters(filteredPetsitters);
+      setIsLoading(false);
     }
   }, [filters, petsitters]);
 
   // console.log("Obiekty petsitterów z serwera:", petsitters);
   // console.log("Przefiltrowane obiekty petsitterów:", filteredPetsitters);
   // console.log("Filtry: ", filters);
+  // console.log("isLoading", isLoading);
 
-  return [filters, filteredPetsitters];
+  return [filters, filteredPetsitters, isLoading];
 };
 
 export default useFindPetsitters;

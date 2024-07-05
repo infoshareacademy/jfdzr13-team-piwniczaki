@@ -1,4 +1,5 @@
-import { getFirestore, doc, collection, getDocs } from "firebase/firestore";
+import { doc, collection, getDocs } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
 const useSubcollectionData = async (
   collectionName: string,
@@ -6,7 +7,6 @@ const useSubcollectionData = async (
   docId: string
 ) => {
   try {
-    const db = getFirestore();
     const docRef = doc(db, collectionName, docId);
     const subcollectionRef = collection(docRef, subcollectionName);
 
