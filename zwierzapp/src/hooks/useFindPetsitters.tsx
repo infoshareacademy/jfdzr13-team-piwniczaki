@@ -11,7 +11,9 @@ interface ExtendedFilters extends Filters {
   priceRange?: [number, number];
 }
 
-const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
+const useFindPetsitters = (
+  sortParam: object
+): [ExtendedFilters, PetsitterDocument[]] => {
   const [filters, petsitterIds] = findPetsittersByRace() as [
     ExtendedFilters,
     string[]
@@ -98,7 +100,7 @@ const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
         const startDate = new Date(filters.startDate); // Convert filters.startDate to a Date object
         filteredPetsitters = filteredPetsitters.filter((el) =>
           el.access?.some(
-            (accessItem) => new Date(accessItem.startDate) >= startDate // Convert accessItem.startDate to a Date object for comparison
+            (accessItem) => new Date(accessItem.startDate) <= startDate // Convert accessItem.startDate to a Date object for comparison
           )
         );
       }
@@ -107,10 +109,103 @@ const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
         const endDate = new Date(filters.endDate); // Convert filters.startDate to a Date object
         filteredPetsitters = filteredPetsitters.filter((el) =>
           el.access?.some(
-            (accessItem) => new Date(accessItem.endDate) <= endDate // Convert accessItem.startDate to a Date object for comparison
+            (accessItem) => new Date(accessItem.endDate) >= endDate // Convert accessItem.startDate to a Date object for comparison
           )
         );
       }
+      if (filters.petRace === "dog") {
+        if (filters.serviceType) {
+          if (filters.serviceType === "walk") {
+            if (filters.minPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.dogWalkPrice >= filters.minPrice
+              );
+            }
+          }
+          if (filters.serviceType === "accom") {
+            if (filters.minPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.dogAccomPrice >= filters.minPrice
+              );
+            }
+          }
+          if (filters.serviceType === "homeVisit") {
+            if (filters.minPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.dogHomeVisitPrice >= filters.minPrice
+              );
+            }
+          }
+          if (filters.serviceType === "walk") {
+            if (filters.maxPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.dogWalkPrice <= filters.maxPrice
+              );
+            }
+          }
+          if (filters.serviceType === "accom") {
+            if (filters.maxPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.dogAccomPrice <= filters.maxPrice
+              );
+            }
+          }
+          if (filters.serviceType === "homeVisit") {
+            if (filters.maxPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.dogHomeVisitPrice <= filters.maxPrice
+              );
+            }
+          }
+        }
+      }
+      if (filters.petRace === "cat") {
+        if (filters.serviceType) {
+          if (filters.serviceType === "walk") {
+            if (filters.minPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.catWalkPrice >= filters.minPrice
+              );
+            }
+          }
+          if (filters.serviceType === "accom") {
+            if (filters.minPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.catAccomPrice >= filters.minPrice
+              );
+            }
+          }
+          if (filters.serviceType === "homeVisit") {
+            if (filters.minPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.catHomeVisitPrice >= filters.minPrice
+              );
+            }
+          }
+          if (filters.serviceType === "walk") {
+            if (filters.maxPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.catWalkPrice <= filters.maxPrice
+              );
+            }
+          }
+          if (filters.serviceType === "accom") {
+            if (filters.maxPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.catAccomPrice <= filters.maxPrice
+              );
+            }
+          }
+          if (filters.serviceType === "homeVisit") {
+            if (filters.maxPrice) {
+              filteredPetsitters = filteredPetsitters.filter(
+                (el) => el.prices?.catHomeVisitPrice <= filters.maxPrice
+              );
+            }
+          }
+        }
+      }
+
       //Sortowanie jezeli pies
       if (filters.petRace === "dog") {
         //sortowanie po rodzaju uslugi
@@ -322,12 +417,194 @@ const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
     }
   }, [filters, petsitters]);
 
-  // console.log("Obiekty petsitterów z serwera:", petsitters);
-  // console.log("Przefiltrowane obiekty petsitterów:", filteredPetsitters);
-  // console.log("Filtry: ", filters);
-  // console.log("isLoading", isLoading);
+  //zaczynamy sortowanie
 
-  return [filters, filteredPetsitters, isLoading];
+  const [sortedPetsitters, setSortedPetsitters] = useState([]);
+  const [sortParamState, setSortParamState] = useState({});
+
+  useEffect(() => {
+    if (sortParam.byName) {
+      if (sortParam.asc) {
+        setSortParamState("byNameAsc");
+      }
+      if (sortParam.desc) {
+        setSortParamState("byNameDesc");
+      }
+    }
+    if (sortParam.byPrice) {
+      if (sortParam.asc) {
+        setSortParamState("byPriceAsc");
+      }
+      if (sortParam.desc) {
+        setSortParamState("byPriceDesc");
+      }
+    }
+  }, [sortParam]);
+
+  useEffect(() => {
+    if (sortParamState === "byNameAsc") {
+      const sortedData = [...filteredPetsitters].sort((a, b) => {
+        const nameA = a.userData?.name ?? "";
+        const nameB = b.userData?.name ?? "";
+        const surnameA = a.userData?.surname ?? "";
+        const surnameB = b.userData?.surname ?? "";
+
+        const surnameComparison = surnameA.localeCompare(surnameB);
+        if (surnameComparison !== 0) {
+          return surnameComparison;
+        }
+        return nameA.localeCompare(nameB);
+      });
+      setSortedPetsitters(sortedData);
+    }
+    if (sortParamState === "byNameDesc") {
+      const sortedData = [...filteredPetsitters].sort((a, b) => {
+        const nameA = a.userData?.name ?? "";
+        const nameB = b.userData?.name ?? "";
+        const surnameA = a.userData?.surname ?? "";
+        const surnameB = b.userData?.surname ?? "";
+
+        const surnameComparison = surnameA.localeCompare(surnameB);
+        if (surnameComparison !== 0) {
+          return -surnameComparison;
+        }
+        return -nameA.localeCompare(nameB);
+      });
+      setSortedPetsitters(sortedData);
+    }
+    if (filters.petRace === "dog") {
+      if (filters.serviceType === "walk") {
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.dogWalkPrice ?? 0;
+            const priceB = b.prices?.dogWalkPrice ?? 0;
+
+            return priceA - priceB;
+          });
+          setSortedPetsitters(sortedData);
+        }
+
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.dogWalkPrice ?? 0;
+            const priceB = b.prices?.dogWalkPrice ?? 0;
+
+            return priceB - priceA;
+          });
+          setSortedPetsitters(sortedData);
+        }
+      }
+      if (filters.serviceType === "accom") {
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.dogAccomPrice ?? 0;
+            const priceB = b.prices?.dogAccomPrice ?? 0;
+
+            return priceA - priceB;
+          });
+          setSortedPetsitters(sortedData);
+        }
+
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.dogAccomPrice ?? 0;
+            const priceB = b.prices?.dogAccomPrice ?? 0;
+
+            return priceB - priceA;
+          });
+          setSortedPetsitters(sortedData);
+        }
+      }
+      if (filters.serviceType === "homeVisit") {
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.dogHomeVisitPrice ?? 0;
+            const priceB = b.prices?.dogHomeVisitPrice ?? 0;
+
+            return priceA - priceB;
+          });
+          setSortedPetsitters(sortedData);
+        }
+
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.dogHomeVisitPrice ?? 0;
+            const priceB = b.prices?.dogHomeVisitPrice ?? 0;
+
+            return priceB - priceA;
+          });
+          setSortedPetsitters(sortedData);
+        }
+      }
+    }
+    if (filters.petRace === "cat") {
+      if (filters.serviceType === "walk") {
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.catWalkPrice ?? 0;
+            const priceB = b.prices?.catWalkPrice ?? 0;
+
+            return priceA - priceB;
+          });
+          setSortedPetsitters(sortedData);
+        }
+
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.catWalkPrice ?? 0;
+            const priceB = b.prices?.catWalkPrice ?? 0;
+
+            return priceB - priceA;
+          });
+          setSortedPetsitters(sortedData);
+        }
+      }
+      if (filters.serviceType === "accom") {
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.catAccomPrice ?? 0;
+            const priceB = b.prices?.catAccomPrice ?? 0;
+
+            return priceA - priceB;
+          });
+          setSortedPetsitters(sortedData);
+        }
+
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.catAccomPrice ?? 0;
+            const priceB = b.prices?.catAccomPrice ?? 0;
+
+            return priceB - priceA;
+          });
+          setSortedPetsitters(sortedData);
+        }
+      }
+      if (filters.serviceType === "homeVisit") {
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.catHomeVisitPrice ?? 0;
+            const priceB = b.prices?.catHomeVisitPrice ?? 0;
+
+            return priceA - priceB;
+          });
+          setSortedPetsitters(sortedData);
+        }
+
+        if (sortParamState === "byPriceAsc") {
+          const sortedData = [...filteredPetsitters].sort((a, b) => {
+            const priceA = a.prices?.catHomeVisitPrice ?? 0;
+            const priceB = b.prices?.catHomeVisitPrice ?? 0;
+
+            return priceB - priceA;
+          });
+          setSortedPetsitters(sortedData);
+        }
+      }
+    }
+  }, [filteredPetsitters, sortParamState]);
+
+  return [filters, sortedPetsitters, isLoading];
 };
 
 export default useFindPetsitters;
