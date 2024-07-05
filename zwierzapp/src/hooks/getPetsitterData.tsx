@@ -41,6 +41,21 @@ export interface PetsitterDocument {
     catHomeVisit?: boolean;
     catWalk?: boolean;
   };
+  userData?:{
+    city?: string;
+    id?: string;
+    name?: string;
+    phone?: string;
+    surname?: string;
+    uid?: string;
+    avatar?:{
+      alt?:string;
+      id?:number;
+      photo?:string;
+    };
+    shortDescription?:string;
+  }
+
 }
 
 const getPetsitterData = (): PetsitterDocument | null => {
