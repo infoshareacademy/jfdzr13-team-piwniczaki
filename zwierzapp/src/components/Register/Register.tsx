@@ -53,8 +53,7 @@ function Register() {
   return (
     <div className={styles.registerPage}>
       <article className={styles.registerContainer}>
-        <h1> UTWÓRZ KONTO</h1>
-
+        <h1>UTWÓRZ KONTO</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor="email">
             <input
@@ -64,7 +63,6 @@ function Register() {
               placeholder="ADRES E-MAIL"
             />
           </label>
-
           <label htmlFor="password">
             <input
               type="password"
@@ -74,7 +72,6 @@ function Register() {
               autoComplete="on"
             />
           </label>
-
           <label htmlFor="confirm_password">
             <input
               type="password"
@@ -84,7 +81,6 @@ function Register() {
               autoComplete="on"
             />
           </label>
-
           <button type="submit" className={`${styles.orangeBtn} ${styles.primaryButton}`}>
             ZAREJESTRUJ SIĘ
           </button>

@@ -1,23 +1,26 @@
 @import "../../../styles/vars.scss";
+@import "../../../styles/button.module.scss";
 
 .container{
   font-family: $font-poppins;
   background-color: rgba(244, 244, 244, 1);
   border-radius: 15px;
   display: grid;
+  height: fit-content;
+  width: 100%;
 }
 
 .formContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   font-family: $font-poppins;
   font-size: 18px;
   background-color: rgba(244, 244, 244, 1);
   border-radius: 15px;
-  margin-bottom: 10px;
+  margin: 10px 0px;
   height: fit-content;
 }
 .formContainer input,.formContainer p {
@@ -35,25 +38,16 @@ input::placeholder {
   border: none;
 }
 .avatarContainer{
-  width: 50%;
-  height: 50%;
+  width: 65%;
+  height: 65%;
 }
 
 .saveChangesButton,
 .editButton {
-  background: white;
-  color: $orange;
-  border: 3px solid $orange;
-  border-radius: 69px;
   width: 80%;
-  padding: 10px;
   font-weight: 700;
   font-size: 20px;
-
-  &:hover {
-    background: $orange;
-    color: white;
-  }
+  padding: 10px 0px;
 }
 
 .shortDescription {

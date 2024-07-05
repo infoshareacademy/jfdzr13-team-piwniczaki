@@ -12,7 +12,7 @@ function AddPet() {
           <Link to="/profile" className={styles.getBackElement}><img src={arrowback}></img>wróć</Link>
         </div>
         <InputDataPet />
-        <Link to="/profile" className={styles.buttonToCancel} >Anuluj</Link>
+        <Link to="/profile" className={`${styles.buttonToCancel} ${styles.primaryButton}`} >Anuluj</Link>
       </div>
     </div>
   )

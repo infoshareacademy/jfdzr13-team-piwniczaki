@@ -21,8 +21,11 @@
     justify-content: center;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
     border-radius: 26px ;
+
+    gap:20px;
     h1{
-        margin: 15px 0px;
+        margin-top: 15px;
+        font-size: 2em;
     }
     form {
         display: flex;
@@ -55,17 +58,15 @@
 .orangeBtn {
     height: 71px;
     width: 40%;
-    margin-bottom: 30px;
     }
 
 
 .orContainer {
     display: flex;
-    margin-bottom: 30px;
+
 
     .line {
         width: 158px;
-        height: 1px;
         border:1px solid black;
         display: flex;
         align-self: center;
@@ -90,17 +91,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 5px;
-
+    margin-bottom: 15px;
     &:active,
     &:hover {
         background-color: $darkerGrey ;
     }
-
     &:active {
         text-decoration: underline;
     }
-
     .googleLogo {
         margin-right: 20px;
     }

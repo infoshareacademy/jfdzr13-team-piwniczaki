@@ -38,7 +38,7 @@ const Login = () => {
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           <input type="email" name="email" placeholder="ADRES MAIL" required />
           <input type="password" name="password" placeholder="HASŁO" autoComplete="on" required />
-          <button type="submit">ZALOGUJ SIĘ</button>
+          <button type="submit" className={styles.primaryButton}>ZALOGUJ SIĘ</button>
         </form>
         <div className={styles.orContainer}>
           <div className={styles.lineElement}></div>

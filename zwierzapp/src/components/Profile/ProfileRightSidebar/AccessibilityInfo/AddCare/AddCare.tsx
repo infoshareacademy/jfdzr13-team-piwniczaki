@@ -112,10 +112,10 @@ function AddCare() {
           <input type="date" name="startDate" min={currentDate} required></input>
           <input type="date" name="endDate" min={currentDate} required></input>
           <input type="text" name="city" required></input>
-          <button type="submit">Dodaj</button>
+          <button type="submit" className={`${styles.returnButton} ${styles.primaryButton}`}>Dodaj</button>
         </form>
       </div>
-      <Link to="/profile" className={styles.returnButton}>Wróć</Link>
+      <Link to="/profile" className={`${styles.returnButton} ${styles.primaryButton}`}>Wróć</Link>
     </div>
   );
 }

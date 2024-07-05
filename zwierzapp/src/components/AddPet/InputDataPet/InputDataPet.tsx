@@ -388,7 +388,7 @@ function InputDatapet() {
                     />
                 </div>
             </div>
-            <button className={styles.buttonToSave} type="submit"> Zapisz </button>
+            <button className={`${styles.buttonToSave} ${styles.primaryButton}`} type="submit"> Zapisz </button>
         </form>
     );
 }

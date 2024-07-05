@@ -86,7 +86,7 @@ const ProfileLeftSidebar = () => {
                 }))
               }
             ></textarea>
-            <button className={styles.saveChangesButton} type="submit">
+            <button className={`${styles.editButton} ${styles.primaryButton}`} type="submit">
               Zapisz zmiany
             </button>
           </form>
@@ -108,10 +108,10 @@ const ProfileLeftSidebar = () => {
               {inputs.city}
             </p>
             <p>
-              {inputs.shortDescription}
+              {inputs.shortDescription ? inputs.shortDescription : `Dodaj opis` }
             </p>
             <button
-              className={styles.editButton}
+              className={`${styles.editButton} ${styles.primaryButton}`}
               type="button"
               onClick={() => setIsEditing(true)}
             >

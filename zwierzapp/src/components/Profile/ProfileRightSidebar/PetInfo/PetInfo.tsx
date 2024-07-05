@@ -64,11 +64,11 @@ if (loading) {
               </li>
             ))}
           </ul>
-          <button onClick={handleAddPet} className={styles.buttonAdd}>Dodaj zwierzaka</button>
+          <button onClick={handleAddPet} className={`${styles.buttonAdd} ${styles.primaryButton}`}>Dodaj zwierzaka</button>
         </div>
       ) : (
-        <div className={styles.noPets}>
-          <button onClick={handleAddPet} className={styles.buttonAdd}>Dodaj zwierzaka</button>
+        <div >
+          <button onClick={handleAddPet} className={`${styles.buttonAdd} ${styles.primaryButton}`}>Dodaj zwierzaka</button>
         </div>
       )}
     </div>

@@ -67,13 +67,13 @@ const AccessibilityInfo = () => {
             ) : (
               <>Coś tu pusto</>
             )}
-            <Link to="/addcare" className={styles.becomePetSitterLink}>
+            <Link to="/addcare" className={`${styles.becomePetSitterLink} ${styles.primaryButton}`}>
               Zarządzaj dostępnością
             </Link>
           </div>
         </div>
       ) : (
-        <Link to="/addpetsitter" className={styles.becomePetSitterLink}>
+        <Link to="/addpetsitter" className={`${styles.becomePetSitterLink} ${styles.primaryButton}`}>
           Zostań petsitterem
         </Link>
       )}

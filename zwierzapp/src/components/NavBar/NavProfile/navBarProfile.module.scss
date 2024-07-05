@@ -1,5 +1,6 @@
 @import "../../../styles/vars.scss";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "../../../styles/button.module.scss";
 .profileNavBarContainer img{
     cursor: pointer;
 }
@@ -73,9 +74,6 @@
 }
 .logoutButton{
     text-decoration: none;
-    background: rgba(254, 144, 42, 1);
-    border: 2px solid transparent;
-    color: white;
     border-radius: 52px;
     width: 90%;
     padding: 15px;
@@ -84,13 +82,4 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    &:hover{
-        color: black;
-        background-color: white;
-        border-color: rgba(254, 144, 42, 1);
-    }
-    &:active{
-        color: black;
-        background-color: rgba(254, 144, 42, 1);
-    }
 }
