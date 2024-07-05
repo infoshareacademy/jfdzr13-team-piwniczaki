@@ -132,36 +132,36 @@ const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
           }
         }
         //sortowanie po plci
-        // if (filters.petSex) {
-        //   if (filters.petSex === "male") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.dogSex0 === true
-        //     );
-        //   }
-        //   if (filters.petSex === "female") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.dogSex1 === true
-        //     );
-        //   }
-        // }
+        if (filters.petSex) {
+          if (filters.petSex === "male") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.dogSex0 === true
+            );
+          }
+          if (filters.petSex === "female") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.dogSex1 === true
+            );
+          }
+        }
         //sortowanie po wieku
-        // if (filters.petAge) {
-        //   if (filters.petAge === "young") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.dogAge0 === true
-        //     );
-        //   }
-        //   if (filters.petAge === "adult") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.dogAge1 === true
-        //     );
-        //   }
-        //   if (filters.petAge === "old") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.dogAge2 === true
-        //     );
-        //   }
-        // }
+        if (filters.petAge) {
+          if (filters.petAge === "young") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.dogAge0 === true
+            );
+          }
+          if (filters.petAge === "adult") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.dogAge1 === true
+            );
+          }
+          if (filters.petAge === "old") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.dogAge2 === true
+            );
+          }
+        }
       }
       //Sortowanie jezeli kot
       if (filters.petRace === "cat") {
@@ -235,36 +235,36 @@ const useFindPetsitters = (): [ExtendedFilters, PetsitterDocument[]] => {
           }
         }
         //sortowanie po plci
-        // if (filters.petSex) {
-        //   if (filters.petSex === "male") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.catSex0 === true
-        //     );
-        //   }
-        //   if (filters.petSex === "female") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.catSex1 === true
-        //     );
-        //   }
-        // }
-        //sortowanie po wieku
-        // if (filters.petAge) {
-        //   if (filters.petAge === "young") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.catAge0 === true
-        //     );
-        //   }
-        //   if (filters.petAge === "adult") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.catAge1 === true
-        //     );
-        //   }
-        //   if (filters.petAge === "old") {
-        //     filteredPetsitters = filteredPetsitters.filter(
-        //       (el) => el.checkboxes?.catAge2 === true
-        //     );
-        //   }
-        // }
+        if (filters.petSex) {
+          if (filters.petSex === "male") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.catSex0 === true
+            );
+          }
+          if (filters.petSex === "female") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.catSex1 === true
+            );
+          }
+        }
+        // sortowanie po wieku
+        if (filters.petAge) {
+          if (filters.petAge === "young") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.catAge0 === true
+            );
+          }
+          if (filters.petAge === "adult") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.catAge1 === true
+            );
+          }
+          if (filters.petAge === "old") {
+            filteredPetsitters = filteredPetsitters.filter(
+              (el) => el.checkboxes?.catAge2 === true
+            );
+          }
+        }
       }
       setFilteredPetsitters(filteredPetsitters);
     }
