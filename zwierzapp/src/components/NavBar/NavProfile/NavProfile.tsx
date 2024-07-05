@@ -2,20 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../../context/AuthContext";
 import styles from "./navBarProfile.module.scss";
-
-import profileImg from "../../../images/Profile button.png";
 import settingIcon from "../../../images/settings.svg";
 import findIcon from "../../../images/person_search.svg";
 
 function NavProfile() {
-    const { currentUser, logout } = useAuth() || {};
+    const { currentUser, logout, avatar } = useAuth() || {};
     const [isClicked, setClick] = useState(false);
     const menuRef = useRef(null);
 
     function showMenu() {
         setClick((prevState) => !prevState);
     }
-
     function hideMenu() {
         setClick(false);
     }
@@ -34,7 +31,7 @@ function NavProfile() {
 
     return (
         <div className={styles.profileNavBarContainer}>
-            <img src={profileImg} onClick={showMenu} alt="Profile" />
+            <img src={avatar.photo} onClick={showMenu} alt="Profile" className={styles.avatarImg}/>
             {isClicked && (
                 <div
                     className={styles.hamburgerMenu}
@@ -58,7 +55,7 @@ function NavProfile() {
                         Ustawienia konta
                     </Link>
                     <Link
-                        to="/filter"
+                        to="/search"
                         className={styles.settingButton}
                         onClick={hideMenu}
                     >

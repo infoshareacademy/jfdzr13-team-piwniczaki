@@ -29,6 +29,14 @@ const SearchPetsitters = () => {
   const [formData, setFormData] = useState<FormField>(initialFormData);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  function capitalizeCityName(city: string) {
+    if (!city) return "";
+    return city
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
 
   const updateFormDataFromSearchParams = (searchParams, initialFormData) => {
     const queryParameters = new URLSearchParams(searchParams.toString());
@@ -38,7 +46,7 @@ const SearchPetsitters = () => {
       maxPrice: queryParameters.get("maxPrice") || initialFormData.maxPrice,
       startDate: queryParameters.get("startDate") || initialFormData.startDate,
       endDate: queryParameters.get("endDate") || initialFormData.endDate,
-      city: queryParameters.get("city") || initialFormData.city,
+      city: capitalizeCityName(queryParameters.get("city") || initialFormData.city),
       serviceType: queryParameters.get("serviceType") || initialFormData.serviceType,
     };
   };
