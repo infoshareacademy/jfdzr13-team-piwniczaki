@@ -1,15 +1,15 @@
 # ZwierzApp
 
-Aplikacja służy do wyszukiwania przez właścicieli psów i kotów odpowiednich opiekunów dla swoich zwierząt podczas ich nieobecności. Jednocześnie Zwierzapp umożliwia użytkownikom zaoferowanie opieki, wyszukiwanie informacji według określonych preferencji oraz bezpośredni kontakt właścicieli z potencjalnymi opiekunami. 
+Aplikacja służy do wyszukiwania przez właścicieli psów i kotów odpowiednich opiekunów dla swoich zwierząt podczas ich nieobecności. Jednocześnie Zwierzapp umożliwia użytkownikom zaoferowanie opieki, wyszukiwanie informacji według określonych preferencji oraz kontakt właścicieli z potencjalnymi opiekunami. 
 
 ## Funkcjonalności
 
 -	Rejestracja i logowanie, zarządzanie danymi profilowymi
 -	Formularz dla właściciela: uzupełnienie danych zwierzaka
 -	Formularz dla opiekuna: cennik, preferowana opieka
--	Formularz dostępności
+-	Formularz dostępności opiekuna
 -	Formularz wyszukiwania opiekuna
--	Wysyłanie bezpośrednio zapytania do potencjalnego opiekuna
+-	Wysyłanie zapytania do potencjalnego opiekuna
 
 ## Technologia
 
@@ -50,10 +50,10 @@ VITE_APP_ID = "XXXXX";
 
 ## Autorzy 
 
-- Barbara Szymańska
-- Mateusz Wasiński
-- Robert Krzak
-- Emilia Bechta
+- [Barbara Szymańska](https://github.com/Barbara-Szymanska)
+- [Emilia Bechta](https://github.com/emilia-bechta)
+- [Mateusz Wasiński](https://github.com/Mwasinski)
+- [Robert Krzak](https://github.com/Krzak-dev)
 
 
 
