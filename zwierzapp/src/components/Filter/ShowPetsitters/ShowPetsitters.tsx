@@ -77,6 +77,7 @@ const ShowPetsitters = () => {
         petsitters={sortedPetsitters}
         serviceType={serviceType}
         race={race}
+        filters={filters}
       />
     </div>
   );
