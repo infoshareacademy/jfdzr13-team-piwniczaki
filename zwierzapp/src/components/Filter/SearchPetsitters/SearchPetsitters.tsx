@@ -9,6 +9,7 @@ interface FormField {
 
 const SearchPetsitters = () => {
   const { currentUser } = useAuth() || {};
+
   const petsArr = getPetData(currentUser.uid);
 
   const currentDate = new Date().toISOString().split("T")[0];
@@ -37,37 +38,26 @@ const SearchPetsitters = () => {
       .join(" ");
   }
 
-  const updateFormDataFromSearchParams = (searchParams, initialFormData) => {
+  const updateFormDataFromSearchParams = (searchParams, formData) => {
     const queryParameters = new URLSearchParams(searchParams.toString());
     return {
-      petId: queryParameters.get("petId") || initialFormData.petId,
-      minPrice: queryParameters.get("minPrice") || initialFormData.minPrice,
-      maxPrice: queryParameters.get("maxPrice") || initialFormData.maxPrice,
-      startDate: queryParameters.get("startDate") || initialFormData.startDate,
-      endDate: queryParameters.get("endDate") || initialFormData.endDate,
+      petId: queryParameters.get("petId") || formData.petId,
+      minPrice: queryParameters.get("minPrice") || formData.minPrice,
+      maxPrice: queryParameters.get("maxPrice") || formData.maxPrice,
+      startDate: queryParameters.get("startDate") || formData.startDate,
+      endDate: queryParameters.get("endDate") || formData.endDate,
       city: capitalizeCityName(
-        queryParameters.get("city") || initialFormData.city
+        queryParameters.get("city") || formData.city
       ),
       serviceType:
-        queryParameters.get("serviceType") || initialFormData.serviceType,
+        queryParameters.get("serviceType") || formData.serviceType,
     };
   };
 
   useEffect(() => {
-    setFormData(updateFormDataFromSearchParams(searchParams, initialFormData));
+    setFormData(updateFormDataFromSearchParams(searchParams, formData));
   }, [searchParams]);
 
-  useEffect(() => {
-    if (petsArr.length > 0) {
-      const newSearchParams = new URLSearchParams();
-      Object.keys(formData).forEach((paramName) => {
-        if (formData[paramName]) {
-          newSearchParams.set(paramName, formData[paramName].toString());
-        }
-      });
-      setSearchParams(newSearchParams);
-    }
-  }, [formData, petsArr]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

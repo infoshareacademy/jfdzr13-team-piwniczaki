@@ -45,7 +45,6 @@ const ShowPetsitters = () => {
   // console.log(
   // useFindPetsitters(sorting)
     console.log(useFindPetsitters(sorting))
-    console.log('heja z sorting',sorting)
   // );
   
   return (
