@@ -182,7 +182,7 @@ const PetSection = () => {
                 attr2: "Wizyta domowa",
               },
             })}
-          {checkboxes.dog.isAvailable && <h2>Pies</h2>}
+          {checkboxes.dog.isAvailable && <h2 className={styles.headerSecond}>Pies</h2>}
           {checkboxes.dog.isAvailable &&
             renderPetSection({
               animal: {
