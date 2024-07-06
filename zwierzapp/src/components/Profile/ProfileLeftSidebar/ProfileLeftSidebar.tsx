@@ -25,32 +25,11 @@ const ProfileLeftSidebar = () => {
   return (
     <>
       <div className={styles.container}>
+        <div className={styles.avatarContainer}>
+          <AddAvatar />
+        </div>
         {isEditing ? (
           <form className={styles.formContainerProfile} onSubmit={handleUpdateData}>
-            <div className={styles.avatarContainer}>
-              <AddAvatar />
-            </div>
-            <input
-              type="text"
-              name="name"
-              placeholder="IMIĘ"
-              required
-              value={inputs.name}
-              onChange={(e) =>
-                setInputs((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
-            <input
-              autoComplete="on"
-              type="text"
-              name="surname"
-              placeholder="NAZWISKO"
-              required
-              value={inputs.surname}
-              onChange={(e) =>
-                setInputs((prev) => ({ ...prev, surname: e.target.value }))
-              }
-            />
             <input
               autoComplete="on"
               type="tel"
@@ -92,15 +71,6 @@ const ProfileLeftSidebar = () => {
           </form>
         ) : (
           <div className={styles.formContainerProfile}>
-            <div className={styles.avatarContainer}>
-              <AddAvatar isEditing={true} />
-            </div>
-            <p className={styles.formContainerPara}>
-              {inputs.name}
-            </p>
-            <p className={styles.formContainerPara}>
-              {inputs.surname}
-            </p>
             <p className={styles.formContainerPara}>
               {inputs.phone}
             </p>
@@ -108,7 +78,7 @@ const ProfileLeftSidebar = () => {
               {inputs.city}
             </p>
             <p className={styles.formContainerPara}>
-              {inputs.shortDescription ? inputs.shortDescription : `Dodaj opis` }
+              {inputs.shortDescription ? inputs.shortDescription : `Dodaj opis`}
             </p>
             <button
               className={`${styles.editButton} ${styles.primaryButton}`}

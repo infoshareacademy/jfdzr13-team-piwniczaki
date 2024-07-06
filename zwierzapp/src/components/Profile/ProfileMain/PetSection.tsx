@@ -129,7 +129,7 @@ const PetSection = () => {
   };
 
   return (
-    <>
+    <div className={styles.profileMainConainter}>
       {(checkboxes.dog.isAvailable || checkboxes.cat.isAvailable) && (
         <div>
           <h1>Jakimi zwierzakami się zajmujesz</h1>
@@ -233,7 +233,7 @@ const PetSection = () => {
             })}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

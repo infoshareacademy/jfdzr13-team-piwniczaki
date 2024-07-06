@@ -80,7 +80,7 @@ const PriceSection: React.FC = () => {
   return (
     <>
       {(services.dogIsAvailable || services.catIsAvailable) && (
-        <div>
+        <div className={styles.containterPriceProfile}>
           <h1>Cennik</h1>
           <div>
             {services.catIsAvailable && (

@@ -1,7 +1,7 @@
 .container {
     display: grid;
     justify-content: start;
-    width: 100%;
+    width: fit-content;
     gap: 30px;
     height: fit-content;
 }
