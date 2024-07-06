@@ -29,7 +29,10 @@ const ProfileLeftSidebar = () => {
           <AddAvatar />
         </div>
         {isEditing ? (
-          <form className={styles.formContainerProfile} onSubmit={handleUpdateData}>
+          <form
+            className={styles.formContainerProfile}
+            onSubmit={handleUpdateData}
+          >
             <input
               autoComplete="on"
               type="tel"
@@ -63,21 +66,22 @@ const ProfileLeftSidebar = () => {
                 }))
               }
             ></textarea>
-            <button className={`${styles.editButton} ${styles.primaryButton}`} type="submit">
+            <button
+              className={`${styles.editButton} ${styles.primaryButton}`}
+              type="submit"
+            >
               Zapisz zmiany
             </button>
           </form>
         ) : (
           <div className={styles.formContainerProfile}>
-            <p className={styles.formContainerPara}>
-              {inputs.phone}
-            </p>
-            <p className={styles.formContainerPara}>
-              {inputs.city}
-            </p>
-            <p className={styles.formContainerPara}>
-              {inputs.shortDescription ? inputs.shortDescription : `Dodaj opis`}
-            </p>
+            <p className={styles.formContainerPara}>{inputs.phone}</p>
+            <p className={styles.formContainerPara}>{inputs.city}</p>
+            {inputs.shortDescription ? (
+              <p className={styles.formContainerPara}>
+                {inputs.shortDescription}
+              </p>
+            ) : null}
             <button
               className={`${styles.editButton} ${styles.primaryButton}`}
               type="button"
