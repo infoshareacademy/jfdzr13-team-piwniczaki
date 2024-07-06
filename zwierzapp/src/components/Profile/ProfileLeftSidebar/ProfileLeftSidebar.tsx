@@ -35,7 +35,6 @@ const ProfileLeftSidebar = () => {
               type="tel"
               name="phone"
               placeholder="NUMER TELEFONU"
-              required
               value={inputs.phone}
               onChange={(e) =>
                 setInputs((prev) => ({ ...prev, phone: e.target.value }))
@@ -46,7 +45,6 @@ const ProfileLeftSidebar = () => {
               type="text"
               name="city"
               placeholder="MIASTO"
-              required
               value={inputs.city}
               onChange={(e) =>
                 setInputs((prev) => ({ ...prev, city: e.target.value }))
