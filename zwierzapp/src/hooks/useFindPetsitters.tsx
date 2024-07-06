@@ -484,7 +484,7 @@ const useFindPetsitters = (
           setSortedPetsitters(sortedData);
         }
 
-        if (sortParamState === "byPriceAsc") {
+        if (sortParamState === "byPriceDesc") {
           const sortedData = [...filteredPetsitters].sort((a, b) => {
             const priceA = a.prices?.dogWalkPrice ?? 0;
             const priceB = b.prices?.dogWalkPrice ?? 0;
@@ -505,7 +505,7 @@ const useFindPetsitters = (
           setSortedPetsitters(sortedData);
         }
 
-        if (sortParamState === "byPriceAsc") {
+        if (sortParamState === "byPriceDesc") {
           const sortedData = [...filteredPetsitters].sort((a, b) => {
             const priceA = a.prices?.dogAccomPrice ?? 0;
             const priceB = b.prices?.dogAccomPrice ?? 0;
@@ -526,7 +526,7 @@ const useFindPetsitters = (
           setSortedPetsitters(sortedData);
         }
 
-        if (sortParamState === "byPriceAsc") {
+        if (sortParamState === "byPriceDesc") {
           const sortedData = [...filteredPetsitters].sort((a, b) => {
             const priceA = a.prices?.dogHomeVisitPrice ?? 0;
             const priceB = b.prices?.dogHomeVisitPrice ?? 0;
@@ -549,7 +549,7 @@ const useFindPetsitters = (
           setSortedPetsitters(sortedData);
         }
 
-        if (sortParamState === "byPriceAsc") {
+        if (sortParamState === "byPriceDesc") {
           const sortedData = [...filteredPetsitters].sort((a, b) => {
             const priceA = a.prices?.catWalkPrice ?? 0;
             const priceB = b.prices?.catWalkPrice ?? 0;
@@ -570,7 +570,7 @@ const useFindPetsitters = (
           setSortedPetsitters(sortedData);
         }
 
-        if (sortParamState === "byPriceAsc") {
+        if (sortParamState === "byPriceDesc") {
           const sortedData = [...filteredPetsitters].sort((a, b) => {
             const priceA = a.prices?.catAccomPrice ?? 0;
             const priceB = b.prices?.catAccomPrice ?? 0;
@@ -591,7 +591,7 @@ const useFindPetsitters = (
           setSortedPetsitters(sortedData);
         }
 
-        if (sortParamState === "byPriceAsc") {
+        if (sortParamState === "byPriceDesc") {
           const sortedData = [...filteredPetsitters].sort((a, b) => {
             const priceA = a.prices?.catHomeVisitPrice ?? 0;
             const priceB = b.prices?.catHomeVisitPrice ?? 0;
