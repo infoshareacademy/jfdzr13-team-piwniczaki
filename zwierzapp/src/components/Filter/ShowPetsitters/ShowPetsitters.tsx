@@ -60,6 +60,7 @@ const ShowPetsitters = () => {
       default:
         break;
     }
+    setSorting(newSortOptions);
   };
 
   return (

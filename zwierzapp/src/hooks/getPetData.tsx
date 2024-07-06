@@ -11,6 +11,7 @@ export interface PetsDocuments {
   sex?: string;
   weight?: string;
   id?: string;
+  petID?: string;
 }
 
 const getPetData = (user: string) => {

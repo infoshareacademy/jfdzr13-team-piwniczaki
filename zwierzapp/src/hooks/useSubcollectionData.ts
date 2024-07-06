@@ -1,25 +1,30 @@
-import { doc, collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
-const useSubcollectionData = async (
+const useSubcollectionData = (
   collectionName: string,
   subcollectionName: string,
   docId: string
 ) => {
-  try {
-    const docRef = doc(db, collectionName, docId);
-    const subcollectionRef = collection(docRef, subcollectionName);
+  const [data, setData] = useState([]);
 
-    const snapshot = await getDocs(subcollectionRef);
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = doc(db, collectionName, docId);
+      const subcollectionRef = collection(docRef, subcollectionName);
 
-    return data;
-  } catch (error) {
-    console.error("Error getting subcollection documents: ", error);
-  }
+      const querySnapshot = await getDocs(subcollectionRef);
+      const documents = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setData(documents);
+    };
+    fetchData();
+  }, [collectionName]);
+
+  return data;
 };
 
 export default useSubcollectionData;
