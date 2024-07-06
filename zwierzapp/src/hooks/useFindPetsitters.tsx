@@ -20,11 +20,11 @@ const useFindPetsitters = (
   ];
   const [petsitters, setPetsitters] = useState<PetsitterDocument[]>([]);
   const [filteredPetsitters, setFilteredPetsitters] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchAccessData = async () => {
-      setIsLoading(true);
+      
       try {
         const petsittersData = await usePetsittersData();
 
@@ -84,7 +84,6 @@ const useFindPetsitters = (
 
   useEffect(() => {
     if (petsitters) {
-      setIsLoading(true);
       let filteredPetsitters = petsitters;
       //Sortowanie po mieście
       if (filters.city) {
@@ -413,7 +412,6 @@ const useFindPetsitters = (
         }
       }
       setFilteredPetsitters(filteredPetsitters);
-      setIsLoading(false);
     }
   }, [filters, petsitters]);
 
@@ -604,7 +602,7 @@ const useFindPetsitters = (
     }
   }, [filteredPetsitters, sortParamState]);
 
-  return [filters, sortedPetsitters, isLoading];
+  return [filters, sortedPetsitters];
 };
 
 export default useFindPetsitters;

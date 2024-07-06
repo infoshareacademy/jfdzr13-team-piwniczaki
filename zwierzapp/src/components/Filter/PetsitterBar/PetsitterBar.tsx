@@ -1,21 +1,14 @@
 import styles from './PetsitterBar.module.scss'
-import useFindPetsitters from '../../../hooks/useFindPetsitters';
 import { useLocation } from 'react-router';
 interface PetsitterBarProps {
-    sorting: {
-      byName: boolean;
-      byPrice: boolean;
-      asc: boolean;
-      desc: boolean;
-    };
-    serviceType: string;
+    serviceType: string | null | undefined;
     race: string;
+    petsitters: any[];
   }
 
-const PetsitterBar: React.FC<PetsitterBarProps> = ({ sorting, serviceType, race }) => {
-    const location = useLocation();
-    const sortedPetsitters = useFindPetsitters(sorting)
-    console.log('sortedpetsitters', sortedPetsitters)
+const PetsitterBar: React.FC<PetsitterBarProps> = ({serviceType, race, petsitters }) => {
+
+
 
   // Funkcja zwracająca cenę usługi dla konkretnego opiekuna
     const getPriceForService = (petsitter: any) => {
@@ -31,16 +24,14 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({ sorting, serviceType, race 
             return 0;
         }
     };
-    const hasSearchParams = new URLSearchParams(location.search).toString() !== '';
 
     return (
         <div>
-          {!hasSearchParams ? (
             <div>
               <h1>Znajdź idealnego opiekuna dla swojego zwierzaka!</h1>
             </div>
-          ) : sortedPetsitters[1] && sortedPetsitters[1].length > 0 ? (
-            sortedPetsitters[1].map((petsitter) => (
+                {petsitters && petsitters.length > 0 ? (
+            petsitters.map((petsitter) => (
               <div key={petsitter.id} className={styles.petsitterCard}>
                 <img src={petsitter?.userData?.avatar?.photo} alt={petsitter?.userData?.avatar?.alt}/>
                 <div>

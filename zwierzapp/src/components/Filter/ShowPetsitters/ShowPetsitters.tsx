@@ -1,16 +1,16 @@
 import PetsitterBar from "../PetsitterBar/PetsitterBar";
 import styles from "./ShowPetsitters.module.scss";
 import useFindPetsitters from "../../../hooks/useFindPetsitters";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const ShowPetsitters = () => {
 
   const [sorting, setSorting] = useState({
     byName: true, byPrice: false, asc: true, desc: false 
   })
-  const filterObj = useFindPetsitters(sorting)
-  const serviceType = filterObj[0].serviceType;
-  const race = filterObj[0].petRace=== "dog" ? "dog" : "cat";
+  const [filters,sortedPetsitters] = useFindPetsitters(sorting)
+  const serviceType = filters.serviceType;
+  const race = filters.petRace=== "dog" ? "dog" : "cat";
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
@@ -39,14 +39,9 @@ const ShowPetsitters = () => {
         break;
     }
 
-    setSorting(newSortOptions);
   };
-  // useFindPetsitters(sorting)
-  // console.log(
-  // useFindPetsitters(sorting)
-    console.log(useFindPetsitters(sorting))
-  // );
-  
+
+
   return (
   <div className={styles.petsittersContainer}>
     <label>
@@ -58,7 +53,7 @@ const ShowPetsitters = () => {
         <option value="alfabetycznie (Z-A)">alfabetycznie (Z-A)</option>
       </select>
     </label>
-    <PetsitterBar sorting={sorting} serviceType={serviceType} race={race}/>
+    <PetsitterBar  petsitters={sortedPetsitters} serviceType={serviceType} race={race} />
   </div>
 )};
 
