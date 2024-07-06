@@ -4,30 +4,16 @@ import { useLocation } from "react-router";
 import { User } from "firebase/auth";
 import useAuth from "../../../context/AuthContext";
 interface PetsitterBarProps {
-  sorting: {
-    byName: boolean;
-    byPrice: boolean;
-    asc: boolean;
-    desc: boolean;
-  };
-  serviceType: string;
+  serviceType: string | null | undefined;
   race: string;
-  filters: object;
+  petsitters: any[];
 }
 
 const PetsitterBar: React.FC<PetsitterBarProps> = ({
-  sorting,
   serviceType,
   race,
-  filters,
+  petsitters,
 }) => {
-  const location = useLocation();
-  const sortedPetsitters = useFindPetsitters(sorting);
-  console.log("sortedpetsitters", sortedPetsitters);
-  const { currentUser }: { currentUser: User | null } = useAuth() || {
-    currentUser: null,
-  };
-
   // Funkcja zwracająca cenę usługi dla konkretnego opiekuna
   const getPriceForService = (petsitter: any) => {
     if (!petsitter) return 0;
@@ -48,10 +34,6 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({
         return 0;
     }
   };
-  const hasSearchParams =
-    new URLSearchParams(location.search).toString() !== "";
-
-  console.log("current user", currentUser);
 
   return (
     <div>

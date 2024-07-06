@@ -42,7 +42,7 @@ const findPetsittersByRace = () => {
     city: null,
     serviceType: null,
   });
-
+console.log('z by race')
   useEffect(() => {
     setFilters((prevFilters) => ({
       ...prevFilters,
