@@ -17,11 +17,13 @@ const AddDataForm = () => {
     const surname = formData.get("surname") as string;
     const city = formData.get("city") as string;
     const phone = formData.get("phone") as string;
+    const email = currentUser.email as string;
     const additionalUserData: AdditionalUserInfo = {
       name,
       surname,
       city,
       phone,
+      email,
       avatar: avatar ?? avatars[0],
     };
 
@@ -74,7 +76,10 @@ const AddDataForm = () => {
             name="city"
             placeholder="MIASTO"
           />
-          <button className={`${styles.saveChangesButton} ${styles.primaryButton}`} type="submit">
+          <button
+            className={`${styles.saveChangesButton} ${styles.primaryButton}`}
+            type="submit"
+          >
             ZAPISZ ZMIANY
           </button>
         </form>
