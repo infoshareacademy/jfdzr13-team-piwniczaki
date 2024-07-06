@@ -1,5 +1,27 @@
+@import "../../../styles/vars.scss";
+
 .form {
     display: flex;
     flex-direction: column;
-    gap: 40px
+    align-items: center;
+    gap: 40px;
 }
+h1 {
+    text-align: center;
+}
+.searchPetsitter {
+    padding: 20px;
+}
+
+.labelPetName,
+.labelService,
+.labelCity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.labelDate {
+    display: flex;
+}
+

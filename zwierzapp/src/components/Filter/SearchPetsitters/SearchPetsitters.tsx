@@ -37,7 +37,6 @@ const SearchPetsitters = () => {
       .join(" ");
   }
 
-
   const updateFormDataFromSearchParams = (searchParams, initialFormData) => {
     const queryParameters = new URLSearchParams(searchParams.toString());
     return {
@@ -46,16 +45,18 @@ const SearchPetsitters = () => {
       maxPrice: queryParameters.get("maxPrice") || initialFormData.maxPrice,
       startDate: queryParameters.get("startDate") || initialFormData.startDate,
       endDate: queryParameters.get("endDate") || initialFormData.endDate,
-      city: capitalizeCityName(queryParameters.get("city") || initialFormData.city),
-      serviceType: queryParameters.get("serviceType") || initialFormData.serviceType,
+      city: capitalizeCityName(
+        queryParameters.get("city") || initialFormData.city
+      ),
+      serviceType:
+        queryParameters.get("serviceType") || initialFormData.serviceType,
     };
   };
 
   useEffect(() => {
-   setFormData(updateFormDataFromSearchParams(searchParams, initialFormData));
-   console.log('który burek będzie?',formData)
-  }, [searchParams])
-
+    setFormData(updateFormDataFromSearchParams(searchParams, initialFormData));
+    console.log("który burek będzie?", formData);
+  }, [searchParams]);
 
   useEffect(() => {
     if (petsArr.length > 0) {
@@ -73,16 +74,20 @@ const SearchPetsitters = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    if ((name === 'startDate' || name === 'endDate') && name === 'startDate' && formData.endDate < value) {
-      setFormData(prevState => ({
+    if (
+      (name === "startDate" || name === "endDate") &&
+      name === "startDate" &&
+      formData.endDate < value
+    ) {
+      setFormData((prevState) => ({
         ...prevState,
         startDate: value,
-        endDate: value // Ustaw endDate na startDate, jeśli jest wcześniejsze
+        endDate: value, // Ustaw endDate na startDate, jeśli jest wcześniejsze
       }));
     } else {
-      setFormData(prevState => ({
+      setFormData((prevState) => ({
         ...prevState,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -103,9 +108,9 @@ const SearchPetsitters = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Wyszukaj opiekuna</h1>
+      <h1 className={styles.searchPetsitter}>Wyszukaj opiekuna</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label>
+        <label className={styles.labelPetName}>
           Imię zwierzaka
           <select name="petId" onChange={handleChange}>
             {petsArr.length >= 1 &&
@@ -117,7 +122,7 @@ const SearchPetsitters = () => {
           </select>
         </label>
 
-        <label>
+        <label className={styles.labelService}>
           Rodzaj usługi
           <label>
             <input
@@ -150,8 +155,7 @@ const SearchPetsitters = () => {
             Wizyta domowa{" "}
           </label>
         </label>
-
-        <label>
+        <label className={styles.labelCity}>
           Miasto
           <input
             type="text"
@@ -163,20 +167,24 @@ const SearchPetsitters = () => {
 
         <label>
           Termin
-          <input
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            min={currentDate}
-            onChange={handleChange}
-          />
-          <input
-            type="date"
-            name="endDate"
-            value={formData.endDate}
-            min={formData.startDate}
-            onChange={handleChange}
-          />
+          <div className={styles.labelDate}>
+            <input
+              className={styles.inputStartDate}
+              type="date"
+              name="startDate"
+              value={formData.startDate}
+              min={currentDate}
+              onChange={handleChange}
+            />
+            <input
+              className={styles.inputEndDate}
+              type="date"
+              name="endDate"
+              value={formData.endDate}
+              min={formData.startDate}
+              onChange={handleChange}
+            />
+          </div>
         </label>
 
         <label>
@@ -193,11 +201,11 @@ const SearchPetsitters = () => {
           <label>
             max
             <input
-                type="number"
-                name="maxPrice"
-                value={formData.maxPrice}
-                min={formData.minPrice}
-                onChange={handleChange}
+              type="number"
+              name="maxPrice"
+              value={formData.maxPrice}
+              min={formData.minPrice}
+              onChange={handleChange}
             />
           </label>
         </label>
