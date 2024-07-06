@@ -1,46 +1,55 @@
 @import "../../styles/vars.scss";
+@import "../../styles/button.module.scss";
 
 .registerPage {
-    height: calc(100vh - 100px);
     width: 100%;
     color: black;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 50px;
+    font-size: 1em;
 }
 
 .registerContainer {
     height: 100%;
-    width: 764px;
-    padding: 100px, 50px, 100px, 50px;
+    width: 45%;
     font-family: $font-poppins;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 26px ;
 
-    h2 {
-        font-weight: 700;
-        font-size: 40px;
-        margin-bottom: 30px;
+    gap:20px;
+    h1{
+        margin-top: 15px;
+        font-size: 2em;
     }
-
     form {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 30px;
-
+        gap: 20px;
+        width: 100%;
+        label{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         input {
-            height: 66px;
-            width: 664px;
-            padding: 20px 50px 20px 50px;
-            font-size: 20px;
-            background-color: $grey;
+            background: rgba(244, 244, 244, 1);
+            width: 60%;
             border: none;
-            border-radius: 35px;
+            border-radius: 26px;
+            padding: 15px 20px;
 
-            &:focus {}
+            &:focus {
+                outline: none; 
+                border: none;  
+            }
         }
     }
 
@@ -48,39 +57,17 @@
 
 .orangeBtn {
     height: 71px;
-    width: 436px;
-    font-family: $font-poppins;
-    font-size: 24px;
-    font-weight: 700;
-    color: white;
-    background-color: $orange;
-    border: none;
-    border-radius: 35px;
-    margin-bottom: 30px;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
-
-    &:active,
-    &:hover {
-        background-color: white;
-        outline: 3px solid $orange;
-        color: $orange;
-        box-sizing: border-box;
+    width: 40%;
     }
-
-    &:active {
-        text-decoration: underline;
-    }
-}
 
 
 .orContainer {
     display: flex;
-    margin-bottom: 30px;
+
 
     .line {
         width: 158px;
-        height: 1px;
-        background-color: black;
+        border:1px solid black;
         display: flex;
         align-self: center;
     }
@@ -104,16 +91,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
+    margin-bottom: 15px;
     &:active,
     &:hover {
         background-color: $darkerGrey ;
     }
-
     &:active {
         text-decoration: underline;
     }
-
     .googleLogo {
         margin-right: 20px;
     }

@@ -25,42 +25,11 @@ const ProfileLeftSidebar = () => {
   return (
     <>
       <div className={styles.container}>
+        <div className={styles.avatarContainer}>
+          <AddAvatar />
+        </div>
         {isEditing ? (
-          <form className={styles.formContainer} onSubmit={handleUpdateData}>
-            <AddAvatar />
-            <textarea
-              required
-              className={styles.shortDescription}
-              id="shortDescription"
-              name="shortDescription"
-              value={inputs.shortDescription}
-              placeholder="Dodaj krótki opis"
-              onChange={(e) =>
-                setInputs((prev) => ({
-                  ...prev,
-                  shortDescription: e.target.value,
-                }))
-              }
-            ></textarea>
-            <input
-              type="text"
-              name="name"
-              placeholder="IMIĘ"
-              value={inputs.name}
-              onChange={(e) =>
-                setInputs((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
-            <input
-              autoComplete="on"
-              type="text"
-              name="surname"
-              placeholder="NAZWISKO"
-              value={inputs.surname}
-              onChange={(e) =>
-                setInputs((prev) => ({ ...prev, surname: e.target.value }))
-              }
-            />
+          <form className={styles.formContainerProfile} onSubmit={handleUpdateData}>
             <input
               autoComplete="on"
               type="tel"
@@ -81,36 +50,42 @@ const ProfileLeftSidebar = () => {
                 setInputs((prev) => ({ ...prev, city: e.target.value }))
               }
             />
-            <button className={styles.saveChangesButton} type="submit">
+            <textarea
+              className={styles.shortDescription}
+              id="shortDescription"
+              name="shortDescription"
+              value={inputs.shortDescription}
+              placeholder="Dodaj krótki opis"
+              onChange={(e) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  shortDescription: e.target.value,
+                }))
+              }
+            ></textarea>
+            <button className={`${styles.editButton} ${styles.primaryButton}`} type="submit">
               Zapisz zmiany
             </button>
           </form>
         ) : (
-          <>
-            <AddAvatar isEditing={true} />
-            <p>
-              <strong>IMIĘ:</strong> {inputs.name}
+          <div className={styles.formContainerProfile}>
+            <p className={styles.formContainerPara}>
+              {inputs.phone}
             </p>
-            <p>
-              <strong>NAZWISKO:</strong> {inputs.surname}
+            <p className={styles.formContainerPara}>
+              {inputs.city}
             </p>
-            <p>
-              <strong>NUMER TELEFONU:</strong> {inputs.phone}
-            </p>
-            <p>
-              <strong>MIASTO:</strong> {inputs.city}
-            </p>
-            <p>
-              <strong>OPIS:</strong> {inputs.shortDescription}
+            <p className={styles.formContainerPara}>
+              {inputs.shortDescription ? inputs.shortDescription : `Dodaj opis`}
             </p>
             <button
-              className={styles.editButton}
+              className={`${styles.editButton} ${styles.primaryButton}`}
               type="button"
               onClick={() => setIsEditing(true)}
             >
               Edytuj dane
             </button>
-          </>
+          </div>
         )}
       </div>
     </>

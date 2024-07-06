@@ -49,7 +49,7 @@ const AddDataForm = () => {
       <div className={styles.boxLogin}>
         <h1>UZUPEŁNIJ DANE</h1>
         <form onSubmit={handleSubmit} className={styles.formContainer}>
-          <div>
+          <div className={styles.avatarMainContainer}>
             <AddAvatar />
           </div>
           <input maxLength={15} type="text" name="name" placeholder="IMIĘ" />
@@ -74,7 +74,7 @@ const AddDataForm = () => {
             name="city"
             placeholder="MIASTO"
           />
-          <button className={styles.saveChangesButton} type="submit">
+          <button className={`${styles.saveChangesButton} ${styles.primaryButton}`} type="submit">
             ZAPISZ ZMIANY
           </button>
         </form>

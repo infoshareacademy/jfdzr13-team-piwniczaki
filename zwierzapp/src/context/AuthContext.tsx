@@ -21,6 +21,7 @@ import { avatars } from "../components/AddDataForm/AddAvatar/AddAvatar";
 import Loading from "../components/Loading/Loading";
 import { auth, db } from "../utils/firebase";
 
+
 export interface User {
   uid: string;
   name?: string;

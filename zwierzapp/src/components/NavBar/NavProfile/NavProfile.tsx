@@ -64,7 +64,7 @@ function NavProfile() {
                     </Link>
                     <Link
                         to="/"
-                        className={styles.logoutButton}
+                        className={`${styles.logoutButton} ${styles.primaryButton}`}
                         onClick={logout}
                     >
                         Wyloguj się

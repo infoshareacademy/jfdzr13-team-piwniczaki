@@ -1,3 +1,23 @@
+@import "./../../../styles/vars.scss";
+@import '../../../styles//button.module.scss';
+
 .container {
-    background-color: aqua;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.editButton{
+    border-radius: 69px;
+    font-weight: 500;
+    font-size: 20px;
+    padding: 10px 0px;
+    width:25%;
+    text-align: center;
+    text-decoration: none;
+  }
+.buttonConainter{
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: end;
 }

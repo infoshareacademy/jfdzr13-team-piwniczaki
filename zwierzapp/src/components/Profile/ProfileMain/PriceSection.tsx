@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import getPetsitterData, {
   PetsitterDocument,
 } from "../../../hooks/getPetsitterData";
-
+import styles from './PriceSection.module.scss'
 type Prices = {
   dogHomeVisitPrice: number;
   dogAccomPrice: number;
@@ -80,20 +80,38 @@ const PriceSection: React.FC = () => {
   return (
     <>
       {(services.dogIsAvailable || services.catIsAvailable) && (
-        <div>
+        <div className={styles.containterPriceProfile}>
           <h1>Cennik</h1>
           <div>
             {services.catIsAvailable && (
               <div>
                 <h2>Kot</h2>
                 {services.catAccom && (
-                  <span>Nocleg {prices.catAccomPrice}zł</span>
+                  <>
+                    <span className={styles.priceLine}>
+                      <p>Nocleg</p> <p>{prices.catAccomPrice}zł</p>
+                    </span>
+                    <div className={styles.priceBar}>
+                    </div>
+                  </>
                 )}
                 {services.catHomeVisit && (
-                  <span>Wizyta domowa {prices.catHomeVisitPrice}zł</span>
+                  <>
+                    <span className={styles.priceLine}>
+                      <p>Wizyta domowa</p> <p>{prices.catHomeVisitPrice}zł</p>
+                    </span>
+                    <div className={styles.priceBar}>
+                    </div>
+                  </>
                 )}
                 {services.catWalk && (
-                  <span>Spacer {prices.catWalkPrice}zł</span>
+                  <>
+                    <span className={styles.priceLine}>
+                      <p>Spacer</p> <p>{prices.catWalkPrice}zł</p>
+                    </span>
+                    <div className={styles.priceBar}>
+                    </div>
+                  </>
                 )}
               </div>
             )}
@@ -101,13 +119,31 @@ const PriceSection: React.FC = () => {
               <div>
                 <h2>Pies</h2>
                 {services.dogAccom && (
-                  <span>Nocleg {prices.dogAccomPrice}zł</span>
+                  <>
+                    <span className={styles.priceLine}>
+                      <p>Nocleg</p> <p>{prices.dogAccomPrice}zł</p>
+                    </span>
+                    <div className={styles.priceBar}>
+                    </div>
+                  </>
                 )}
                 {services.dogHomeVisit && (
-                  <span>Wizyta domowa {prices.dogHomeVisitPrice}zł</span>
+                  <>
+                    <span className={styles.priceLine}>
+                      <p>Wizyta domowa</p> <p>{prices.dogHomeVisitPrice}zł</p>
+                    </span>
+                    <div className={styles.priceBar}>
+                    </div>
+                  </>
                 )}
                 {services.dogWalk && (
-                  <span>Spacer {prices.dogWalkPrice}zł</span>
+                  <>
+                    <span className={styles.priceLine}>
+                      <p>Spacer</p> <p>{prices.dogWalkPrice}zł</p>
+                    </span>
+                    <div className={styles.priceBar}>
+                    </div>
+                  </>
                 )}
               </div>
             )}

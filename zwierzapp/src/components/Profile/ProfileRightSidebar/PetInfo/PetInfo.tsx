@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useData from '../../../../context/DataContext'
 import useAuth from '../../../../context/AuthContext'
 import { useNavigate } from 'react-router-dom';
+import styles from './PetInfo.module.scss'
 
 
 function PetInfo() {
@@ -52,23 +53,22 @@ if (loading) {
 }
 
   return (
-    <div>
+    <div className={styles.petContainer}>
       {pets.length > 0 ? (
-        <div>
-          <h1>Twoje zwierzaki</h1>
-          <ul>
+        <div className={styles.petWrapper}>
+          <p>Twoii pupile</p>
+          <ul className={styles.petList}>
             {pets.map(pet => (
               <li key={pet.id} onClick={() => handleEditPet(pet.id)}>
                 {pet.name}
               </li>
             ))}
           </ul>
-          <button onClick={handleAddPet}>Dodaj zwierzaka</button>
+          <button onClick={handleAddPet} className={`${styles.buttonAdd} ${styles.primaryButton}`}>Dodaj zwierzaka</button>
         </div>
       ) : (
-        <div>
-          <h1>Twoje zwierzaki</h1>
-          <button onClick={handleAddPet}>Dodaj zwierzaka</button>
+        <div >
+          <button onClick={handleAddPet} className={`${styles.buttonAdd} ${styles.primaryButton}`}>Dodaj zwierzaka</button>
         </div>
       )}
     </div>

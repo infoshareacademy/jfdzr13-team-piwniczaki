@@ -13,7 +13,7 @@ const AvatarModal = (props: AvatarModalProps) => {
         <p className={styles.avatarText}>WYBIERZ SWÓJ AWATAR</p>
         {props.avatars.map((element, index) => (
           <li className={styles.avatarImages} key={index}>
-            <img
+            <img className={styles.singleAvatarImage}
               src={element.photo}
               alt={element.alt}
               onClick={() => {

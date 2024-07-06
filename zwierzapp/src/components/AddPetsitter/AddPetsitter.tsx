@@ -6,21 +6,23 @@ import { db } from "../../utils/firebase";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import useData from "../../context/DataContext";
+import { Link } from "react-router-dom";
+import arrowback from "../../images/arrow_back.svg"
 
 function AddPetsitter() {
   const dataContext = useData();
   const authContext = useAuth();
   const [isFirstTime, setIsFirstTime] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
-  
-  
+
+
   const initialCheckboxes = {
-    cat: false,    
+    cat: false,
     catSex0: false,
     catSex1: false,
-    catAge0:false,
-    catAge1:false,
-    catAge2:false,
+    catAge0: false,
+    catAge1: false,
+    catAge2: false,
     catActivity0: false,
     catActivity1: false,
     catActivity2: false,
@@ -33,11 +35,11 @@ function AddPetsitter() {
     catAccom: false,
     catHomeVisit: false,
     dog: false,
-    dogSex0:false,
-    dogSex1:false,
-    dogAge0:false,
-    dogAge1:false,
-    dogAge2:false,
+    dogSex0: false,
+    dogSex1: false,
+    dogAge0: false,
+    dogAge1: false,
+    dogAge2: false,
     dogActivity0: false,
     dogActivity1: false,
     dogActivity2: false,
@@ -129,7 +131,7 @@ function AddPetsitter() {
     if (value === '') {
       setPrices((prev) => ({
         ...prev,
-        [name]: 0, 
+        [name]: 0,
       }));
     }
   };
@@ -265,31 +267,29 @@ function AddPetsitter() {
 
         setTimeout(() => {
           navigate("/profile");
-        }, 2000);
+        }, 1500);
       }
     } catch (error) {
       toast.dismiss(loadingToastId);
       toast.error("Błąd podczas zapisywania danych");
     }
   };
-  const goBack = () => {
-    navigate('/profile')
-  }
   return (
     <div className={styles.AddPetsitterPage}>
       <article className={styles.addPetsitterContainer}>
         {!isFirstTime && !isEditMode && (
-          <button type="button" onClick={goBack}>
-            <img src="/src/images/arrow_back.svg"></img>wróć
-          </button>
-            )}
+          <div>
+            <Link to="/profile" className={styles.getBackElement}><img src={arrowback}></img>wróć</Link>
+          </div>
+        )}
         <h1>Zostań petsitterem!</h1>
         <h2>Jakimi zwierzętami chcesz się opiekować?</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.formContainer}>
           <div className={styles.inputWrapper}>
+
             <div className={styles.dog}>
-              <div className="dogRace">
-                <label>
+              <div className={styles.inputSelectWrapper}>
+                <label >
                   <input
                     name="dog"
                     type="checkbox"
@@ -302,65 +302,65 @@ function AddPetsitter() {
               </div>
               {checkboxes.dog && (
                 <>
-                  <div className="dogSex">
                   <h3>Płeć</h3>
-                    <label>
-                        <input
-                          name="dogSex0"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogSex0}
-                          disabled={!isEditMode}
-                        />
-                          Pies
-                      </label>
-                    <label>
-                        <input
-                          name="dogSex1"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogSex1}
-                          disabled={!isEditMode}
-                        />
-                          Suczka 
-                      </label>
+                  <div className={styles.inputSelectWrapper}>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogSex0"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogSex0}
+                        disabled={!isEditMode}
+                      />
+                      Pies
+                    </label>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogSex1"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogSex1}
+                        disabled={!isEditMode}
+                      />
+                      Suczka
+                    </label>
                   </div>
-                  <div className="dogAge">
                   <h3>Wiek</h3>
-                    <label>
-                        <input
-                          name="dogAge0"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogAge0}
-                          disabled={!isEditMode}
-                        />
-                          Młody
+                  <div className={styles.inputSelectWrapper}>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogAge0"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogAge0}
+                        disabled={!isEditMode}
+                      />
+                      Młody
                     </label>
-                    <label>
-                        <input
-                          name="dogAge1"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogAge1}
-                          disabled={!isEditMode}
-                        />
-                          Dorosły
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogAge1"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogAge1}
+                        disabled={!isEditMode}
+                      />
+                      Dorosły
                     </label>
-                    <label>
-                        <input
-                          name="dogAge2"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogAge2}
-                          disabled={!isEditMode}
-                        />
-                          Stary
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogAge2"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogAge2}
+                        disabled={!isEditMode}
+                      />
+                      Stary
                     </label>
                   </div>
-                  <div className="dogActivity">
-                    <h3>Aktywność Fizyczna</h3>
-                    <label>
+                  <h3>Aktywność Fizyczna</h3>
+                  <div className={styles.inputSelectWrapper}>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="dogActivity0"
                         type="checkbox"
@@ -370,7 +370,7 @@ function AddPetsitter() {
                       />
                       Leniuch
                     </label>
-                    <label>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="dogActivity1"
                         type="checkbox"
@@ -380,7 +380,7 @@ function AddPetsitter() {
                       />
                       Średniak
                     </label>
-                    <label>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="dogActivity2"
                         type="checkbox"
@@ -391,146 +391,152 @@ function AddPetsitter() {
                       Wariat
                     </label>
                   </div>
-                  <div className="dogWeight">
-                    <h3>Waga</h3>
-                    <div>
-                      <label>
-                        <input
-                          name="dogWeight0"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogWeight0}
-                          disabled={!isEditMode}
-                        />
-                        &lt;5kg
-                      </label>
-                      <label>
-                        <input
-                          name="dogWeight1"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogWeight1}
-                          disabled={!isEditMode}
-                        />
-                        5-10kg
-                      </label>
-                      <label>
-                        <input
-                          name="dogWeight2"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogWeight2}
-                          disabled={!isEditMode}
-                        />
-                        10-15kg
-                      </label>
-                      <label>
-                        <input
-                          name="dogWeight3"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogWeight3}
-                          disabled={!isEditMode}
-                        />
-                        15-20kg
-                      </label>
-                      <label>
-                        <input
-                          name="dogWeight4"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.dogWeight4}
-                          disabled={!isEditMode}
-                        />
-                        20+kg
-                      </label>
-                    </div>
+                  <h3>Waga</h3>
+                  <div className={styles.inputSelectWrapper}>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogWeight0"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogWeight0}
+                        disabled={!isEditMode}
+                      />
+                      &lt;5kg
+                    </label>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogWeight1"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogWeight1}
+                        disabled={!isEditMode}
+                      />
+                      5-10kg
+                    </label>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogWeight2"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogWeight2}
+                        disabled={!isEditMode}
+                      />
+                      10-15kg
+                    </label>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogWeight3"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogWeight3}
+                        disabled={!isEditMode}
+                      />
+                      15-20kg
+                    </label>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="dogWeight4"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.dogWeight4}
+                        disabled={!isEditMode}
+                      />
+                      20+kg
+                    </label>
                   </div>
-                  <div className="dogOffer">
-                    <h3>Oferta</h3>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="dogWalk"
-                        onChange={handleCheckboxChange}
-                        checked={checkboxes.dogWalk}
-                        disabled={!isEditMode}
-                      />
-                      Spacer
-                    </label>
-                    {checkboxes.dogWalk && (
-                      <label>
+                  <h3>Oferta</h3>
+                  <div className={styles.inputSelectWrapper}>
+                    <div className={styles.inputCheckBoxPrice}>
+                      <label className={styles.singleCheckbox}>
                         <input
-                          type="number"
-                          name="dogWalkPrice"
-                          value={prices.dogWalkPrice}
-                          min={0}
-                          onFocus={handleFocus}
-                          onBlur={handleBlur}
-                          onChange={handlePriceInput}
+                          type="checkbox"
+                          name="dogWalk"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.dogWalk}
                           disabled={!isEditMode}
                         />
-                        <span>PLN</span>
+                        Spacer
                       </label>
-                    )}
-
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="dogAccom"
-                        onChange={handleCheckboxChange}
-                        checked={checkboxes.dogAccom}
-                        disabled={!isEditMode}
-                      />
-                      Nocleg
-                    </label>
-                    {checkboxes.dogAccom && (
-                      <label>
+                      {checkboxes.dogWalk && (
+                        <label className={styles.inputPriceWithCurrency}>
+                          <input
+                            type="number"
+                            name="dogWalkPrice"
+                            value={prices.dogWalkPrice}
+                            min={0}
+                            className={styles.inputPrice}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            onChange={handlePriceInput}
+                            disabled={!isEditMode}
+                          />
+                          <span>PLN</span>
+                        </label>
+                      )}
+                    </div>
+                    <div className={styles.inputCheckBoxPrice}>
+                      <label className={styles.singleCheckbox}>
                         <input
-                          type="number"
-                          name="dogAccomPrice"
-                          value={prices.dogAccomPrice}
-                          min={0}
-                          onFocus={handleFocus}
-                          onBlur={handleBlur}
-                          onChange={handlePriceInput}
+                          type="checkbox"
+                          name="dogAccom"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.dogAccom}
                           disabled={!isEditMode}
                         />
-                        <span>PLN</span>
+                        Nocleg
                       </label>
-                    )}
-
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="dogHomeVisit"
-                        onChange={handleCheckboxChange}
-                        checked={checkboxes.dogHomeVisit}
-                        disabled={!isEditMode}
-                      />
-                      Wizyta Domowa
-                    </label>
-                    {checkboxes.dogHomeVisit && (
-                      <label>
+                      {checkboxes.dogAccom && (
+                        <label className={styles.inputPriceWithCurrency}>
+                          <input
+                            type="number"
+                            name="dogAccomPrice"
+                            value={prices.dogAccomPrice}
+                            min={0}
+                            className={styles.inputPrice}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            onChange={handlePriceInput}
+                            disabled={!isEditMode}
+                          />
+                          <span>PLN</span>
+                        </label>
+                      )}
+                    </div>
+                    <div className={styles.inputCheckBoxPrice}>
+                      <label className={styles.singleCheckbox}>
                         <input
-                          type="number"
-                          name="dogHomeVisitPrice"
-                          value={prices.dogHomeVisitPrice}
-                          min={0}
-                          onFocus={handleFocus}
-                          onBlur={handleBlur}
-                          onChange={handlePriceInput}
+                          type="checkbox"
+                          name="dogHomeVisit"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.dogHomeVisit}
                           disabled={!isEditMode}
                         />
-                        <span>PLN</span>
+                        Wizyta Domowa
                       </label>
-                    )}
+                      {checkboxes.dogHomeVisit && (
+                        <label className={styles.inputPriceWithCurrency}>
+                          <input
+                            type="number"
+                            name="dogHomeVisitPrice"
+                            value={prices.dogHomeVisitPrice}
+                            min={0}
+                            className={styles.inputPrice}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            onChange={handlePriceInput}
+                            disabled={!isEditMode}
+                          />
+                          <span>PLN</span>
+                        </label>
+                      )}
+                    </div>
                   </div>
                 </>
               )}
             </div>
+
             <div className={styles.cat}>
-              <div className="catRace">
+              <div className={styles.inputSelectWrapper}>
                 <label>
                   <input
                     name="cat"
@@ -544,65 +550,65 @@ function AddPetsitter() {
               </div>
               {checkboxes.cat && (
                 <>
-                <div className="catSex">
                   <h3>Płeć</h3>
-                    <label>
-                        <input
-                          name="catSex0"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.catSex0}
-                          disabled={!isEditMode}
-                        />
-                          Kot
-                      </label>
-                    <label>
-                        <input
-                          name="catSex1"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.catSex1}
-                          disabled={!isEditMode}
-                        />
-                          Kotka
-                      </label>
+                  <div className={styles.inputSelectWrapper}>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="catSex0"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.catSex0}
+                        disabled={!isEditMode}
+                      />
+                      Kot
+                    </label>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="catSex1"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.catSex1}
+                        disabled={!isEditMode}
+                      />
+                      Kotka
+                    </label>
                   </div>
-                  <div className="catAge">
                   <h3>Wiek</h3>
-                    <label>
-                        <input
-                          name="catAge0"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.catAge0}
-                          disabled={!isEditMode}
-                        />
-                          Młody
+                  <div className={styles.inputSelectWrapper}>
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="catAge0"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.catAge0}
+                        disabled={!isEditMode}
+                      />
+                      Młody
                     </label>
-                    <label>
-                        <input
-                          name="catAge1"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.catAge1}
-                          disabled={!isEditMode}
-                        />
-                          Dorosły
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="catAge1"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.catAge1}
+                        disabled={!isEditMode}
+                      />
+                      Dorosły
                     </label>
-                    <label>
-                        <input
-                          name="catAge2"
-                          type="checkbox"
-                          onChange={handleCheckboxChange}
-                          checked={checkboxes.catAge2}
-                          disabled={!isEditMode}
-                        />
-                          Stary
+                    <label className={styles.singleCheckbox}>
+                      <input
+                        name="catAge2"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                        checked={checkboxes.catAge2}
+                        disabled={!isEditMode}
+                      />
+                      Stary
                     </label>
                   </div>
-                  <div className="catActivity">
-                    <h3>Akytwność Fizyczna</h3>
-                    <label>
+                  <h3>Akytwność Fizyczna</h3>
+                  <div className={styles.inputSelectWrapper}>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="catActivity0"
                         type="checkbox"
@@ -612,7 +618,7 @@ function AddPetsitter() {
                       />
                       Leniuch
                     </label>
-                    <label>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="catActivity1"
                         type="checkbox"
@@ -622,7 +628,7 @@ function AddPetsitter() {
                       />
                       Średniak
                     </label>
-                    <label>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="catActivity2"
                         type="checkbox"
@@ -633,9 +639,9 @@ function AddPetsitter() {
                       Wariat
                     </label>
                   </div>
-                  <div className="catWeight">
-                    <h3>Waga</h3>
-                    <label>
+                  <h3>Waga</h3>
+                  <div className={styles.inputSelectWrapper}>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="catWeight0"
                         type="checkbox"
@@ -645,7 +651,7 @@ function AddPetsitter() {
                       />
                       &lt;2kg
                     </label>
-                    <label>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="catWeight1"
                         type="checkbox"
@@ -655,7 +661,7 @@ function AddPetsitter() {
                       />
                       2-4kg
                     </label>
-                    <label>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="catWeight2"
                         type="checkbox"
@@ -665,7 +671,7 @@ function AddPetsitter() {
                       />
                       4-6kg
                     </label>
-                    <label>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="catWeight3"
                         type="checkbox"
@@ -675,7 +681,7 @@ function AddPetsitter() {
                       />
                       6-8kg
                     </label>
-                    <label>
+                    <label className={styles.singleCheckbox}>
                       <input
                         name="catWeight4"
                         type="checkbox"
@@ -686,83 +692,92 @@ function AddPetsitter() {
                       8+kg
                     </label>
                   </div>
-                  <div className="catOffer">
-                    <h3>Oferta</h3>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="catWalk"
-                        onChange={handleCheckboxChange}
-                        checked={checkboxes.catWalk}
-                        disabled={!isEditMode}
-                      />
-                      Spacer
-                    </label>
-                    {checkboxes.catWalk && (
-                      <label>
+                  <h3>Oferta</h3>
+                  <div className={styles.inputSelectWrapper}>
+                    <div className={styles.inputCheckBoxPrice}>
+                      <label className={styles.singleCheckbox}>
                         <input
-                          type="number"
-                          name="catWalkPrice"
-                          value={prices.catWalkPrice}
-                          min={0}
-                          onFocus={handleFocus}
-                          onBlur={handleBlur}
-                          onChange={handlePriceInput}
+                          type="checkbox"
+                          name="catWalk"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.catWalk}
                           disabled={!isEditMode}
                         />
-                        <span>PLN</span>
+                        Spacer
                       </label>
-                    )}
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="catAccom"
-                        onChange={handleCheckboxChange}
-                        checked={checkboxes.catAccom}
-                        disabled={!isEditMode}
-                      />
-                      Nocleg
-                    </label>
-                    {checkboxes.catAccom && (
-                      <label>
+                      {checkboxes.catWalk && (
+                        <label className={styles.inputPriceWithCurrency}>
+                          <input
+                            type="number"
+                            name="catWalkPrice"
+                            value={prices.catWalkPrice}
+                            min={0}
+                            className={styles.inputPrice}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            onChange={handlePriceInput}
+                            disabled={!isEditMode}
+                          />
+                          <span>PLN</span>
+                        </label>
+                      )}
+                    </div>
+                    <div className={styles.inputCheckBoxPrice}>
+                      <label className={styles.singleCheckbox}>
                         <input
-                          type="number"
-                          name="catAccomPrice"
-                          value={prices.catAccomPrice}
-                          min={0}
-                          onFocus={handleFocus}
-                          onBlur={handleBlur}
-                          onChange={handlePriceInput}
+                          type="checkbox"
+                          name="catAccom"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.catAccom}
                           disabled={!isEditMode}
                         />
-                        <span>PLN</span>
+                        Nocleg
                       </label>
-                    )}
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="catHomeVisit"
-                        onChange={handleCheckboxChange}
-                        checked={checkboxes.catHomeVisit}
-                        disabled={!isEditMode}
-                      />
-                      Wizyta Domowa
-                    </label>
-                    {checkboxes.catHomeVisit && (
-                      <label>
+                      {checkboxes.catAccom && (
+                        <label className={styles.inputPriceWithCurrency}>
+                          <input
+                            type="number"
+                            name="catAccomPrice"
+                            value={prices.catAccomPrice}
+                            min={0}
+                            className={styles.inputPrice}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            onChange={handlePriceInput}
+                            disabled={!isEditMode}
+                          />
+                          <span>PLN</span>
+                        </label>
+                      )}
+                    </div>
+                    <div className={styles.inputCheckBoxPrice}>
+                      <label className={styles.singleCheckbox}>
                         <input
-                          type="number"
-                          name="catHomeVisitPrice"
-                          value={prices.catHomeVisitPrice}
-                          min={0}
-                          onFocus={handleFocus}
-                          onBlur={handleBlur}
-                          onChange={handlePriceInput}
+                          type="checkbox"
+                          name="catHomeVisit"
+                          onChange={handleCheckboxChange}
+                          checked={checkboxes.catHomeVisit}
                           disabled={!isEditMode}
                         />
-                        <span>PLN</span>
+                        Wizyta Domowa
                       </label>
-                    )}
+                      {checkboxes.catHomeVisit && (
+                        <label className={styles.inputPriceWithCurrency}>
+                          <input
+                            type="number"
+                            name="catHomeVisitPrice"
+                            value={prices.catHomeVisitPrice}
+                            min={0}
+                            className={styles.inputPrice}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            onChange={handlePriceInput}
+                            disabled={!isEditMode}
+                          />
+                          <span>PLN</span>
+                        </label>
+                      )}
+                    </div>
                   </div>
                 </>
               )}
@@ -770,20 +785,20 @@ function AddPetsitter() {
           </div>
           <div className={styles.buttonWrapper}>
             {!isFirstTime && !isEditMode && (
-              <button type="button" onClick={handleEditClick}>
+              <button type="button" className={`${styles.primaryButton} ${styles.addPetSitterButton}`} onClick={handleEditClick}>
                 Edytuj
               </button>
             )}
-              {!isFirstTime && isEditMode && (
-              <button type="button" onClick={handleReset}>
+            {!isFirstTime && isEditMode && (
+              <button type="button" className={`${styles.primaryButton} ${styles.addPetSitterButton}`} onClick={handleReset}>
                 Wyczyść
               </button>
             )}
-            <button type="submit">Zapisz</button>
+            <button type="submit" className={`${styles.primaryButton} ${styles.addPetSitterButton}`}>Zapisz</button>
           </div>
         </form>
       </article>
-    </div>
+    </div >
   );
 }
 

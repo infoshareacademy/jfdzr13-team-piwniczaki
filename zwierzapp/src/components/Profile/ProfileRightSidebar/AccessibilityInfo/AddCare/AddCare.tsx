@@ -28,7 +28,7 @@ function AddCare() {
     if (databasePetsitter) {
       setDocumentId(databasePetsitter.id);
       fetchAccessDates(databasePetsitter.id);
-      
+
     }
   }, [databasePetsitter]);
 
@@ -82,7 +82,14 @@ function AddCare() {
   return (
     <div className={styles.addcareContainer}>
       {accessDates.length === 0 ? (
-        <p className={styles.emptyState}>Brak dostępnych dat</p>
+        <>
+          <p className={styles.emptyState}>Brak dostępnych dat</p>
+          <div className={styles.dateTittle}>
+            <span className={styles.tittleAcc}>Początek</span>
+            <span className={styles.tittleAcc}>Koniec</span>
+            <span className={styles.tittleAcc}>Lokalizacja</span>
+          </div>
+        </>
       ) : (
         <>
           <div className={styles.dateTittle}>
@@ -95,7 +102,7 @@ function AddCare() {
               <input type="date" value={date.startDate} readOnly></input>
               <input type="date" value={date.endDate} readOnly></input>
               <input type="text" value={date.careCity} readOnly></input>
-              <button onClick={() => removeRecord(date)}>Skasuj</button>
+              <button onClick={() => removeRecord(date)} className={`${styles.returnButton} ${styles.primaryButton}`}>Skasuj</button>
             </div>
           ))}
         </>
@@ -105,10 +112,10 @@ function AddCare() {
           <input type="date" name="startDate" min={currentDate} required></input>
           <input type="date" name="endDate" min={currentDate} required></input>
           <input type="text" name="city" required></input>
-          <button type="submit">Dodaj</button>
+          <button type="submit" className={`${styles.returnButton} ${styles.primaryButton}`}>Dodaj</button>
         </form>
       </div>
-      <Link to="/profile" className={styles.becomePetSitterLink}>Wróć</Link>
+      <Link to="/profile" className={`${styles.returnButton} ${styles.primaryButton}`}>Wróć</Link>
     </div>
   );
 }
