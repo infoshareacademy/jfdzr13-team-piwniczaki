@@ -167,7 +167,7 @@ const SearchPetsitters = () => {
 
         <label>
           Termin
-          <div className={styles.labelDate}>
+          <div>
             <input
               className={styles.inputStartDate}
               type="date"
@@ -189,25 +189,27 @@ const SearchPetsitters = () => {
 
         <label>
           Cena
-          <label>
-            min
-            <input
-              type="number"
-              name="minPrice"
-              value={formData.minPrice}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            max
-            <input
-              type="number"
-              name="maxPrice"
-              value={formData.maxPrice}
-              min={formData.minPrice}
-              onChange={handleChange}
-            />
-          </label>
+          <div className={styles.priceWrapper}>
+            <label>
+              min
+              <input
+                type="number"
+                name="minPrice"
+                value={formData.minPrice}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              max
+              <input
+                type="number"
+                name="maxPrice"
+                value={formData.maxPrice}
+                min={formData.minPrice}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
         </label>
 
         <button type="submit">Szukaj</button>
