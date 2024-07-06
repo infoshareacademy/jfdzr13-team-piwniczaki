@@ -108,10 +108,10 @@ const SearchPetsitters = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <h1 className={styles.searchPetsitter}>Wyszukaj opiekuna</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
+        <h1>Wyszukaj opiekuna</h1>
         <label className={styles.labelPetName}>
-          Imię zwierzaka
+          <span>Imię zwierzaka</span>
           <select name="petId" onChange={handleChange}>
             {petsArr.length >= 1 &&
               petsArr.map((pet) => (
@@ -121,43 +121,46 @@ const SearchPetsitters = () => {
               ))}
           </select>
         </label>
-
-        <label className={styles.labelService}>
-          Rodzaj usługi
-          <label>
-            <input
-              type="radio"
-              name="serviceType"
-              value="walk"
-              onChange={handleChange}
-              checked={formData.serviceType === "walk"}
-            />{" "}
-            Spacer{" "}
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="serviceType"
-              value="accom"
-              onChange={handleChange}
-              checked={formData.serviceType === "accom"}
-            />{" "}
-            Nocleg{" "}
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="serviceType"
-              value="homeVisit"
-              onChange={handleChange}
-              checked={formData.serviceType === "homeVisit"}
-            />{" "}
-            Wizyta domowa{" "}
-          </label>
+        <label>
+          <span>Rodzaj usługi</span>
+          <div className={styles.labelServiceContainer}>
+            <label>
+              <input
+                type="radio"
+                name="serviceType"
+                value="walk"
+                onChange={handleChange}
+                checked={formData.serviceType === "walk"}
+              />{" "}
+              Spacer{" "}
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="serviceType"
+                value="accom"
+                onChange={handleChange}
+                checked={formData.serviceType === "accom"}
+              />{" "}
+              Nocleg{" "}
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="serviceType"
+                value="homeVisit"
+                onChange={handleChange}
+                checked={formData.serviceType === "homeVisit"}
+              />{" "}
+              Wizyta domowa{" "}
+            </label>
+          </div>
         </label>
+
         <label className={styles.labelCity}>
-          Miasto
+          <span>Miasto</span>
           <input
+            className={styles.inputCity}
             type="text"
             name="city"
             value={formData.city}
@@ -165,9 +168,9 @@ const SearchPetsitters = () => {
           />
         </label>
 
-        <label>
-          Termin
-          <div>
+        <label className={styles.labelDateContainer}>
+          <span>Termin</span>
+          <div className={styles.labelDate}>
             <input
               className={styles.inputStartDate}
               type="date"
@@ -187,21 +190,23 @@ const SearchPetsitters = () => {
           </div>
         </label>
 
-        <label>
-          Cena
+        <label className={styles.labelPriceContainer}>
+          <span>Cena</span>
           <div className={styles.priceWrapper}>
-            <label>
-              min
+            <label className={styles.labelMinPrice}>
+              <span>min</span>
               <input
+                className={styles.inputMinPrice}
                 type="number"
                 name="minPrice"
                 value={formData.minPrice}
                 onChange={handleChange}
               />
             </label>
-            <label>
-              max
+            <label className={styles.labelMaxPrice}>
+              <span>max</span>
               <input
+                className={styles.inputMaxPrice}
                 type="number"
                 name="maxPrice"
                 value={formData.maxPrice}
@@ -212,7 +217,12 @@ const SearchPetsitters = () => {
           </div>
         </label>
 
-        <button type="submit">Szukaj</button>
+        <button
+          type="submit"
+          className={`${styles.searchButton} ${styles.primaryButton}`}
+        >
+          Szukaj
+        </button>
       </form>
     </div>
   );
