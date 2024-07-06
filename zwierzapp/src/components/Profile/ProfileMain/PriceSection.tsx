@@ -117,7 +117,7 @@ const PriceSection: React.FC = () => {
             )}
             {services.dogIsAvailable && (
               <div>
-                <h2>Pies</h2>
+                <h2 className={styles.headerSecond}>Pies</h2>
                 {services.dogAccom && (
                   <>
                     <span className={styles.priceLine}>

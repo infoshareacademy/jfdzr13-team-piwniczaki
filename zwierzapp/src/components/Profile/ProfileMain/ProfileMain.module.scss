@@ -3,8 +3,13 @@
 
 .container {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+}
+.top{
+  width: 100%;
+  height: 100%;
 }
 .editButton{
     border-radius: 69px;
