@@ -32,8 +32,8 @@ function ProfileMain(passedData: { uid?: string }) {
   return (
     <main className={styles.container}>
       <div className={styles.top}>
-        <h1>
-          {user ? `${user.name} ${user.surname}` : "Anonimowy użytkownik"}
+        <h1 className={styles.nameProfile}>
+          {user ? `Cześć, ${user.name} ${user.surname}!` : "Cześć, Anonimowy użytkowniku!"}
         </h1>
         <DescSection/>
       </div>

@@ -56,7 +56,7 @@ if (loading) {
     <div className={styles.petContainer}>
       {pets.length > 0 ? (
         <div className={styles.petWrapper}>
-          <p>Twoii pupile</p>
+          <p className={styles.tittlePetInfo}>Twoi pupile</p>
           <ul className={styles.petList}>
             {pets.map(pet => (
               <li key={pet.id} onClick={() => handleEditPet(pet.id)}>

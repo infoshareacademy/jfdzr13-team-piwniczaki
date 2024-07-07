@@ -73,7 +73,7 @@ function DescSection() {
                 <>
                     {userDoc.descLong ? (
                         <>
-                            <p>{userDoc.descLong}</p>
+                            <p className={styles.paraLongDesc}>{userDoc.descLong}</p>
                             <button className={`${styles.editDescButton} ${styles.primaryButton}`} onClick={handleChange}>Edytuj opis</button>
                         </>
                     ) : (
