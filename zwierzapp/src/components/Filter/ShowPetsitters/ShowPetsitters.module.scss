@@ -1,4 +1,37 @@
-.petsittersContainer{
+@import "../../../styles/vars.scss";
+
+.petsittersContainer {
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
+
+.sortContainer {
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+.sort {
+    word-spacing: 3px;
+    font-size: 12px;
+    border-radius: 35px;
+    background-color: $orange;
+
+
+    label {
+        font-weight: 500;
+        color: white;
+        width: 200px;
+        margin: 0;
+        padding: 0 20px;
+
+    }
+
+    select {
+        font-weight: bold;
+        background-color: $grey;
+        width: 200px;
+        margin: 0;
+    }
 }

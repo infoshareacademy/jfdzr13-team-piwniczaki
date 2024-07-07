@@ -64,15 +64,20 @@ const ShowPetsitters = () => {
 
   return (
     <div className={styles.petsittersContainer}>
-      <label>
-        sortuj według
-        <select onChange={handleSortChange} defaultValue="alfabetycznie (A-Z)">
-          <option value="kwota rosnąco">kwota rosnąco</option>
-          <option value="kwota malejąco">kwota malejąco</option>
-          <option value="alfabetycznie (A-Z)">alfabetycznie (A-Z)</option>
-          <option value="alfabetycznie (Z-A)">alfabetycznie (Z-A)</option>
-        </select>
-      </label>
+      <div className={styles.sortContainer}>
+        <div className={styles.sort}>
+            <label>
+            sortuj według
+            </label>
+            <select onChange={handleSortChange} defaultValue='alfabetycznie (A-Z)' >
+              <option value="kwota rosnąco">kwota rosnąco</option>
+              <option value="kwota malejąco">kwota malejąco</option>
+              <option value="alfabetycznie (A-Z)">alfabetycznie (A-Z)</option>
+              <option value="alfabetycznie (Z-A)">alfabetycznie (Z-A)</option>
+            </select>
+        </div>
+      </div>
+
       <PetsitterBar
         petsitters={sortedPetsitters}
         serviceType={serviceType}

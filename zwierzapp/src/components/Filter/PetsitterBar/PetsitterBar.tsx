@@ -18,7 +18,7 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({
   const { currentUser }: { currentUser: User | null } = useAuth() || {
     currentUser: null,
   };
-  // Funkcja zwracająca cenę usługi dla konkretnego opiekuna
+
   const getPriceForService = (petsitter: any) => {
     if (!petsitter) return 0;
     switch (serviceType) {
@@ -40,9 +40,11 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({
   };
   return (
     <div>
-      <div>
-        <h1>Znajdź idealnego opiekuna dla swojego zwierzaka!</h1>
-      </div>
+      {location.pathname === '/search' && location.search === '' && (
+        <div>
+          <h1>Znajdź idealnego opiekuna dla swojego zwierzaka!</h1>
+        </div>
+      )}
       {petsitters && petsitters.length > 0 ? (
         petsitters.map((petsitter) => (
           <div key={petsitter.id} className={styles.petsitterCard}>
@@ -50,14 +52,17 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({
               src={petsitter?.userData?.avatar?.photo}
               alt={petsitter?.userData?.avatar?.alt}
             />
-            <div>
+            <div className={styles.petsitterInfo}>
               <h1>{`${petsitter?.userData?.name} ${petsitter?.userData?.surname}`}</h1>
               <p>{petsitter?.userData?.shortDescription}</p>
             </div>
-            <div>
-              <span>{`Suma ${getPriceForService(petsitter)} zł`}</span>
+            <div className={styles.serviceInfo}>
+              <div className={styles.price}>
+                <span className={styles.sum}>suma</span>
+                <span className={styles.amount}>{` ${getPriceForService(petsitter)} zł`}</span>
+              </div>
               {petsitter?.userData?.email ? (
-                <button>
+                <button className={`${styles.askButton} ${styles.primaryButton}`}>
                   <a
                     href={`mailto:${petsitter?.userData?.email}?subject=${
                       filters?.petName
@@ -120,11 +125,12 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({
           </div>
         ))
       ) : (
-        <div>
-          <h1>Nie znaleziono opiekunów :(((( </h1>
+        <div className={styles.noPetsitters}>
+          <h1>Nie znaleziono opiekunów :(</h1>
         </div>
       )}
-    </div>
-  );
+  </div>
+
+    );
 };
 export default PetsitterBar;

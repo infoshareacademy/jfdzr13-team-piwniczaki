@@ -1,0 +1,65 @@
+@import "../../../styles/vars.scss";
+@import "../../../styles/button.module.scss";
+
+
+.petsitterCard {
+    display: flex;
+    padding: 20px;
+    background-color: $grey;
+    border-radius: 15px;
+    margin: 15px 10px;
+
+    img {
+        height: 140px;
+        width: 140px;
+        margin-right: 15px;
+    }
+}
+
+.petsitterInfo {
+
+    h1 {
+        text-align: left;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    p {
+        font-size: 12px;
+        font-weight: normal;
+    }
+}
+
+.serviceInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 20px;
+
+    .price {
+        text-align: right;
+
+        .sum {
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .amount {
+            font-size: 32px;
+            font-weight: bold;
+        }
+    }
+
+    .askButton {
+        width: 263px;
+        height: 50px;
+        font-size: 16px;
+    }
+}
+
+.noPetsitters {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
