@@ -25,6 +25,9 @@
     text-align: center;
     border: none;
     border-bottom: 1px solid black;
+    &::placeholder {
+        color: #777;
+    }
 }
 .inputWrapper{
     display: flex;
