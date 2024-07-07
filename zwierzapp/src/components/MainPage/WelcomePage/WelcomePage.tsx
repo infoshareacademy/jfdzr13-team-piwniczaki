@@ -3,7 +3,7 @@ import useAuth from "../../../context/AuthContext";
 import styles from "../WelcomePage/welcomePage.module.scss";
 
 const WelcomePage = () => {
-  const { currentUser } = useAuth();
+  const { currentUser } = useAuth() || {};
 
   return (
     <main className={styles.sectionsWrapper}>

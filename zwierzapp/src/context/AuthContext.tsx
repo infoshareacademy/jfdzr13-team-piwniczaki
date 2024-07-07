@@ -17,14 +17,31 @@ import {
 } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { auth, db } from "../utils/firebase"; 
+import { avatars } from "../components/AddDataForm/AddAvatar/AddAvatar";
+import Loading from "../components/Loading/Loading";
+import { auth, db } from "../utils/firebase";
 
-type AdditionalUserInfo = {
+
+export interface User {
+  uid: string;
+  name?: string;
+  surname?: string;
+  phone?: number;
+  city?: string;
+  descLong?: string;
+  descShort?: string;
+  email?: string;
+}
+
+export type AdditionalUserInfo = {
   name: string;
   surname: string;
   city: string;
-  phone: number;
+  phone: string;
+  email: string;
+  avatar: { id: number; photo: string; alt: string };
 };
+
 interface AuthContextData {
   currentUser: any;
   login: (email: string, password: string) => Promise<void>;
@@ -32,14 +49,22 @@ interface AuthContextData {
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   savePersonalData: (userData: AdditionalUserInfo) => Promise<void>;
+  avatar: { id: number; photo: string; alt: string };
+  handleAvatar: (avatarEntry: {
+    id: number;
+    photo: string;
+    alt: string;
+  }) => void;
 }
 
-const AuthContext = createContext<AuthContextData | null>(null);
+export const AuthContext = createContext<AuthContextData | null>(null);
 
 const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isLoading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [avatar, setAvatar] = useState(avatars[0]);
 
   const addNewUserToDatabase = async (user: any) => {
     const usersdata = await getDocs(collection(db, "Users"));
@@ -86,7 +111,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return toast.promise(signInWithEmailAndPassword(auth, email, password), {
       loading: "Logowanie...",
       success: <b>Zostałeś zalogowany</b>,
-      error: (err) => <b>Błąd: {err.message}</b>,
+      error: <b>Podany adres email lub hasło są niepoprawne!</b>,
     });
   }
 
@@ -116,7 +141,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       {
         loading: "Rejestrowanie",
         success: <b>Zarejestrowanie poprawnie!</b>,
-        error: "Niepoprawny adres e-mail",
+        error: (err) => {
+          if (err.code === "auth/email-already-in-use") {
+            return <b>Istnieje już użytkownik o takim adresie email!</b>;
+          }
+          return <b>Rejestracja nie powiodła się!</b>;
+        },
       }
     );
   }
@@ -129,21 +159,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }
 
-  function savePersonalData(userData: AdditionalUserInfo) {
-    return toast.promise(
-      new Promise(async (resolve) => {
-        await updateUserToDatabase(currentUser.uid, userData);
-        resolve(undefined);
-      }),
-      {
-        loading: "Zapisanie danych...",
-        success: <b>Zapisano dane</b>,
-        error: (err) => <b>Błąd: {err.message}</b>,
-      }
-    );
+  async function savePersonalData(userData: AdditionalUserInfo) {
+    try {
+      await updateUserToDatabase(currentUser.uid, userData);
+
+      setCurrentUser((prev: any) => ({
+        ...prev,
+        ...userData,
+      }));
+
+      toast.success("Zapisano poprawnie dane");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
+  const handleAvatar = (avatarEntry: {
+    id: number;
+    photo: string;
+    alt: string;
+  }) => {
+    setAvatar(avatarEntry);
+  };
+
   useEffect(() => {
+    setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const dbUser = await getUserFromDatabase(user.uid);
@@ -152,11 +192,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             ...user,
             ...dbUser,
           });
+          setLoading(false);
         } else {
           setCurrentUser(user);
+          setLoading(false);
         }
       } else {
-        setCurrentUser(user);
+        setCurrentUser(user); // null
+        setLoading(false);
       }
     });
     return () => unsubscribe();
@@ -169,7 +212,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     register,
     logout,
     savePersonalData,
+    avatar,
+    handleAvatar,
   };
+  if (isLoading) {
+    return <Loading message="Ładowanie użytkownika" />;
+  }
 
   return (
     <AuthContext.Provider value={passedData}>{children}</AuthContext.Provider>

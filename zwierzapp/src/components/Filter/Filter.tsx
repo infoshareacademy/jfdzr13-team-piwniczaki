@@ -1,9 +1,14 @@
+import SearchPetsitters from "./SearchPetsitters/SearchPetsitters";
+import ShowPetsitters from "./ShowPetsitters/ShowPetsitters";
 import styles from "./filter.module.scss";
 
-function Filter() {
+const Filter = () => {
   return (
-    <div className={styles.filterContainer}>Fliter</div>
-  )
-}
+    <div className={styles.pageContainer}>
+      <SearchPetsitters />
+      <ShowPetsitters />
+    </div>
+  );
+};
 
-export default Filter
+export default Filter;

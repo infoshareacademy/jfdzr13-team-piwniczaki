@@ -1,24 +1,21 @@
-import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../utils/firebase.ts";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
-const useFirebaseData = (collectionName: string) => {
+const useFirebaseData = (collectionName:string) => {
   const [data, setData] = useState([]);
 
-  const fetchData = async () => {
-    const querySnapshot = await getDocs(collection(db, collectionName));
-    const data = querySnapshot.docs.map((document) => document.data());
-
-    setData(data);
-  };
-
   useEffect(() => {
-    fetchData();
-
-    return () => {
-      fetchData();
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, collectionName));
+      const documents = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setData(documents);
     };
-  }, []);
+    fetchData();
+  }, [collectionName]);
 
   return data;
 };

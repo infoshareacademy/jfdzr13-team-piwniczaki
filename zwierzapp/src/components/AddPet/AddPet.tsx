@@ -5,17 +5,14 @@ import arrowback from "../../images/arrow_back.svg"
 
 function AddPet() {
 
-
-
   return (
     <div className={styles.addpetContainer}>
-
       <div className={styles.containerForm}>
         <div className={styles.getBackContainer}>
-          <Link to="/" className={styles.getBackElement}><img src={arrowback}></img>wróć</Link>
+          <Link to="/profile" className={styles.getBackElement}><img src={arrowback}></img>wróć</Link>
         </div>
-        <InputDataPet/>
-        <Link to="/" className={styles.buttonToCancel} >Anuluj</Link>
+        <InputDataPet />
+        <Link to="/profile" className={`${styles.buttonToCancel} ${styles.primaryButton}`} >Anuluj</Link>
       </div>
     </div>
   )

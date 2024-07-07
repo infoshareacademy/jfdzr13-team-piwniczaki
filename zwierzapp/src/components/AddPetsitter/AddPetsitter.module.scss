@@ -1,0 +1,93 @@
+@import '../../styles/vars.scss';
+@import '../../styles/button.module.scss';
+.getBackElement{
+    border: 2px solid black;
+    padding: 2px 5px;
+    border-radius: 35px;
+    display: flex;
+    text-decoration: none;
+    &:visited{
+        color: black;
+    }
+    &:hover{
+        color: white;
+        background-color: $orange;
+    }
+}
+
+.addPetsitterContainer{
+    font-family: $font-poppins;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    width: 50%;
+    gap:5px;
+}
+.inputWrapper{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:15px;
+    justify-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.dog{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    width: 90%;
+    gap:5px;
+}
+.cat{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    gap:5px;
+}
+.buttonWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.addPetSitterButton{
+    padding: 0px 10px;
+    margin: 0px 20px;
+}
+.inputSelectWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(244, 244, 244, 1);
+    border-radius: 35px;
+    gap: 5px;
+    font-weight: 400;
+    font-size: 18px;
+    padding: 10px 20px;
+}
+.singleCheckbox{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+}
+.inputCheckBoxPrice{
+    display: flex;
+    justify-content: space-between;
+}
+.inputPriceWithCurrency{
+    display: flex;
+}
+.inputPrice{
+    width: 50px;
+    height: 25px;
+}

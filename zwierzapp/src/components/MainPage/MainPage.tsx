@@ -1,13 +1,13 @@
 import AboutUs from "./AboutUs/AboutUs";
 import Footer from "./Footer/Footer";
 import WelcomePage from "./WelcomePage/WelcomePage";
-// import Carousel from "./Carousel/Carousel";
+import Carousel from "./Carousel/Carousel";
 
 function MainPage() {
   return (
     <>
       <WelcomePage />
-      {/* <Carousel /> */}
+      <Carousel />
       <AboutUs />
       <Footer />
     </>

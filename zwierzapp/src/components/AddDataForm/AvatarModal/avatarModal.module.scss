@@ -1,0 +1,43 @@
+.avatarContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 2fr 2fr;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: fit-content;
+  height: fit-content;
+  background-color: #f2f0f0d3;
+  border-radius: 10px;
+  position: fixed;
+  padding: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  gap: 5px;
+  -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+}
+
+.avatarText {
+  font-weight: 700;
+  font-size: 25px;
+  grid-column: 1/4;
+  grid-row: 1/2;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatarImages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 130px;
+  width: 130px;
+  list-style-type: none;
+}
+.singleAvatarImage{
+  height: 100%;
+  width: 100%;
+}

@@ -1,0 +1,42 @@
+@import "./../../../../styles/vars.scss";
+@import "../../../../styles/button.module.scss";
+
+.accessContainer{
+    font-family: $font-poppins;
+    width: 100%;
+    height: 100%;
+    background-color: $grey;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+.tittleAcc{
+    font-size: 16px;
+    font-weight: 600;
+}
+.listOfAccess{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:10px;
+    width: 100%;
+}
+.dateElement{
+    font-size: 16px;
+    font-weight: 600;
+    padding:2px;
+}
+.becomePetSitterLink{
+    text-decoration: none;
+    width: 100%;
+    height: 40px;
+    padding: 15px;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
