@@ -30,6 +30,7 @@ export interface User {
   city?: string;
   descLong?: string;
   descShort?: string;
+  email?: string;
 }
 
 export type AdditionalUserInfo = {
@@ -37,6 +38,7 @@ export type AdditionalUserInfo = {
   surname: string;
   city: string;
   phone: string;
+  email: string;
   avatar: { id: number; photo: string; alt: string };
 };
 
