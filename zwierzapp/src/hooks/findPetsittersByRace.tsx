@@ -5,24 +5,24 @@ import useFirebaseData from "./useFirebaseData";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
-interface Filters {
-  petId: string | null;
-  petAge: string | null;
-  petBehavior: string | null;
-  petDescription: string | null;
-  petName: string | null;
-  petRace: string | null;
-  petSex: string | null;
-  petWeight: string | null;
-  minPrice: string | null;
-  maxPrice: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  city: string | null;
-  serviceType: string | null;
+export interface Filters {
+  petId?: string | null;
+  petAge?: string | null;
+  petBehavior?: string | null;
+  petDescription?: string | null;
+  petName?: string | null;
+  petRace?: string | null;
+  petSex?: string | null;
+  petWeight?: string | null;
+  minPrice?: string | null;
+  maxPrice?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  city?: string | null;
+  serviceType?: string | null;
 }
 
-const findPetsitter = () => {
+const findPetsittersByRace = () => {
   const [queryParameters] = useSearchParams();
   const pets: PetDocument[] = useFirebaseData("Pets");
   const [petObject, setPetObject] = useState<PetDocument | undefined>();
@@ -42,9 +42,9 @@ const findPetsitter = () => {
     city: null,
     serviceType: null,
   });
-
   useEffect(() => {
-    setFilters({
+    setFilters((prevFilters) => ({
+      ...prevFilters,
       petId: queryParameters.get("petId"),
       minPrice: queryParameters.get("minPrice"),
       maxPrice: queryParameters.get("maxPrice"),
@@ -52,14 +52,7 @@ const findPetsitter = () => {
       endDate: queryParameters.get("endDate"),
       city: queryParameters.get("city"),
       serviceType: queryParameters.get("serviceType"),
-      petAge: filters.petAge,
-      petBehavior: filters.petBehavior,
-      petDescription: filters.petDescription,
-      petName: filters.petName,
-      petRace: filters.petRace,
-      petSex: filters.petSex,
-      petWeight: filters.petWeight,
-    });
+    }));
   }, [queryParameters]);
 
   useEffect(() => {
@@ -84,57 +77,36 @@ const findPetsitter = () => {
     }
   }, [petObject]);
 
-  //start filters
-
-  // const isDog = filters.petRace === "dog";
-  const [isDog, setIsDog] = useState(false);
-  const [isCat, setIsCat] = useState(false);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
 
   const filterUsers = async () => {
+    const queries = [];
     if (filters.petRace === "dog") {
-      setIsDog(true);
-    } else {
-      setIsDog(false);
-    }
-    if (filters.petRace === "cat") {
-      setIsCat(true);
-    } else {
-      setIsCat(false);
-    }
-
-    if (isCat) {
-      const usersSnapshot: object | null = await getDocs(
-        query(collection(db, "Petsitters"), where("checkboxes.cat", "==", true))
-      );
-      if (usersSnapshot.docs) {
-        setFilteredUsers(
-          usersSnapshot.docs.map(
-            (doc) => doc._document.data.value.mapValue.fields.userId.stringValue
-          )
-        );
-      }
-    } else if (isDog) {
-      const usersSnapshot: object | null = await getDocs(
+      queries.push(
         query(collection(db, "Petsitters"), where("checkboxes.dog", "==", true))
       );
-      if (usersSnapshot.docs) {
-        setFilteredUsers(
-          usersSnapshot.docs.map(
-            (doc) => doc._document.data.value.mapValue.fields.userId.stringValue
-          )
-        );
-      }
     }
+    if (filters.petRace === "cat") {
+      queries.push(
+        query(collection(db, "Petsitters"), where("checkboxes.cat", "==", true))
+      );
+    }
+
+    const userSnapshots = await Promise.all(queries.map((q) => getDocs(q)));
+    const users: string[] = userSnapshots.flatMap((snapshot) =>
+      snapshot.docs.map((doc) => doc.data().userId as string)
+    );
+
+    setFilteredUsers(users);
   };
 
   useEffect(() => {
-    filterUsers();
-  }, [filters, isDog, isCat]);
-
-  console.log(filteredUsers);
+    if (filters.petRace) {
+      filterUsers();
+    }
+  }, [filters.petRace]);
 
   return [filters, filteredUsers];
 };
 
-export default findPetsitter;
+export default findPetsittersByRace;

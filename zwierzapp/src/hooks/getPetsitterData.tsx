@@ -4,6 +4,7 @@ import useAuth, { User } from "../context/AuthContext";
 
 export interface PetsitterDocument {
   userId: string;
+  id?: string;
   prices?: {
     dogHomeVisitPrice?: number;
     dogAccomPrice?: number;
@@ -40,6 +41,21 @@ export interface PetsitterDocument {
     catHomeVisit?: boolean;
     catWalk?: boolean;
   };
+  userData?:{
+    city?: string;
+    id?: string;
+    name?: string;
+    phone?: string;
+    surname?: string;
+    uid?: string;
+    avatar?:{
+      alt?:string;
+      id?:number;
+      photo?:string;
+    };
+    shortDescription?:string;
+  }
+
 }
 
 const getPetsitterData = (): PetsitterDocument | null => {
