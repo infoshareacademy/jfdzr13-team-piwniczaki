@@ -65,12 +65,15 @@
         height: 50px;
         font-size: 16px;
 
-        a,
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
         a:hover,
         a:active,
         a:visited {
-            text-decoration: none;
-            color: white;
+            color: black;
         }
     }
 }
