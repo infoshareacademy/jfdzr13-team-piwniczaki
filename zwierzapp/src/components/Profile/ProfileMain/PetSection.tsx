@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import getPetsitterData, {
   PetsitterDocument,
 } from "../../../hooks/getPetsitterData";
+import styles from './PetSection.module.scss'
 
 interface Checkboxes {
   isAvailable?: boolean;
@@ -117,15 +118,18 @@ const PetSection = () => {
     ].filter(Boolean);
 
     return (
-      <div>
+      <>
+      <div className={styles.petActivity}>
         {labels.title && <span>{labels.title}</span>}
         {activityLabels.length > 0 && <span>{activityLabels.join(", ")}</span>}
       </div>
+      <div className={styles.barLine}></div>
+      </>
     );
   };
 
   return (
-    <>
+    <div className={styles.profileMainConainter}>
       {(checkboxes.dog.isAvailable || checkboxes.cat.isAvailable) && (
         <div>
           <h1>Jakimi zwierzakami się zajmujesz</h1>
@@ -178,7 +182,7 @@ const PetSection = () => {
                 attr2: "Wizyta domowa",
               },
             })}
-          {checkboxes.dog.isAvailable && <h2>Pies</h2>}
+          {checkboxes.dog.isAvailable && <h2 className={styles.headerSecond}>Pies</h2>}
           {checkboxes.dog.isAvailable &&
             renderPetSection({
               animal: {
@@ -229,7 +233,7 @@ const PetSection = () => {
             })}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

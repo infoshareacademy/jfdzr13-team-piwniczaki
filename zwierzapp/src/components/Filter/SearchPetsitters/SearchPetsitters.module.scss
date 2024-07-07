@@ -1,5 +1,77 @@
+@import "../../../styles/vars.scss";
+@import "../../../styles/button.module.scss";
+
 .form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  font-size: 18px;
+  background-color: $grey;
+  border-radius: 15px;
+  margin: 10px 0px;
+  padding: 30px;
+  height: fit-content;
+}
+
+h1 {
+  text-align: center;
+  padding-top: 20px;
+}
+
+span {
+    font-weight: bold;
+    padding-bottom: 15px;
+}
+
+select,
+.inputCity,
+.inputStartDate,
+.inputEndDate,
+.inputMinPrice,
+.inputMaxPrice {
+    background: white;
+    width: 100%;
+    border: none;
+    border-radius: 26px;
+    padding: 10px 20px;
+}
+
+.labelPetName,
+.labelCity,
+.labelDateContainer,
+.labelPriceContainer,
+.labelMinPrice,
+.labelMaxPrice {
     display: flex;
     flex-direction: column;
-    gap: 40px
+    align-items: center;
+    width: 80%;
+}
+
+.labelServiceContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+    width: 100%;
+    padding-top: 20px;
+    gap: 4px;
+}
+.formContainerProfile input:focus {
+    outline: none;
+    border: none;
+}
+
+.priceWrapper,
+.labelDate {
+    display: flex;
+    gap: 10px;
+    
+}
+
+.searchButton {
+    width: 80%;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 10px 0px;
 }

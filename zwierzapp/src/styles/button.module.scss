@@ -1,0 +1,22 @@
+@import "./vars.scss";
+
+.primaryButton {
+        font-family: $font-poppins;
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        background-color: $orange;
+        border: none;
+        border-radius: 35px;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        &:active,
+        &:hover {
+            background-color: white;
+            outline: 3px solid $orange;
+            color: $orange;
+        }
+    
+        &:active {
+            text-decoration: underline;
+        }
+    }

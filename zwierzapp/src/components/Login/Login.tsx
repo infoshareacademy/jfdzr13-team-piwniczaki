@@ -38,7 +38,7 @@ const Login = () => {
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           <input type="email" name="email" placeholder="ADRES MAIL" required />
           <input type="password" name="password" placeholder="HASŁO" autoComplete="on" required />
-          <button type="submit">ZALOGUJ SIĘ</button>
+          <button type="submit" className={styles.primaryButton}>ZALOGUJ SIĘ</button>
         </form>
         <div className={styles.orContainer}>
           <div className={styles.lineElement}></div>
@@ -47,7 +47,7 @@ const Login = () => {
         </div>
         <button className={styles.googleLogin} onClick={authenticateWithGoogle}>
           <img className={styles.googleLogo} src={googleLogo} />
-          KONTYNUUJ Z UŻYCIEM KONTA GOOGLE
+          <p>KONTYNUUJ Z UŻYCIEM KONTA GOOGLE</p>
         </button>
         <Link to="/register" className={styles.registerLink}>
           NIE MASZ KONTA? ZAREJESTRUJ SIĘ!

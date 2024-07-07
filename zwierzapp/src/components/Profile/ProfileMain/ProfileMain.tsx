@@ -5,9 +5,11 @@ import PetSection from "./PetSection";
 import { useEffect, useState } from "react";
 import getUserData from "../../../hooks/getUserData";
 import { Link } from "react-router-dom";
+import DescSection from "./DescSection";
 import getPetsitterData, {
   PetsitterDocument,
 } from "../../../hooks/getPetsitterData";
+
 
 function ProfileMain(passedData: { uid?: string }) {
   const petsitterDocument: PetsitterDocument | null = getPetsitterData();
@@ -25,22 +27,27 @@ function ProfileMain(passedData: { uid?: string }) {
     }
   }, [passedUser]);
 
+
+
   return (
     <main className={styles.container}>
       <div className={styles.top}>
-        <h1>
-          {user ? `${user.name} ${user.surname}` : "Anonimowy użytkownik"}
+        <h1 className={styles.nameProfile}>
+          {user ? `Cześć, ${user.name} ${user.surname}!` : "Cześć, Anonimowy użytkowniku!"}
         </h1>
+        <DescSection/>
       </div>
       <PetSection />
       <PriceSection />
       {petsitterDocument &&
         petsitterDocument.checkboxes &&
         (petsitterDocument.checkboxes.cat ||
-        petsitterDocument.checkboxes.dog ? (
-          <Link to="/addpetsitter">
-            <button>Edytuj dane</button>
-          </Link>
+          petsitterDocument.checkboxes.dog ? (
+          <div className={styles.buttonConainter}>
+            <Link to="/addpetsitter" className={`${styles.editButton} ${styles.primaryButton}`}>
+              Edytuj dane
+            </Link>
+          </div>
         ) : null)}
     </main>
   );

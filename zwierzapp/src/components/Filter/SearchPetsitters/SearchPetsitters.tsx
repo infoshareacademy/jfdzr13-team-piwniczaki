@@ -37,7 +37,6 @@ const SearchPetsitters = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
-
   const updateFormDataFromSearchParams = (searchParams, formData) => {
     const queryParameters = new URLSearchParams(searchParams.toString());
     return {
@@ -97,10 +96,10 @@ const SearchPetsitters = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Wyszukaj opiekuna</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label>
-          Imię zwierzaka
+        <h1>Wyszukaj opiekuna</h1>
+        <label className={styles.labelPetName}>
+          <span>Imię zwierzaka</span>
           <select name="petId" onChange={handleChange}>
             {petsArr.length >= 1 &&
               petsArr.map((pet) => (
@@ -110,44 +109,46 @@ const SearchPetsitters = () => {
               ))}
           </select>
         </label>
-
         <label>
-          Rodzaj usługi
-          <label>
-            <input
-              type="radio"
-              name="serviceType"
-              value="walk"
-              onChange={handleChange}
-              checked={formData.serviceType === "walk"}
-            />{" "}
-            Spacer{" "}
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="serviceType"
-              value="accom"
-              onChange={handleChange}
-              checked={formData.serviceType === "accom"}
-            />{" "}
-            Nocleg{" "}
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="serviceType"
-              value="homeVisit"
-              onChange={handleChange}
-              checked={formData.serviceType === "homeVisit"}
-            />{" "}
-            Wizyta domowa{" "}
-          </label>
+          <span>Rodzaj usługi</span>
+          <div className={styles.labelServiceContainer}>
+            <label>
+              <input
+                type="radio"
+                name="serviceType"
+                value="walk"
+                onChange={handleChange}
+                checked={formData.serviceType === "walk"}
+              />{" "}
+              Spacer{" "}
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="serviceType"
+                value="accom"
+                onChange={handleChange}
+                checked={formData.serviceType === "accom"}
+              />{" "}
+              Nocleg{" "}
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="serviceType"
+                value="homeVisit"
+                onChange={handleChange}
+                checked={formData.serviceType === "homeVisit"}
+              />{" "}
+              Wizyta domowa{" "}
+            </label>
+          </div>
         </label>
 
-        <label>
-          Miasto
+        <label className={styles.labelCity}>
+          <span>Miasto</span>
           <input
+            className={styles.inputCity}
             type="text"
             name="city"
             value={formData.city}
@@ -155,48 +156,61 @@ const SearchPetsitters = () => {
           />
         </label>
 
-        <label>
-          Termin
-          <input
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            min={currentDate}
-            onChange={handleChange}
-          />
-          <input
-            type="date"
-            name="endDate"
-            value={formData.endDate}
-            min={formData.startDate}
-            onChange={handleChange}
-          />
-        </label>
-
-        <label>
-          Cena
-          <label>
-            min
+        <label className={styles.labelDateContainer}>
+          <span>Termin</span>
+          <div className={styles.labelDate}>
             <input
-              type="number"
-              name="minPrice"
-              value={formData.minPrice}
+              className={styles.inputStartDate}
+              type="date"
+              name="startDate"
+              value={formData.startDate}
+              min={currentDate}
               onChange={handleChange}
             />
-          </label>
-          <label>
-            max
             <input
-              type="number"
-              name="maxPrice"
-              value={formData.maxPrice}
-              min={formData.minPrice}
+              className={styles.inputEndDate}
+              type="date"
+              name="endDate"
+              value={formData.endDate}
+              min={formData.startDate}
               onChange={handleChange}
             />
-          </label>
+          </div>
         </label>
 
-        <button type="submit">Szukaj</button>
+        <label className={styles.labelPriceContainer}>
+          <span>Cena</span>
+          <div className={styles.priceWrapper}>
+            <label className={styles.labelMinPrice}>
+              <span>min</span>
+              <input
+                className={styles.inputMinPrice}
+                type="number"
+                name="minPrice"
+                value={formData.minPrice}
+                onChange={handleChange}
+              />
+            </label>
+            <label className={styles.labelMaxPrice}>
+              <span>max</span>
+              <input
+                className={styles.inputMaxPrice}
+                type="number"
+                name="maxPrice"
+                value={formData.maxPrice}
+                min={formData.minPrice}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+        </label>
+
+        <button
+          type="submit"
+          className={`${styles.searchButton} ${styles.primaryButton}`}
+        >
+          Szukaj
+        </button>
       </form>
     </div>
   );
