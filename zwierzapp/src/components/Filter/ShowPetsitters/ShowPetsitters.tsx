@@ -64,7 +64,7 @@ const ShowPetsitters = () => {
 
   return (
     <div className={styles.petsittersContainer}>
-      <div className={styles.sortContainer}>
+      {/* <div className={styles.sortContainer}>
         <div className={styles.sort}>
             <label>
             sortuj według
@@ -76,7 +76,7 @@ const ShowPetsitters = () => {
               <option value="alfabetycznie (Z-A)">alfabetycznie (Z-A)</option>
             </select>
         </div>
-      </div>
+      </div> */}
 
       <PetsitterBar
         petsitters={sortedPetsitters}

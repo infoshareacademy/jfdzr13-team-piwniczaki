@@ -48,17 +48,19 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({
       {petsitters && petsitters.length > 0 ? (
         petsitters.map((petsitter) => (
           <div key={petsitter.id} className={styles.petsitterCard}>
-            <img
-              src={petsitter?.userData?.avatar?.photo}
-              alt={petsitter?.userData?.avatar?.alt}
-            />
-            <div className={styles.petsitterInfo}>
-              <h1>{`${petsitter?.userData?.name} ${petsitter?.userData?.surname}`}</h1>
-              <p>{petsitter?.userData?.shortDescription}</p>
+            <div className={styles.avatarAndInfo}>
+              <img
+                src={petsitter?.userData?.avatar?.photo}
+                alt={petsitter?.userData?.avatar?.alt}
+              />
+              <div className={styles.petsitterInfo}>
+                <h1>{`${petsitter?.userData?.name} ${petsitter?.userData?.surname}`}</h1>
+                <p>{petsitter?.userData?.shortDescription}</p>
+              </div>
             </div>
             <div className={styles.serviceInfo}>
               <div className={styles.price}>
-                <span className={styles.sum}>suma</span>
+                <span className={styles.sum}>cena</span>
                 <span className={styles.amount}>{` ${getPriceForService(petsitter)} zł`}</span>
               </div>
               {petsitter?.userData?.email ? (
