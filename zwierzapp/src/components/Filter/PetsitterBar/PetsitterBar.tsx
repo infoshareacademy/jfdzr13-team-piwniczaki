@@ -2,6 +2,7 @@ import { User } from "firebase/auth";
 import styles from "./PetsitterBar.module.scss";
 import { useLocation } from "react-router";
 import useAuth from "../../../context/AuthContext";
+import placehodlerAvatar from '../../../assets/Avatars/Avatar 1.svg'
 interface PetsitterBarProps {
   serviceType: string | null | undefined;
   race: string;
@@ -50,7 +51,8 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({
           <div key={petsitter.id} className={styles.petsitterCard}>
             <div className={styles.avatarAndInfo}>
               <img
-                src={petsitter?.userData?.avatar?.photo}
+                // src={petsitter?.userData?.avatar?.photo || placehodlerAvatar}
+                src={placehodlerAvatar}
                 alt={petsitter?.userData?.avatar?.alt}
               />
               <div className={styles.petsitterInfo}>
