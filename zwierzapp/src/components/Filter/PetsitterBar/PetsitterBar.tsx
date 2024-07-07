@@ -48,7 +48,10 @@ const PetsitterBar: React.FC<PetsitterBarProps> = ({
       {petsitters && petsitters.length > 0 ? (
         petsitters.map((petsitter) => (
           <div key={petsitter.id} className={styles.petsitterCard}>
-            <img src="/src/assets/Avatars/Avatar%201.svg" alt={petsitter?.userData?.avatar?.alt} />
+            <img
+              src={petsitter?.userData?.avatar?.photo}
+              alt={petsitter?.userData?.avatar?.alt}
+            />
             <div className={styles.petsitterInfo}>
               <h1>{`${petsitter?.userData?.name} ${petsitter?.userData?.surname}`}</h1>
               <p>{petsitter?.userData?.shortDescription}</p>
